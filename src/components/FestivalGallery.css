@@ -41,7 +41,7 @@
 }
 
 .eventMediaHero__mediaOpen:focus-visible {
-  outline: 2px solid #8a1343;
+  outline: 2px solid #111111;
   outline-offset: -2px;
 }
 
@@ -86,7 +86,7 @@
 }
 
 .eventMediaHero__playBtn:focus-visible {
-  outline: 2px solid #8a1343;
+  outline: 2px solid #111111;
   outline-offset: 3px;
 }
 
@@ -163,7 +163,7 @@
 }
 
 .eventMediaHero__cell:focus-visible {
-  outline: 2px solid #8a1343;
+  outline: 2px solid #111111;
   outline-offset: 2px;
   z-index: 2;
 }
@@ -215,7 +215,7 @@
 }
 
 .eventMediaHero__galleryBtn:focus-visible {
-  outline: 2px solid #8a1343;
+  outline: 2px solid #111111;
   outline-offset: 2px;
 }
 
@@ -721,13 +721,13 @@
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: #fff;
-  background: rgba(138, 19, 67, 0.92);
+  background: rgba(0, 0, 0, 0.85);
 }
 
 .eventMediaHero--immersive .eventMediaHero__title {
   margin: 0;
-  max-width: 18ch;
-  font-family: 'Montserrat', sans-serif;
+  max-width: 22ch;
+  font-family: 'Jost', sans-serif;
   font-size: clamp(2rem, 6vw, 3.5rem);
   line-height: 1.05;
   font-weight: 700;
@@ -831,15 +831,16 @@
   font-size: 0.9375rem;
   line-height: 1.2;
   font-weight: 700;
-  color: #fff;
-  background: #8a1343;
+  color: var(--cta-text, #fff);
+  background: var(--cta-bg, #0079ca);
   cursor: pointer;
-  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.28);
-  transition: background 0.2s ease, transform 0.15s ease;
+  box-shadow: 0 4px 22px rgba(0, 121, 202, 0.5);
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
 }
 
 .eventMediaHero--immersive .eventMediaHero__buyBtn:hover {
-  background: #7b0f3a;
+  background: var(--cta-bg-hover, #0062a3);
+  box-shadow: 0 6px 26px rgba(0, 121, 202, 0.62);
 }
 
 .eventMediaHero--immersive .eventMediaHero__buyBtn:focus-visible {

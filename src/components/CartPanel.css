@@ -12,7 +12,7 @@
   display: flex;
   flex-direction: column;
   overflow: hidden;
-  font-family: Montserrat, system-ui, -apple-system, sans-serif;
+  font-family: Inter, system-ui, -apple-system, sans-serif;
 }
 
 .cartPanelFloat {
@@ -397,8 +397,8 @@
   margin: 0;
   border: none;
   border-radius: 9999px;
-  background: #0a0a0a;
-  color: #fff;
+  background: var(--cta-bg, #0079ca);
+  color: var(--cta-text, #fff);
   font: inherit;
   font-size: var(--type-small-size);
   line-height: var(--type-small-line-height);
@@ -407,7 +407,7 @@
 }
 
 .cartCheckoutBtn:hover {
-  background: #262626;
+  background: var(--cta-bg-hover, #0062a3);
 }
 
 .cartPanelMobileWrap {
@@ -456,7 +456,7 @@
     padding: 0.75rem 1.25rem max(0.75rem, env(safe-area-inset-bottom));
     background: #f2f3f3;
     border-top: 1px solid #ccd2d8;
-    font-family: Montserrat, system-ui, -apple-system, sans-serif;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
     transform: translateY(0);
     opacity: 1;
     pointer-events: auto;
@@ -542,8 +542,8 @@
     padding: 0.85rem 1.25rem;
     border: none;
     border-radius: 9999px;
-    background: #0a0a0a;
-    color: #fff;
+    background: var(--cta-bg, #0079ca);
+    color: var(--cta-text, #fff);
     font: inherit;
     font-size: var(--type-small-size);
     line-height: var(--type-small-line-height);
@@ -554,7 +554,7 @@
   }
 
   .cartMobileCheckoutPill:hover {
-    background: #262626;
+    background: var(--cta-bg-hover, #0062a3);
   }
 
   .cartMobileBackdrop {

@@ -491,6 +491,8 @@
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
   padding-bottom: 0.125rem;
+  padding-inline: 1px 0.65rem;
+  scroll-padding-inline: 0.65rem;
 }
 
 .pillRow::-webkit-scrollbar {

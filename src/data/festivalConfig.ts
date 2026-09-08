@@ -1,5 +1,6 @@
 /**
- * Festival-specific branding and copy for BIGSOUND Valencia 2027.
+ * Festival-specific branding and copy for Gärten Project —
+ * ARTBAT @ Château de Fontainebleau, 12 September 2026.
  */
 
 export type PlanCategory = {
@@ -9,12 +10,14 @@ export type PlanCategory = {
 
 export const PLAN_CATEGORIES: PlanCategory[] = [
   { id: 'overview', title: 'Overview' },
-  { id: 'abonos', title: 'Abonos' },
-  { id: 'addons', title: 'Add-ons' },
+  { id: 'entry', title: 'Entry pass' },
+  { id: 'merch', title: 'Merch' },
+  { id: 'addons', title: 'Bar' },
+  { id: 'shuttle', title: 'Shuttle' },
 ];
 
-/** Default plan tab (weekend abonos). */
-export const DEFAULT_PLAN_TAB = 'abonos';
+/** Default plan tab (entry passes). */
+export const DEFAULT_PLAN_TAB = 'entry';
 
 const BASE = import.meta.env.BASE_URL;
 
@@ -28,23 +31,23 @@ export const HERO_GRID_IMAGES = [
 export const GALLERY_IMAGES = [
   {
     src: `${BASE}festival-poster.jpg`,
-    alt: 'BIGSOUND Festival 2027 — Parc Central, Torrent',
+    alt: 'ARTBAT @ Château de Fontainebleau — Gärten Project',
   },
   {
     src: HERO_GRID_IMAGES[0],
-    alt: 'Crowd at BIGSOUND Festival',
+    alt: 'ARTBAT at Château de Fontainebleau',
   },
   {
     src: HERO_GRID_IMAGES[1],
-    alt: 'Main stage at BIGSOUND',
+    alt: 'Gärten Project night at a French château',
   },
   {
     src: HERO_GRID_IMAGES[2],
-    alt: 'Night concert at BIGSOUND Valencia',
+    alt: 'Crowd at a Gärten Project château night',
   },
   {
     src: HERO_GRID_IMAGES[3],
-    alt: 'Festival crowd under the lights',
+    alt: 'Gärten Project — Carl Cox & Mau P at Chantilly',
   },
 ];
 
@@ -60,64 +63,66 @@ export const GALLERY_IMAGE_URLS = GALLERY_IMAGES.map((image) => image.src);
 
 export const POSTER_IMAGE = `${BASE}festival-poster.jpg`;
 
-export const AVATAR_URL =
-  'https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=96&h=96&q=80';
+export const AVATAR_URL = `${BASE}favicon.png`;
 
 export const VENUE_IMAGE = `${BASE}hero-grid-1.jpg`;
 
 export const HERO_FACTS = [
-  { label: 'Date', value: '18–19 Jun' },
-  { label: 'Duration', value: '2 days' },
+  { label: 'Date', value: '12 Sep' },
+  { label: 'Doors', value: '19:00' },
   { label: 'Format', value: 'Outdoor' },
-  { label: 'City', value: 'Torrent' },
+  { label: 'City', value: 'Fontainebleau' },
 ] as const;
+
+export const LINEUP_TITLE = 'Lineup';
+export const LINEUP_HINT = 'Saturday 12 September 2026';
 
 export const OVERVIEW_INFO = [
   {
     icon: '📅',
     label: 'Date',
-    text: '18–19 June 2027 (Friday–Saturday). Doors 16:00–02:00 both days.',
+    text: 'Saturday 12 September 2026 at the Château de Fontainebleau. An intimate evening produced by Gärten.',
   },
   {
     icon: '📍',
     label: 'Location',
-    text: 'Parc Central de Torrent — Avinguda del Rei Joan Carles I, 22, 46900 Torrent, Valencia',
+    text: 'Château de Fontainebleau, 77300 Fontainebleau, France',
   },
   {
     icon: '🔞',
     label: 'Age',
-    text: 'Under 16 must be with a parent or legal guardian. Ages 16–17 need a signed authorization. Children up to 6 enter free with an adult (one child per ticket).',
+    text: '18+. Access is restricted to persons aged 18 and over.',
   },
   {
     icon: '♿',
-    label: 'Accessibility',
-    text: 'Contact ventas@enterticket.es for access requirements before the event.',
+    label: 'On site',
+    text: 'Cashless only — card and mobile payments. No outside food or drinks. VIP includes a private WC and bottle service.',
   },
 ];
 
 export const FESTIVAL_CURRENCY = {
-  locale: 'es-ES',
+  locale: 'fr-FR',
   currency: 'EUR',
 } as const;
 
 export const FESTIVAL_COPY = {
   intro:
-    'BIGSOUND is Valencia’s urban music festival — two days of pop, urbano and live hits at Parc Central de Torrent. The 2027 edition lands on 18 and 19 June, with more stages and more space for the biggest weekend of the summer.',
-  introCta: 'Abonos 2027 are on sale now!',
+    'We are proud to present ARTBAT at the Château de Fontainebleau — Paris, this Saturday 12 September 2026. An intimate evening blending power, elegance and emotion at the heart of a jewel of French heritage. Produced by Gärten: the first luxury musical events brand.',
+  introCta: 'Entry passes from €49.',
   ticketTabs:
-    'Browse Abonos and Add-ons in the tabs above. Tickets are nominative and swapped for a cashless wristband at accreditation.',
-  supportEmail: 'ventas@enterticket.es',
-  privacyUrl: 'https://feverup.com',
-  officialSiteUrl: 'https://bigsoundfestival.com/valencia/abonos',
-  officialSiteLabel: 'bigsoundfestival.com',
-  marketingBrand: 'BIGSOUND Festival',
+    'Browse Entry pass, Merch, Bar, and Shuttle. General access and VIP are sold in waves. Bar is cashless. A limited return shuttle runs to Paris-Bercy after the night.',
+  supportEmail: 'help@feverup.com',
+  privacyUrl: 'https://www.gartenproject.com/privacy-policy',
+  officialSiteUrl: 'https://www.gartenproject.com/',
+  officialSiteLabel: 'gartenproject.com',
+  marketingBrand: 'Gärten Project',
   venue: {
-    name: 'Parc Central de Torrent',
-    text: 'An open-air park about 8 km from Valencia city, with Metrovalencia to Torrent Avinguda (~300 m from the gate), shuttle buses, and more than 4,000 public parking spaces.',
+    name: 'Château de Fontainebleau',
+    text: 'A UNESCO jewel of French heritage. Gärten brings cutting-edge electronic music into the château grounds — a blend of French luxury, unique venues, and an intimate night with ARTBAT.',
   },
   gettingThere: {
-    name: 'Parc Central',
-    address: 'Avinguda del Rei Joan Carles I, 22\n46900 Torrent, Valencia\nSpain',
-    mapQuery: 'Parc Central Torrent Valencia',
+    name: 'Château de Fontainebleau',
+    address: 'Château de Fontainebleau\n77300 Fontainebleau\nFrance',
+    mapQuery: 'Château de Fontainebleau',
   },
 } as const;

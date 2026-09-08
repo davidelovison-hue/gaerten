@@ -1,15 +1,15 @@
 import { GALLERY_IMAGES, POSTER_IMAGE } from '../data/festivalConfig';
 
-export const FESTIVAL_EVENT_ID = 'bigsound-valencia-2027';
+export const FESTIVAL_EVENT_ID = 'artbat-fontainebleau-2026';
 
-export const FESTIVAL_LOGO_SRC = `${import.meta.env.BASE_URL}festival-logo.jpg`;
+export const FESTIVAL_LOGO_SRC = `${import.meta.env.BASE_URL}festival-logo.png`;
 
 export const FESTIVAL_EVENT = {
   id: FESTIVAL_EVENT_ID,
-  title: 'BIGSOUND Festival 2027',
+  title: 'ARTBAT @ Château de Fontainebleau',
   image: GALLERY_IMAGES[0]?.src ?? POSTER_IMAGE,
-  venue: 'Parc Central — Torrent, Valencia',
-  dateLine: '18–19 June 2027 (Friday–Saturday)',
+  venue: 'Château de Fontainebleau — Paris',
+  dateLine: 'Saturday 12 September 2026',
 };
 
 export function getFestivalEvent(eventId: string) {

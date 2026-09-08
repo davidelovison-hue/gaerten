@@ -1,22 +1,18 @@
-# Big Sound Festival
+# Gärten Project
 
-Festival ticketing prototype for **BIGSOUND Valencia 2027** (18–19 June, Parc Central de Torrent), using the [fever-festival-plan](https://davidelovison-hue.github.io/fever-festival-plan/) skeleton.
+Ticketing prototype for **ARTBAT @ Château de Fontainebleau** (12 September 2026), branded from [gartenproject.com](https://www.gartenproject.com/).
 
 ## Plan tabs
 
-1. **Abonos** — weekend passes: General (€49), Front Stage (€89), VIPSOUND (€230)
-2. **Add-ons** — cashless Promo 30 (€30 + €5 extra), Promo 50 (€50 + €10 extra), and Ingood reimbursement insurance
-
-Prices for weekend abonos follow the official [purchase guide](https://bigsoundfestival.com/valencia/guia-compra).
+1. **Entry pass** — General access (€49, three waves) and VIP area (€199 / €249)
+2. **Merch** — limited-edition t-shirts (S–XXL)
+3. **Add-ons** — bar top-ups (€20 / €50 / €100 / €150)
+4. **Shuttle** — return bus to Paris-Bercy (€15)
 
 ## Commands
 
 ```bash
 npm install
-npm run dev      # http://localhost:5174
+npm run dev      # http://localhost:5175
 npm run build
 ```
-
-## Live URL
-
-https://davidelovison-hue.github.io/big-sound-festival/

@@ -16,7 +16,7 @@ import './PmrPreBookingPage.css';
 const CHOICE = 'Your choice';
 
 const GENDER_OPTIONS = ['Man', 'Woman', 'Non-binary', 'Prefer not to say'];
-const COUNTRY_OPTIONS = ['Spain', 'France', 'Portugal', 'United Kingdom', 'United States', 'Mexico', 'Other'];
+const COUNTRY_OPTIONS = ['France', 'Germany', 'Spain', 'Portugal', 'United Kingdom', 'United States', 'Mexico', 'Other'];
 const SITUATION_OPTIONS = [
   'Wheelchair user',
   'Reduced mobility (without a wheelchair)',
@@ -87,7 +87,7 @@ export function PmrPreBookingPage() {
   const [fileName, setFileName] = useState(data?.pmrProofFileName ?? '');
 
   if (!eventId || !data) {
-    return <Navigate to={eventId ? planPath('abonos') : '/'} replace />;
+    return <Navigate to={eventId ? planPath('entry') : '/'} replace />;
   }
 
   if (!checkoutRequiresPmrProof(data)) {

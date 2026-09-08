@@ -1,3 +1,4 @@
+import { LINEUP_HINT, LINEUP_TITLE } from '../data/festivalConfig';
 import { FESTIVAL_ARTISTS } from '../data/festivalArtists';
 import { FestivalArtistsCarousel } from './FestivalArtistsCarousel';
 import { OverviewSection } from './OverviewSection';
@@ -19,8 +20,8 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
       <div className="planOverviewLineup">
         <FestivalArtistsCarousel
           artists={FESTIVAL_ARTISTS}
-          title="Lineup"
-          hint="18–19 June 2027"
+          title={LINEUP_TITLE}
+          hint={LINEUP_HINT}
           hideDay={false}
         />
       </div>
@@ -34,7 +35,7 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
       >
         <span className="planOverviewToggleText">
           <span className="planOverviewToggleLabel">Overview</span>
-          <span className="planOverviewToggleHint">Festival info, venue &amp; more</span>
+          <span className="planOverviewToggleHint">Show info, venue &amp; more</span>
         </span>
         <span className="planOverviewToggleAction">
           <span className="planOverviewToggleActionText">{isOpen ? 'Hide' : 'Show details'}</span>

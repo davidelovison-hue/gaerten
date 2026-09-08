@@ -1,13 +1,12 @@
-import { computeServiceFee } from './checkoutState';
 import { formatPrice } from './formatPrice';
 
 export function formatEntityPrice(price: number): string {
   return formatPrice(price);
 }
 
-/** Catalog unit price plus the checkout service fee, for card display. */
+/** Catalog selling price (no extra booking fee). */
 export function formatEntityTotalPrice(basePrice: number): string {
-  return formatPrice(basePrice + computeServiceFee(basePrice));
+  return formatPrice(basePrice);
 }
 
 export function getListingTagTone(tag?: string): 'selling_fast' | 'limited' | 'sold_out' | null {
@@ -33,7 +32,7 @@ export function getEntityMetaLines(entity: {
   }
 
   if (entity.id.startsWith('park-') || entity.id.startsWith('bus-')) {
-    return entity.date ? [entity.date, 'Festival entry ticket not included'] : ['Festival entry ticket not included'];
+    return entity.date ? [entity.date, 'Entry ticket not included'] : ['Entry ticket not included'];
   }
 
   if (entity.type === 'configurable_multi' && entity.displaySummary) {

@@ -1,6 +1,5 @@
 import { useEffect, useId, useState, type MouseEvent, type ReactNode } from 'react'
 import { PaymentMethodBadge } from './PaymentMethodBadge'
-import { InstallmentsPicker } from './InstallmentsPicker'
 import { formatCardNumber, formatExpiry } from '../lib/cardInputFormat'
 import { formatPrice } from '../lib/formatPrice'
 import '../CheckoutPage.css'
@@ -29,7 +28,6 @@ type PaymentOption = {
   sublabel?: string
   kind: 'card' | 'new_card' | 'paypal' | 'google_pay' | 'klarna'
   brand?: CardBrand
-  supportsInstallments: boolean
 }
 
 type NewCardForm = {
@@ -45,27 +43,23 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     label: 'Ending in 9694',
     kind: 'card',
     brand: 'visa',
-    supportsInstallments: true,
   },
   {
     id: 'card_mc_4267',
     label: 'Ending in 4267',
     kind: 'card',
     brand: 'mastercard',
-    supportsInstallments: true,
   },
   {
     id: 'card_mc_3804',
     label: 'Ending in 3804',
     kind: 'card',
     brand: 'mastercard',
-    supportsInstallments: true,
   },
   {
     id: 'new_card',
     label: 'New Card',
     kind: 'new_card',
-    supportsInstallments: true,
   },
   {
     id: 'paypal',
@@ -73,19 +67,16 @@ const PAYMENT_OPTIONS: PaymentOption[] = [
     sublabel:
       'Pay in full or split into 4 interest-free payments in PayPal, subject to eligibility.',
     kind: 'paypal',
-    supportsInstallments: false,
   },
   {
     id: 'google_pay',
     label: 'Google Pay',
     kind: 'google_pay',
-    supportsInstallments: false,
   },
   {
     id: 'klarna',
     label: 'Klarna',
     kind: 'klarna',
-    supportsInstallments: false,
   },
 ]
 
@@ -104,8 +95,6 @@ function detectBrand(cardNumber: string): CardBrand {
 
 export type CheckoutPaymentMethodsProps = {
   total: number
-  /** Used for installment initial payment (fees). */
-  serviceFee?: number
   onPay: () => void
   /** Use when embedded in a parent <form> (guest checkout). */
   submitType?: 'submit' | 'button'
@@ -115,7 +104,6 @@ export type CheckoutPaymentMethodsProps = {
 
 export function CheckoutPaymentMethods({
   total,
-  serviceFee = 0,
   onPay,
   submitType = 'button',
   showTermsAccept = true,
@@ -233,10 +221,6 @@ export function CheckoutPaymentMethods({
             <ChevronDown />
           </span>
         </button>
-
-        {selected.supportsInstallments ? (
-          <InstallmentsPicker total={total} serviceFee={serviceFee} />
-        ) : null}
       </div>
 
       {modalView === 'methods' ? (

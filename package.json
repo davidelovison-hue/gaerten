@@ -1,13 +1,13 @@
 {
-  "name": "big-sound-festival",
-  "homepage": "https://davidelovison-hue.github.io/big-sound-festival",
+  "name": "gaerten",
+  "homepage": "https://davidelovison-hue.github.io/gaerten",
   "private": true,
   "version": "0.0.1",
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 5174",
+    "dev": "vite --host 0.0.0.0 --port 5175",
     "build": "tsc && vite build",
-    "preview": "vite preview --host 0.0.0.0 --port 5174",
+    "preview": "vite preview --host 0.0.0.0 --port 5175",
     "deploy": "gh-pages -d dist --nojekyll -t"
   },
   "dependencies": {

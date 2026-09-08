@@ -26,8 +26,8 @@ export function buildLoginCheckoutState(
     subtotal: 0,
     serviceFee: 0,
     total: 0,
-    returnTab: 'abonos',
-    returnHash: 'abonos',
+    returnTab: 'entry',
+    returnHash: 'entry',
     ...extras,
   };
 }

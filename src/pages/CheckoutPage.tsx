@@ -34,7 +34,7 @@ export function CheckoutPage() {
   )
 
   if (!eventId || !data) {
-    return <Navigate to={eventId ? planPath('abonos') : '/'} replace />
+    return <Navigate to={eventId ? planPath('entry') : '/'} replace />
   }
 
   if (checkoutRequiresPmrProof(data) && !checkoutHasPmrProof(data)) {
@@ -103,7 +103,6 @@ export function CheckoutPage() {
           <section className="checkoutGrid__payment guestCheckoutPanel">
             <CheckoutPaymentMethods
               total={checkoutData.total}
-              serviceFee={checkoutData.serviceFee}
               onPay={onPay}
               submitType="button"
             />

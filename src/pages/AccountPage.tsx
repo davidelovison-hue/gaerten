@@ -56,7 +56,7 @@ export function AccountPage() {
         )
       }
     }
-    return <Navigate to={planPath('abonos')} replace />
+    return <Navigate to={planPath('entry')} replace />
   }
 
   const onMenuClick = (id: ProfileActionId | 'tickets') => {
@@ -97,7 +97,7 @@ export function AccountPage() {
     }
     if (modal === 'logout') {
       clearUserSession()
-      navigate(planPath('abonos'))
+      navigate(planPath('entry'))
     }
     setModal(null)
   }

@@ -3,7 +3,7 @@ import {
   type OrderConfirmationState,
 } from './checkoutState'
 
-const STORAGE_KEY = 'big-sound-festival:order-confirm'
+const STORAGE_KEY = 'gaerten:order-confirm'
 
 export function persistOrderConfirmation(payload: OrderConfirmationState): void {
   try {

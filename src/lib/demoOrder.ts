@@ -17,21 +17,21 @@ export function ensureDemoOrder(): OrderConfirmationState | null {
     eventImage: FESTIVAL_EVENT.image,
     venue: FESTIVAL_EVENT.venue,
     dateLine: FESTIVAL_EVENT.dateLine,
-    lines: [{ id: 'abono-general', label: '1× Abono General', amount: ticketSubtotal }],
+    lines: [{ id: 'ticket-ga', label: '1× General access (First wave)', amount: ticketSubtotal }],
     subtotal: ticketSubtotal,
     serviceFee,
     total,
-    returnTab: 'abonos',
-    returnHash: 'abonos',
+    returnTab: 'entry',
+    returnHash: 'entry',
     email: session?.email ?? 'guest@feverup.com',
     guest: {
       fullName: session?.name ?? 'Demo Guest',
-      phoneCountryCode: '+34',
+      phoneCountryCode: '+33',
       phoneNational: '612345678',
       dateOfBirth: '01/01/1990',
       gender: 'prefer_not',
     },
-    orderRef: 'BIGS-DEMO-7K2M9X',
+    orderRef: 'GAER-DEMO-7K2M9X',
   };
 
   persistOrderConfirmation(payload);

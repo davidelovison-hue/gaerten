@@ -64,10 +64,9 @@ export type PmrPreBookingAnswers = {
   withAssociation: string
 }
 
-/** Demo booking fee: 10% of merchandise subtotal (matches common Ticketclub-style breakdown). */
-export function computeServiceFee(subtotal: number): number {
-  if (subtotal <= 0) return 0
-  return Math.round(subtotal * 0.1 * 100) / 100
+/** Catalog prices are the selling prices; no extra booking fee. */
+export function computeServiceFee(_subtotal: number): number {
+  return 0
 }
 
 export function isCheckoutLineItem(x: unknown): x is CheckoutLineItem {

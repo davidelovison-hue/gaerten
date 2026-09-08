@@ -1,6 +1,6 @@
 /**
- * BIGSOUND Valencia 2027 ticket catalog.
- * Weekend abonos are the entry-pass tab; add-ons are cashless + insurance.
+ * Gärten 2026 ticket catalog.
+ * Entry pass: one GA card and one VIP card, each with release waves.
  */
 import { formatPrice } from '../lib/formatPrice';
 
@@ -44,11 +44,42 @@ export type PlanCategory = {
   groups: PlanGroup[];
 };
 
-export const ENTRY_TICKET_IDS = [
-  'abono-general',
-  'abono-front-stage',
-  'abono-vipsound',
-] as const;
+export const ENTRY_TICKET_IDS = ['ticket-ga', 'ticket-vip'] as const;
+
+const TEE_SIZES: VariantAxis = {
+  id: 'size',
+  label: 'Size',
+  options: ['S', 'M', 'L', 'XL', 'XXL'],
+};
+
+function merchTee(id: string, name: string, price: number): PlanEntity {
+  return {
+    id,
+    name,
+    price,
+    type: 'configurable_single',
+    listingTag: 'LIMITED',
+    description: 'Limited edition. Choose your size.',
+    variantAxes: [TEE_SIZES],
+    optionPrices: Object.fromEntries(TEE_SIZES.options.map((size) => [size, price])),
+    cardPreviewBullets: ['Limited edition', 'S–XXL'],
+    includedItems: ['1× t-shirt'],
+  };
+}
+
+function barTopUp(id: string, amount: number): PlanEntity {
+  return {
+    id,
+    name: `${amount}€ top-up`,
+    price: amount,
+    type: 'configurable_single',
+    hideImage: true,
+    description: 'Load credit onto your Gärten bar account. Cashless only.',
+    cardPreviewBullets: [`Load €${amount}`, 'Cashless bar'],
+    includedItems: [`€${amount} bar credit`],
+    requires: [...ENTRY_TICKET_IDS],
+  };
+}
 
 export const PLAN_CATALOG: PlanCategory[] = [
   {
@@ -58,62 +89,63 @@ export const PLAN_CATALOG: PlanCategory[] = [
     groups: [],
   },
   {
-    id: 'abonos',
-    title: 'Abonos',
+    id: 'entry',
+    title: 'Entry pass',
     groups: [
       {
-        id: 'abonos-weekend',
-        title: 'Weekend pass',
+        id: 'entry-passes',
+        title: 'Choose your pass',
         entities: [
           {
-            id: 'abono-general',
-            name: 'Abono General',
+            id: 'ticket-ga',
+            name: 'General access',
             price: 49,
             type: 'configurable_single',
             listingTag: 'SELLING FAST',
-            date: '18–19 Jun 2027',
-            description:
-              'Access to the BIGSOUND concert grounds on Friday 18 and Saturday 19 June, from doors to close. Fees included. Nominative ticket — swapped for a wristband at accreditation.',
-            cardPreviewBullets: ['Friday & Saturday', 'General admission'],
-            includedItems: [
-              'Festival access 18–19 June',
-              'General grounds',
-              'Cashless wristband at accreditation',
+            description: 'General admission to Gärten. Valid for 1 person. Choose your release wave.',
+            variantAxes: [
+              {
+                id: 'wave',
+                label: 'Wave',
+                options: ['First wave', 'Second wave', 'Third wave'],
+                defaultOption: 'First wave',
+              },
             ],
+            optionPrices: {
+              'First wave': 49,
+              'Second wave': 49,
+              'Third wave': 49,
+            },
+            cardPreviewBullets: ['Valid for 1 person', 'All waves €49'],
+            includedItems: ['Festival entry', 'General access area'],
           },
           {
-            id: 'abono-front-stage',
-            name: 'Abono Front Stage',
-            price: 89,
+            id: 'ticket-vip',
+            name: 'VIP area',
+            price: 199,
             type: 'configurable_single',
             listingTag: 'LIMITED',
-            date: '18–19 Jun 2027',
+            pricingMode: 'dynamic',
             description:
-              'Front-row access under the main stage plus general grounds, Friday 18 and Saturday 19 June. Fees included.',
-            cardPreviewBullets: ['Front rows, main stage', 'Friday & Saturday'],
-            includedItems: [
-              'Festival access 18–19 June',
-              'Front Stage zone at the main stage',
-              'General grounds',
+              'Limited tickets. Valid for 1 person. Access to the VIP area on the stage next to the DJ booth throughout the show. Private WC. Bottle service. Fast-track entry.',
+            variantAxes: [
+              {
+                id: 'wave',
+                label: 'Release',
+                options: ['First release', 'Second release'],
+                defaultOption: 'First release',
+              },
             ],
-          },
-          {
-            id: 'abono-vipsound',
-            name: 'Abono VIPSOUND',
-            price: 230,
-            type: 'configurable_single',
-            listingTag: 'LIMITED',
-            date: '18–19 Jun 2027',
-            description:
-              'The most exclusive weekend pass: fast-track accreditation, VIP platform and Front Stage, exclusive toilets, bar and food, glass + lanyard, and 4 drinks. Fees included.',
-            cardPreviewBullets: ['VIP platform + Front Stage', '4 drinks included'],
+            optionPrices: {
+              'First release': 199,
+              'Second release': 249,
+            },
+            cardPreviewBullets: ['Stage VIP next to DJ booth', 'Private WC · bottle service'],
             includedItems: [
-              'Festival access 18–19 June',
-              'Fast-track accreditation',
-              'VIP platform and Front Stage',
-              'Exclusive toilets, bar and food',
-              'Glass + lanyard',
-              '4 drinks',
+              'VIP area next to the DJ booth',
+              'Private WC',
+              'Bottle service',
+              'Fast-track entry',
             ],
           },
         ],
@@ -121,55 +153,54 @@ export const PLAN_CATALOG: PlanCategory[] = [
     ],
   },
   {
-    id: 'addons',
-    title: 'Add-ons',
+    id: 'merch',
+    title: 'Merch',
     groups: [
       {
-        id: 'addons-cashless',
-        title: 'Cashless top-up',
+        id: 'merch-tees',
+        title: 'T-shirts',
         entities: [
-          {
-            id: 'cashless-promo-30',
-            name: 'Promo 30',
-            price: 30,
-            type: 'configurable_single',
-            hideImage: true,
-            listingTag: 'LIMITED',
-            description:
-              'Load €30 onto your cashless wristband and get €5 extra. Add more than one promo to the same ticket. Promotional credit is used first and is not refundable.',
-            cardPreviewBullets: ['Pay €30, get €35', 'While stocks last'],
-            includedItems: ['€30 cashless credit', '€5 bonus drink credit'],
-            requires: [...ENTRY_TICKET_IDS],
-          },
-          {
-            id: 'cashless-promo-50',
-            name: 'Promo 50',
-            price: 50,
-            type: 'configurable_single',
-            hideImage: true,
-            listingTag: 'LIMITED',
-            description:
-              'Load €50 onto your cashless wristband and get €10 extra. Add more than one promo to the same ticket. Promotional credit is used first and is not refundable.',
-            cardPreviewBullets: ['Pay €50, get €60', 'While stocks last'],
-            includedItems: ['€50 cashless credit', '€10 bonus drink credit'],
-            requires: [...ENTRY_TICKET_IDS],
-          },
+          merchTee('merch-tee-black-coffee', 'T-shirt — Black Coffee @Grand Palais', 40),
+          merchTee('merch-tee-gaerten-2026', 'T-shirt Gärten 2026 — Black', 35),
+          merchTee('merch-tee-gaerten-project', 'T-shirt Gärten Project — Black', 35),
         ],
       },
+    ],
+  },
+  {
+    id: 'addons',
+    title: 'Bar',
+    groups: [
       {
-        id: 'addons-insurance',
-        title: 'Insurance',
+        id: 'addons-bar',
+        title: 'Bar',
+        entities: [
+          barTopUp('bar-topup-20', 20),
+          barTopUp('bar-topup-50', 50),
+          barTopUp('bar-topup-100', 100),
+          barTopUp('bar-topup-150', 150),
+        ],
+      },
+    ],
+  },
+  {
+    id: 'shuttle',
+    title: 'Shuttle',
+    groups: [
+      {
+        id: 'shuttle-paris',
+        title: 'Paris',
         entities: [
           {
-            id: 'insurance-ingood',
-            name: 'Reimbursement insurance',
-            price: 5.9,
+            id: 'shuttle-paris-return',
+            name: 'Return shuttle to Paris',
+            price: 15,
             type: 'configurable_single',
-            hideImage: true,
+            listingTag: 'LIMITED',
             description:
-              'Ingood refund insurance by Reale Seguros if you cannot attend. After purchase you receive the policy by email. Questions: ayuda@ingood.es.',
-            cardPreviewBullets: ['Ingood × Reale Seguros', 'Per ticket'],
-            includedItems: ['Non-attendance reimbursement cover', 'Policy details by email'],
+              'Limited capacity. Return bus from the Château de Fontainebleau to Paris-Bercy. Navette retour au départ du Château de Fontainebleau vers Paris-Bercy.',
+            cardPreviewBullets: ['Limited capacity', 'Fontainebleau → Paris-Bercy'],
+            includedItems: ['One-way return seat to Paris-Bercy'],
             requires: [...ENTRY_TICKET_IDS],
           },
         ],
@@ -181,17 +212,27 @@ export const PLAN_CATALOG: PlanCategory[] = [
 const BASE = import.meta.env.BASE_URL;
 
 export const DEFAULT_TICKET_IMAGE = `${BASE}entity-ticket.jpg`;
-const ABONO_GENERAL_IMG = `${BASE}abono-general.jpg`;
-const ABONO_FRONT_IMG = `${BASE}abono-front-stage.jpg`;
-const ABONO_VIP_IMG = `${BASE}abono-vipsound.jpg`;
 
 export const ENTITY_IMAGES: Record<string, string> = {
-  'abono-general': ABONO_GENERAL_IMG,
-  'abono-front-stage': ABONO_FRONT_IMG,
-  'abono-vipsound': ABONO_VIP_IMG,
+  'ticket-ga': `${BASE}abono-general.jpg`,
+  'ticket-vip': `${BASE}abono-vipsound.jpg`,
+  'merch-tee-black-coffee': `${BASE}merch-black-coffee-front.jpg`,
+  'merch-tee-gaerten-2026': `${BASE}merch-gaerten-2026.jpg`,
+  'merch-tee-gaerten-project': `${BASE}merch-gaerten-project.jpg`,
+  'shuttle-paris-return': `${BASE}entity-bus.jpg`,
 };
 
-export const ENTITY_GALLERIES: Record<string, string[]> = {};
+export const ENTITY_GALLERIES: Record<string, string[]> = {
+  'merch-tee-black-coffee': [
+    `${BASE}merch-black-coffee-front.jpg`,
+    `${BASE}merch-black-coffee-back.jpg`,
+  ],
+  'merch-tee-gaerten-2026': [`${BASE}merch-gaerten-2026.jpg`, `${BASE}merch-gaerten-2026-back.jpg`],
+  'merch-tee-gaerten-project': [
+    `${BASE}merch-gaerten-project.jpg`,
+    `${BASE}merch-gaerten-project-back.jpg`,
+  ],
+};
 
 export function getEntityImages(entityId: string): string[] {
   if (ENTITY_GALLERIES[entityId]) return ENTITY_GALLERIES[entityId];
@@ -209,11 +250,15 @@ export function findEntity(entityId: string): PlanEntity | undefined {
   return undefined;
 }
 
-export const PLAN_CORE_CATEGORY_IDS = ['abonos'] as const;
+export const PLAN_CORE_CATEGORY_IDS = ['entry'] as const;
 
-export const PLAN_ADDON_CATEGORIES = [{ id: 'addons', label: 'Add-ons' }] as const;
+export const PLAN_ADDON_CATEGORIES = [
+  { id: 'merch', label: 'Merch' },
+  { id: 'addons', label: 'Bar' },
+  { id: 'shuttle', label: 'Shuttle' },
+] as const;
 
-export type PlanStepId = 'abonos' | 'addons';
+export type PlanStepId = 'entry' | 'merch' | 'addons' | 'shuttle';
 
 export type PlanStep = {
   id: PlanStepId;
@@ -221,32 +266,41 @@ export type PlanStep = {
   categoryIds: string[];
 };
 
-export const PLAN_CORE_STEP_IDS: PlanStepId[] = ['abonos'];
+export const PLAN_CORE_STEP_IDS: PlanStepId[] = ['entry'];
 
-export const DEFAULT_PLAN_STEP: PlanStepId = 'abonos';
+export const DEFAULT_PLAN_STEP: PlanStepId = 'entry';
 
 export const PLAN_STEPS: PlanStep[] = [
-  { id: 'abonos', title: 'Abonos', categoryIds: ['abonos'] },
-  { id: 'addons', title: 'Add-ons', categoryIds: ['addons'] },
+  { id: 'entry', title: 'Entry pass', categoryIds: ['entry'] },
+  { id: 'merch', title: 'Merch', categoryIds: ['merch'] },
+  { id: 'addons', title: 'Bar', categoryIds: ['addons'] },
+  { id: 'shuttle', title: 'Shuttle', categoryIds: ['shuttle'] },
 ];
 
 const CATEGORY_TO_STEP: Record<string, PlanStepId> = {
-  abonos: 'abonos',
+  entry: 'entry',
+  merch: 'merch',
   addons: 'addons',
-  acceso: 'abonos',
-  bundles: 'abonos',
+  shuttle: 'shuttle',
+  tickets: 'entry',
+  abonos: 'entry',
   extra: 'addons',
 };
 
 const HASH_TO_STEP: Record<string, PlanStepId> = {
   ...CATEGORY_TO_STEP,
-  pass: 'abonos',
-  tickets: 'abonos',
-  'entry-pass': 'abonos',
-  entradas: 'abonos',
-  'day-pass': 'abonos',
+  pass: 'entry',
+  'entry-pass': 'entry',
+  ga: 'entry',
+  vip: 'entry',
+  tshirt: 'merch',
+  tees: 'merch',
+  bar: 'addons',
   cashless: 'addons',
-  insurance: 'addons',
+  'top-up': 'addons',
+  bus: 'shuttle',
+  navette: 'shuttle',
+  paris: 'shuttle',
 };
 
 export function getPlanStep(stepId: string): PlanStep | undefined {

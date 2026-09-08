@@ -36,7 +36,7 @@ export function OrderConfirmationPage() {
   }, [data, clearCart])
 
   if (!eventId || !data) {
-    return <Navigate to={eventId ? planPath('abonos') : '/'} replace />
+    return <Navigate to={eventId ? planPath('entry') : '/'} replace />
   }
 
   const ticketLine = data.lines.find((l) => l.id === 'ticket') ?? data.lines[0]
@@ -125,10 +125,12 @@ export function OrderConfirmationPage() {
                       <span className="orderConfirmLine__price">{formatPrice(line.amount)}</span>
                     </li>
                   ))}
-                  <li className="orderConfirmLine orderConfirmLine--muted">
-                    <span>Booking fee</span>
-                    <span className="orderConfirmLine__price">{formatPrice(data.serviceFee)}</span>
-                  </li>
+                  {data.serviceFee > 0 ? (
+                    <li className="orderConfirmLine orderConfirmLine--muted">
+                      <span>Booking fee</span>
+                      <span className="orderConfirmLine__price">{formatPrice(data.serviceFee)}</span>
+                    </li>
+                  ) : null}
                 </ul>
                 <p className="orderConfirmTotal">
                   Total: <strong>{formatPrice(data.total)}</strong>
@@ -202,7 +204,7 @@ export function OrderConfirmationPage() {
           </footer>
 
           <div className="orderConfirmCtaWrap">
-            <Link className="orderConfirmCta" to={planPath('abonos')}>
+            <Link className="orderConfirmCta" to={planPath('entry')}>
               View more events
             </Link>
           </div>

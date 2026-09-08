@@ -73,10 +73,12 @@ export function CheckoutSummaryCard({ data }: Props) {
             <dt>Subtotal</dt>
             <dd>{formatPrice(data.subtotal)}</dd>
           </div>
-          <div className="checkoutBreakdown__row">
-            <dt>Booking fee</dt>
-            <dd>{formatPrice(data.serviceFee)}</dd>
-          </div>
+          {data.serviceFee > 0 ? (
+            <div className="checkoutBreakdown__row">
+              <dt>Booking fee</dt>
+              <dd>{formatPrice(data.serviceFee)}</dd>
+            </div>
+          ) : null}
           <div className="checkoutBreakdown__row checkoutBreakdown__row--total">
             <dt>Total</dt>
             <dd>{formatPrice(data.total)}</dd>

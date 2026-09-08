@@ -17,16 +17,16 @@ function ghPagesSpa404(): import('vite').Plugin {
 
 export default defineConfig(({ mode }) => ({
   plugins: [react(), ...(mode === 'production' ? [ghPagesSpa404()] : [])],
-  base: mode === 'production' ? '/big-sound-festival/' : '/',
+  base: mode === 'production' ? '/gaerten/' : '/',
   server: {
     host: true,
-    port: 5174,
+    port: 5175,
     strictPort: true,
     allowedHosts: true,
   },
   preview: {
     host: true,
-    port: 5174,
+    port: 5175,
     strictPort: true,
     allowedHosts: true,
   },

@@ -89,7 +89,7 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
             ) : null}
             <div className="eventMediaHero__scrim" aria-hidden />
             <div className="eventMediaHero__overlay">
-              <p className="eventMediaHero__exclusive">Official ticketing platform</p>
+              <p className="eventMediaHero__exclusive">Produced by Gärten</p>
               <h1 className="eventMediaHero__title">{FESTIVAL_EVENT.title}</h1>
               <div className="eventMediaHero__metaRow">
                 <p className="eventMediaHero__venue">{FESTIVAL_EVENT.venue}</p>

@@ -4,16 +4,16 @@
  */
 
 export const colors = {
-  primary: '#8a1343',
-  primaryLight: '#f5e6ec',
-  primaryDark: '#7b0f3a',
+  primary: '#111111',
+  primaryLight: '#f3f3f3',
+  primaryDark: '#000000',
   
-  textDark: '#031419',
-  textMuted: '#536b75',
-  textLight: '#a7b2ba',
+  textDark: '#111111',
+  textMuted: '#5d6c7b',
+  textLight: '#aaadb0',
   
-  border: '#ccd2d8',
-  background: '#f2f3f3',
+  border: '#e2e2e2',
+  background: '#fafafa',
   white: '#ffffff',
   
   accent: {
@@ -22,13 +22,13 @@ export const colors = {
     green: '#24a865',
     greenDark: '#18824c',
     purple: '#6f41d7',
-    red: '#eb0052',
+    red: '#ea384c',
   },
 } as const;
 
 export const fonts = {
-  heading: "'Montserrat', sans-serif",
-  body: "'Muli', sans-serif",
+  heading: "'Jost', sans-serif",
+  body: "'Inter', sans-serif",
 } as const;
 
 export const spacing = {

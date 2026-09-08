@@ -92,7 +92,7 @@ export function FestivalArtistsCarousel({
   return (
     <section
       className={`festivalArtistsCarousel${className ? ` ${className}` : ''}`}
-      aria-label="Festival lineup artists"
+      aria-label="Themed gardens"
     >
       <div className="festivalArtistsCarousel__head">
         <h2 className="festivalArtistsCarousel__title">{title}</h2>

@@ -105,7 +105,7 @@ export function GuestCheckoutPage() {
   }
 
   if (!eventId || !data) {
-    return <Navigate to={eventId ? planPath('abonos') : '/'} replace />
+    return <Navigate to={eventId ? planPath('entry') : '/'} replace />
   }
 
   if (checkoutRequiresPmrProof(data) && !checkoutHasPmrProof(data)) {
@@ -281,7 +281,6 @@ export function GuestCheckoutPage() {
 
               <CheckoutPaymentMethods
                 total={data.total}
-                serviceFee={data.serviceFee}
                 onPay={onPay}
                 submitType="submit"
                 showTermsAccept={false}

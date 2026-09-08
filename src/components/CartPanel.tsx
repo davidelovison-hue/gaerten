@@ -152,7 +152,7 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
   );
 
   const proceedToCheckout = useCallback(() => {
-    const returnHash = window.location.hash.replace(/^#/, '') || 'abonos';
+    const returnHash = window.location.hash.replace(/^#/, '') || 'entry';
     const payload = buildCheckoutFromCart(items, returnHash);
     if (!payload) return;
     persistCheckoutBasket(payload.eventId, payload);

@@ -11,18 +11,18 @@
   --checkout-border-hover: #a7b2ba;
   --checkout-border-soft: #eaeaea;
   --checkout-field-shadow: 0 0 0 1px #ccd2d8;
-  --checkout-field-shadow-focus: 0 0 0 3px rgba(138, 19, 67, 0.18), 0 0 0 1px #8a1343;
-  --checkout-text: #031419;
-  --checkout-text-muted: #536b75;
-  --checkout-text-dim: #a7b2ba;
-  --checkout-accent-row: #f5e6ec;
+  --checkout-field-shadow-focus: 0 0 0 3px rgba(17, 17, 17, 0.18), 0 0 0 1px #111111;
+  --checkout-text: #111111;
+  --checkout-text-muted: #5d6c7b;
+  --checkout-text-dim: #aaadb0;
+  --checkout-accent-row: #f3f3f3;
 
-  --pacha-cherry: #8a1343;
-  --pacha-cherry-mid: #7b0f3a;
-  --pacha-cherry-deep: #6b0d32;
-  --pacha-cherry-glow: rgba(138, 19, 67, 0.2);
-  --pacha-red-mist: #f5e6ec;
-  --pacha-black: #031419;
+  --pacha-cherry: #111111;
+  --pacha-cherry-mid: #000000;
+  --pacha-cherry-deep: #000000;
+  --pacha-cherry-glow: rgba(17, 17, 17, 0.2);
+  --pacha-red-mist: #f3f3f3;
+  --pacha-black: #111111;
 }
 
 .appShell {
@@ -213,7 +213,7 @@
 }
 
 .ticketingProfileBtn:focus-visible {
-  outline: 2px solid #8a1343;
+  outline: 2px solid #111111;
   outline-offset: 2px;
 }
 
@@ -235,7 +235,7 @@
   height: 2rem;
   border-radius: 9999px;
   background: #f5e6ec;
-  color: #8a1343;
+  color: #111111;
   font-size: 0.75rem;
   font-weight: 700;
   letter-spacing: 0.02em;

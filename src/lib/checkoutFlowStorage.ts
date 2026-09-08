@@ -1,8 +1,8 @@
 import { isEventCheckoutState, type EventCheckoutState } from './checkoutState'
 
-const BASKET_PREFIX = 'big-sound-festival:basket:'
-const CONNECT_PREFIX = 'big-sound-festival:connect:'
-const GUEST_CONTACT_PREFIX = 'big-sound-festival:guest-contact:'
+const BASKET_PREFIX = 'gaerten:basket:'
+const CONNECT_PREFIX = 'gaerten:connect:'
+const GUEST_CONTACT_PREFIX = 'gaerten:guest-contact:'
 
 export type ConnectFlowStep = 'choose' | 'email' | 'verify'
 

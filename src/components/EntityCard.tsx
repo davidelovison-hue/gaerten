@@ -23,6 +23,24 @@ function listingTagClass(tone: ReturnType<typeof getListingTagTone>) {
   return 'entityListingTag';
 }
 
+/** Scroll only the chip row, so the card carousel does not move. */
+function scrollChipIntoRowView(chip: HTMLElement) {
+  const row = chip.closest('.pillRow');
+  if (!(row instanceof HTMLElement) || row.classList.contains('pillRowStacked')) return;
+
+  const rowRect = row.getBoundingClientRect();
+  const chipRect = chip.getBoundingClientRect();
+  const pad = 10;
+  let delta = 0;
+  if (chipRect.right > rowRect.right - pad) {
+    delta = chipRect.right - rowRect.right + pad;
+  } else if (chipRect.left < rowRect.left + pad) {
+    delta = chipRect.left - rowRect.left - pad;
+  }
+  if (Math.abs(delta) < 1) return;
+  row.scrollBy({ left: delta, behavior: 'smooth' });
+}
+
 export function EntityCard({ entity }: EntityCardProps) {
   const { getQuantity, setQuantity: setCartQuantity } = useCart();
   const images = getEntityImages(entity.id);
@@ -128,7 +146,13 @@ export function EntityCard({ entity }: EntityCardProps) {
                 aria-pressed={isSelected}
                 aria-disabled={isOptionSoldOut || undefined}
                 disabled={isOptionDisabled}
-                onClick={() => selectAxis(axis.id, option)}
+                onClick={(event) => {
+                  selectAxis(axis.id, option);
+                  const chip = event.currentTarget;
+                  requestAnimationFrame(() => {
+                    requestAnimationFrame(() => scrollChipIntoRowView(chip));
+                  });
+                }}
               >
                 {option}
               </button>
@@ -275,7 +299,6 @@ export function EntityCard({ entity }: EntityCardProps) {
                 <div className="priceRowWithStepper">
                   <div className="price">
                     <span className="priceAmount">{formatEntityTotalPrice(unitPrice)}</span>
-                    <span className="fees"> incl. fees</span>
                   </div>
                   <span className="soldOutPill">Sold out</span>
                 </div>
@@ -283,7 +306,6 @@ export function EntityCard({ entity }: EntityCardProps) {
                 <div className="priceRowWithStepper">
                   <div className="price">
                     <span className="priceAmount">{formatEntityTotalPrice(unitPrice)}</span>
-                    <span className="fees"> incl. fees</span>
                   </div>
                   <div className="qty" aria-label="Quantity">
                     <button
@@ -363,7 +385,6 @@ export function EntityCard({ entity }: EntityCardProps) {
               <div className="priceRowWithStepper">
                 <div className="price">
                   <span className="priceAmount">{formatEntityTotalPrice(unitPrice)}</span>
-                  <span className="fees"> incl. fees</span>
                 </div>
                 <span className="soldOutPill">Sold out</span>
               </div>
@@ -371,7 +392,6 @@ export function EntityCard({ entity }: EntityCardProps) {
               <div className="priceRowWithStepper">
                 <div className="price">
                   <span className="priceAmount">{formatEntityTotalPrice(unitPrice)}</span>
-                  <span className="fees"> incl. fees</span>
                 </div>
                 <div className="qty" aria-label="Quantity">
                   <button
