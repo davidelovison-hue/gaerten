@@ -54,7 +54,7 @@ export function AddonCheckoutPrompt({
         aria-labelledby={titleId}
       >
         <h2 id={titleId} className="addonCheckoutPrompt__title">
-          Add a cashless top-up or insurance?
+          Want to add anything else?
         </h2>
         <div className="addonCheckoutPrompt__options">
           {PLAN_STEPS.filter((step) => !PLAN_CORE_STEP_IDS.includes(step.id)).map((step, index) => (
