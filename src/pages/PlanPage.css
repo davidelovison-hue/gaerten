@@ -1,0 +1,420 @@
+.planPage {
+  --festival-nav-height: calc(0.5rem + 2rem + 0.5rem);
+  --sticky-tabs-height: 5.35rem;
+  --tab-content-scroll-gap: 0.75rem;
+  --cart-column-top-gap: 1.25rem;
+  min-height: 100vh;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+@media (max-width: 900px) {
+  .planPage {
+    --festival-nav-height: calc(0.45rem + 2rem + 0.45rem);
+    --sticky-tabs-height: 5.1rem;
+  }
+}
+
+@media (min-width: 901px) {
+  .planPage {
+    --sticky-tabs-height: 5.7rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .planPage {
+    --festival-nav-height: calc(0.5rem + 2.5rem + 0.5rem);
+  }
+}
+
+.planStickyNav {
+  order: 1;
+  flex: 0 0 auto;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #000;
+  border-bottom: none;
+  box-sizing: border-box;
+}
+
+.planHeroSlot {
+  order: 2;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.planHeroSlot--immersive {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0;
+}
+
+.planDesktopShell {
+  order: 3;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+}
+
+.eventTitle {
+  box-sizing: border-box;
+  width: 100%;
+  min-width: 0;
+  margin: 0;
+  padding: 1.5rem 1rem 1rem;
+  font-size: var(--type-h2-size);
+  line-height: var(--type-h2-line-height);
+  font-weight: var(--font-weight-bold);
+  color: #0a0a0a;
+  letter-spacing: -0.02em;
+}
+
+.planOverviewSlot {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  border-bottom: 1px solid #e8ecef;
+}
+
+.planIntroBand {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 1rem 1rem 0.6rem;
+  background: #fff;
+}
+
+.planTicketsHeading {
+  margin: 1.25rem 0 0;
+  font-size: 1.0625rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #031419;
+}
+
+.planArtistsSlot {
+  flex: 0 0 auto;
+  width: 100%;
+  min-width: 0;
+  box-sizing: border-box;
+  padding: 0.9rem 0 0;
+  margin: 0;
+  border-top: 1px solid #eef0f2;
+}
+
+.planIntroBand .festivalArtistsCarousel__head {
+  margin-bottom: 0.75rem;
+}
+
+.planIntroBand .festivalArtistsCarousel__title {
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: #031419;
+}
+
+.planIntroBand .festivalArtistsCarousel__hint {
+  font-size: 0.8125rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #8a1343;
+}
+
+.planIntroBand .festivalArtistsCarousel__outer {
+  --artist-track-pad-top: 0.1rem;
+}
+
+.planIntroBand .festivalArtistsCarousel__track {
+  padding: 0.1rem 0 0.35rem;
+  margin: 0;
+  gap: 0.75rem;
+}
+
+.planTabsScrollAnchor {
+  flex: 0 0 auto;
+  width: 0;
+  height: 0;
+  margin: 0;
+  padding: 0;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+.planTabsSlot {
+  flex: 0 0 auto;
+  position: sticky;
+  top: var(--festival-nav-height);
+  z-index: 110;
+  isolation: isolate;
+  background: #fff;
+  min-width: 0;
+  box-sizing: border-box;
+  width: 100%;
+  margin-top: 0;
+  align-self: stretch;
+  border-bottom: none;
+}
+
+.planTabsSlot::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  z-index: -1;
+  pointer-events: none;
+}
+
+.planMainShell {
+  flex: 1 1 auto;
+  position: relative;
+  z-index: 1;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 28px 1rem 2.5rem;
+}
+
+.planMainColumn {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  container-type: inline-size;
+  container-name: plan-main;
+  --plan-card-width: min(340px, calc((100% - 1rem) / 2));
+  --plan-card-min-height: 26.5rem;
+}
+
+@supports (container-type: inline-size) {
+  .planMainColumn {
+    --plan-card-width: min(
+      340px,
+      max(11rem, calc((100cqi - 2 * 0.75rem) / 2.5)),
+      calc((100cqi - 0.75rem) / 2)
+    );
+  }
+}
+
+.planContentColumn {
+  min-width: 0;
+  width: 100%;
+  min-height: calc(
+    100vh - var(--festival-nav-height) - var(--sticky-tabs-height) - 10rem
+  );
+}
+
+.categorySection {
+  margin-bottom: 2.5rem;
+  scroll-margin-top: calc(
+    var(--festival-nav-height) + var(--sticky-tabs-height) + var(--tab-content-scroll-gap, 0.75rem)
+  );
+}
+
+.placeholderSection {
+  padding: 2rem 0;
+  color: #536b75;
+  font-size: var(--type-base-size);
+  line-height: var(--type-base-line-height);
+}
+
+@media (min-width: 901px) {
+  .planDesktopShell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+    grid-template-rows: auto auto 1fr;
+    grid-template-areas:
+      "intro intro"
+      "tabs tabs"
+      "main cart";
+    max-width: 1280px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+    column-gap: 1.5rem;
+    align-items: start;
+  }
+
+  .planHeroSlot--mediaHero,
+  .planHeroSlot--mediaHero.planHeroSlot--immersive {
+    width: 100%;
+    max-width: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .planHeroSlot--mediaHero .festivalGalleryBand {
+    max-width: none;
+    margin: 0;
+    width: 100%;
+  }
+
+  .eventTitle {
+    padding: 1.5rem 0 1rem;
+  }
+
+  .planIntroBand {
+    grid-area: intro;
+    grid-column: 1 / -1;
+    width: 100%;
+    padding: 1.15rem 0 0.6rem;
+  }
+
+  .planOverviewSlot {
+    width: 100%;
+    min-width: 0;
+    padding-top: 0;
+  }
+
+  .planArtistsSlot {
+    width: 100%;
+    padding: 1rem 0 0;
+  }
+
+  .planTabsScrollAnchor {
+    grid-area: tabs;
+    align-self: start;
+  }
+
+  .planTabsSlot {
+    grid-area: tabs;
+    grid-column: 1 / -1;
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    position: sticky;
+  }
+
+  .planTabsSlot .stickyTabsBar,
+  .planTabsSlot .tabsNav,
+  .planTabsSlot .tabsBarInner,
+  .planTabsSlot .tabsScroll {
+    background: transparent;
+  }
+
+  .planTabsSlot .tabsBarInner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .planMainShell {
+    grid-area: main;
+    max-width: none;
+    margin: 0;
+    padding: 28px 0 2.5rem;
+  }
+
+  .planCartColumn {
+    grid-area: cart;
+    position: sticky;
+    top: calc(
+      var(--festival-nav-height) + var(--sticky-tabs-height) + var(--cart-column-top-gap)
+    );
+    padding-top: 0;
+    margin-top: var(--cart-column-top-gap);
+    z-index: 89;
+    align-self: start;
+    width: 100%;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    box-sizing: border-box;
+  }
+
+  .planCartColumn--placeholder {
+    visibility: hidden;
+    pointer-events: none;
+    min-height: 12rem;
+  }
+
+  .cartPanelReveal {
+    animation: cartPanelIn 0.38s ease-out both;
+  }
+
+  @keyframes cartPanelIn {
+    from {
+      opacity: 0;
+      transform: translateX(12px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+}
+
+@media (max-width: 900px) {
+  .planMainColumn {
+    --plan-card-width: 100%;
+  }
+
+  /* Desktop sidebar cart — not mounted on mobile; keep rule as safety net */
+  .planCartColumn {
+    display: none !important;
+  }
+
+  .planIntroBand {
+    padding: 0.95rem 1rem 0.55rem;
+  }
+
+  .planHeroSlot--immersive {
+    flex: 0 0 auto;
+    height: calc(100svh - var(--festival-nav-height));
+    min-height: calc(100svh - var(--festival-nav-height));
+  }
+
+  .planHeroSlot--immersive .festivalGalleryBand {
+    height: 100%;
+    min-height: 100%;
+  }
+
+  .planTabsSlot {
+    width: 100vw;
+    max-width: 100vw;
+    margin-left: calc(50% - 50vw);
+    margin-right: calc(50% - 50vw);
+    margin-top: 0;
+  }
+
+  .planTabsSlot .stickyTabsBar,
+  .planTabsSlot .tabsNav,
+  .planTabsSlot .tabsBarInner,
+  .planTabsSlot .tabsScroll {
+    background: transparent;
+  }
+
+  .eventTitle {
+    padding: 1.25rem 1rem 0.85rem;
+  }
+
+  .planTabsSlot .tabsBarInner {
+    padding-left: 1rem;
+    padding-right: 0;
+  }
+
+  .planMainShell {
+    padding: 1.35rem 1rem calc(4.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .categorySection {
+    margin-bottom: 1.75rem;
+  }
+}

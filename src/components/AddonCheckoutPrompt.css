@@ -1,0 +1,99 @@
+.addonCheckoutPrompt {
+  position: fixed;
+  inset: 0;
+  z-index: 240;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.25rem;
+}
+
+.addonCheckoutPrompt__backdrop {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgba(3, 20, 25, 0.45);
+  cursor: pointer;
+}
+
+.addonCheckoutPrompt__card {
+  position: relative;
+  z-index: 1;
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 22.5rem;
+  padding: 1.5rem 1.35rem 1.25rem;
+  border-radius: 1rem;
+  background: #fff;
+  color: #031419;
+  box-shadow:
+    0 16px 40px rgb(0 0 0 / 0.18),
+    0 2px 8px rgb(0 0 0 / 0.08);
+}
+
+.addonCheckoutPrompt__title {
+  margin: 0 0 1.1rem;
+  font-size: 1.125rem;
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.addonCheckoutPrompt__options {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.5rem;
+}
+
+.addonCheckoutPrompt__option {
+  margin: 0;
+  min-height: 2.75rem;
+  padding: 0.55rem 0.7rem;
+  border-radius: 0.75rem;
+  border: 1px solid #e5e7eb;
+  background: #f4f6f7;
+  color: #0a1f26;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  line-height: 1.2;
+  text-align: center;
+  cursor: pointer;
+}
+
+.addonCheckoutPrompt__option:hover {
+  background: #eef1f2;
+  border-color: #d7dde0;
+}
+
+.addonCheckoutPrompt__option:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}
+
+.addonCheckoutPrompt__skip {
+  display: block;
+  width: 100%;
+  margin: 0.85rem 0 0;
+  padding: 0.45rem 0.25rem;
+  border: 0;
+  background: transparent;
+  color: #536b75;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 0.18em;
+  cursor: pointer;
+}
+
+.addonCheckoutPrompt__skip:hover {
+  color: #031419;
+}
+
+.addonCheckoutPrompt__skip:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}

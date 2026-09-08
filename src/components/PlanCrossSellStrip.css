@@ -1,0 +1,84 @@
+.planCrossSell {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0 0 1.5rem;
+  padding: 0.55rem 0 0;
+  border-top: 1px solid #eef0f2;
+  min-width: 0;
+}
+
+.planCrossSellLabel {
+  flex: 0 0 auto;
+  margin: 0;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #6b7c84;
+  white-space: nowrap;
+}
+
+.planCrossSellList {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  gap: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  min-width: 0;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+}
+
+.planCrossSellList::-webkit-scrollbar {
+  display: none;
+}
+
+.planCrossSellItem {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.planCrossSellDot {
+  margin: 0 0.15rem;
+  color: #b0b8bc;
+  font-size: 0.85rem;
+  line-height: 1;
+}
+
+.planCrossSellChip {
+  margin: 0;
+  padding: 0.22rem 0.55rem;
+  font: inherit;
+  font-size: 0.75rem;
+  line-height: 1.2;
+  font-weight: 600;
+  color: #0a1f26;
+  background: #f4f6f7;
+  border: 1px solid #e6eaed;
+  border-radius: 9999px;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+}
+
+.planCrossSellChip:hover {
+  background: #eef1f2;
+  border-color: #d7dde0;
+  color: #031419;
+}
+
+.planCrossSellChip:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}
+
+@media (max-width: 900px) {
+  .planCrossSell {
+    margin-top: 0.85rem;
+    padding-top: 0.45rem;
+  }
+}
