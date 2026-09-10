@@ -1,8 +1,6 @@
 import { useEffect, useRef } from 'react';
-import { PLAN_CORE_STEP_IDS, PLAN_STEPS, type PlanStepId } from '../data/planCatalog';
+import { PLAN_STEPS, type PlanStepId } from '../data/planCatalog';
 import './PlanTabs.css';
-
-const CORE_TAB_IDS = new Set<PlanStepId>(PLAN_CORE_STEP_IDS);
 
 type PlanTabsProps = {
   activeTab: PlanStepId;
@@ -39,8 +37,6 @@ function TabButton({
 export function PlanTabs({ activeTab, onTabChange }: PlanTabsProps) {
   const tabsScrollRef = useRef<HTMLDivElement>(null);
   const tabsBarInnerRef = useRef<HTMLDivElement>(null);
-  const coreTabs = PLAN_STEPS.filter((step) => CORE_TAB_IDS.has(step.id));
-  const addonTabs = PLAN_STEPS.filter((step) => !CORE_TAB_IDS.has(step.id));
 
   useEffect(() => {
     const el = tabsScrollRef.current;
@@ -100,19 +96,7 @@ export function PlanTabs({ activeTab, onTabChange }: PlanTabsProps) {
         <div className="tabsBarInner" ref={tabsBarInnerRef}>
           <div className="tabsScroll" ref={tabsScrollRef}>
             <ul className="tabsList" role="tablist">
-              {coreTabs.map((step) => (
-                <TabButton
-                  key={step.id}
-                  tabId={step.id}
-                  title={step.title}
-                  isActive={activeTab === step.id}
-                  onTabChange={onTabChange}
-                />
-              ))}
-              <li className="tabsGroupDivider" role="separator" aria-label="Add-ons">
-                |
-              </li>
-              {addonTabs.map((step) => (
+              {PLAN_STEPS.map((step) => (
                 <TabButton
                   key={step.id}
                   tabId={step.id}
@@ -122,9 +106,6 @@ export function PlanTabs({ activeTab, onTabChange }: PlanTabsProps) {
                 />
               ))}
             </ul>
-          </div>
-          <div className="tabsScrollCue" aria-hidden="true">
-            <span className="tabsScrollCueIcon">›</span>
           </div>
         </div>
       </nav>

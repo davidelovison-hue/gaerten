@@ -42,9 +42,9 @@ export function getDefaultSelections(entity: PlanEntity): CartSelection {
 }
 
 export function formatCartSelections(selections: CartSelection): string {
-  return Object.entries(selections)
-    .filter(([, value]) => value.trim())
-    .map(([key, value]) => `${key.replace(/-/g, ' ')}: ${value}`)
+  return Object.values(selections)
+    .map((value) => value.trim())
+    .filter(Boolean)
     .join(' · ');
 }
 

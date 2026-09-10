@@ -68,6 +68,7 @@ function merchTee(id: string, name: string, price: number): PlanEntity {
 }
 
 function barTopUp(id: string, amount: number): PlanEntity {
+  const option = `€${amount}`;
   return {
     id,
     name: `${amount}€ top-up`,
@@ -75,6 +76,14 @@ function barTopUp(id: string, amount: number): PlanEntity {
     type: 'configurable_single',
     hideImage: true,
     description: 'Load credit onto your Gärten bar account. Cashless only.',
+    variantAxes: [
+      {
+        id: 'option',
+        label: 'Option',
+        options: [option],
+        defaultOption: option,
+      },
+    ],
     cardPreviewBullets: [`Load €${amount}`, 'Cashless bar'],
     includedItems: [`€${amount} bar credit`],
     requires: [...ENTRY_TICKET_IDS],
@@ -201,6 +210,14 @@ export const PLAN_CATALOG: PlanCategory[] = [
               'Limited capacity. Return bus from the Château de Fontainebleau to Paris-Bercy. Navette retour au départ du Château de Fontainebleau vers Paris-Bercy.',
             cardPreviewBullets: ['Limited capacity', 'Fontainebleau → Paris-Bercy'],
             includedItems: ['One-way return seat to Paris-Bercy'],
+            variantAxes: [
+              {
+                id: 'option',
+                label: 'Option',
+                options: ['Paris-Bercy'],
+                defaultOption: 'Paris-Bercy',
+              },
+            ],
             requires: [...ENTRY_TICKET_IDS],
           },
         ],
