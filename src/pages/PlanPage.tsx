@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { useLocation } from 'react-router-dom';
-import { AddToCartToast } from '../components/AddToCartToast';
 import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
 import { FestivalNavbar } from '../components/FestivalNavbar';
@@ -334,7 +333,6 @@ export function PlanPage() {
                 <PlanCrossSellStrip activeTab={activeTab} onSelectTab={selectPlanTab} />
               ) : null}
             </div>
-            {isMobile ? <AddToCartToast variant="mobile" /> : null}
           </div>
         </div>
 
