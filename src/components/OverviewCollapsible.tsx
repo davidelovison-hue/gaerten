@@ -22,7 +22,7 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
           artists={FESTIVAL_ARTISTS}
           title={LINEUP_TITLE}
           hint={LINEUP_HINT}
-          hideDay={false}
+          hideDay
         />
       </div>
 
