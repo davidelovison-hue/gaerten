@@ -1,0 +1,22 @@
+.planPage--scroll .planContentColumn {
+  padding-bottom: 45vh;
+}
+
+.planPage--scroll .categorySection {
+  margin-bottom: 3.25rem;
+  padding-top: 0.35rem;
+}
+
+.planPage--scroll .categorySection:last-child {
+  margin-bottom: 0;
+}
+
+.planPage--scroll .categorySectionTitle {
+  margin: 0 0 1.1rem;
+}
+
+@media (min-width: 901px) {
+  .planPage--scroll .planCartColumn {
+    top: calc(var(--festival-nav-height) + var(--cart-column-top-gap));
+  }
+}

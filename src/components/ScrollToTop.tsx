@@ -12,6 +12,7 @@ export function ScrollToTop() {
   }, [pathname]);
 
   useLayoutEffect(() => {
+    if (pathname === '/scroll') return;
     return scrollPageToTop();
   }, [pathname, search, hash, key]);
 

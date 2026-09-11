@@ -1,4 +1,4 @@
-import { copyFileSync } from 'node:fs';
+import { copyFileSync, mkdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { defineConfig } from 'vite';
@@ -11,6 +11,8 @@ function ghPagesSpa404(): import('vite').Plugin {
     name: 'gh-pages-spa-404',
     closeBundle() {
       copyFileSync(resolve(__dirname, 'dist/index.html'), resolve(__dirname, 'dist/404.html'));
+      mkdirSync(resolve(__dirname, 'dist/scroll'), { recursive: true });
+      copyFileSync(resolve(__dirname, 'dist/index.html'), resolve(__dirname, 'dist/scroll/index.html'));
     },
   };
 }

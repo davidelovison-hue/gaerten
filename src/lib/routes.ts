@@ -4,6 +4,11 @@ export function planPath(hash?: string): string {
   return hash ? `/#${hash.replace(/^#/, '')}` : '/';
 }
 
+/** Stacked-category plan. Later this can ship as its own Pages path. */
+export function scrollPlanPath(hash?: string): string {
+  return hash ? `/scroll#${hash.replace(/^#/, '')}` : '/scroll';
+}
+
 export function eventPath(eventId: string, hash?: string): string {
   void eventId;
   return planPath(hash ?? 'entry');

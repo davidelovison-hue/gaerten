@@ -10,6 +10,8 @@ type PlanCategorySectionProps = {
   isActive?: boolean;
   /** Carry the category name in each carousel title instead of a heading row. */
   prefixCarouselTitles?: boolean;
+  /** Show the category title above the cards (stacked / scroll plan). */
+  showCategoryHeading?: boolean;
   footer?: ReactNode;
 };
 
@@ -17,6 +19,7 @@ export function PlanCategorySection({
   category,
   isActive = true,
   prefixCarouselTitles = false,
+  showCategoryHeading = false,
   footer,
 }: PlanCategorySectionProps) {
   const groups = category.groups.filter((group) => group.entities.length > 0);
@@ -78,6 +81,7 @@ export function PlanCategorySection({
       aria-hidden={!isActive}
       hidden={!isActive}
     >
+      {showCategoryHeading ? <h2 className="categorySectionTitle">{category.title}</h2> : null}
       {groups.length > 1 ? (
         <div className="groupStackAll">{groups.map((group) => renderGroup(group, true))}</div>
       ) : groups[0] ? (

@@ -5,6 +5,7 @@ import { CartProvider } from './lib/cartContext';
 import { ToastProvider } from './lib/toastContext';
 import { CheckoutLayout } from './layouts/CheckoutLayout';
 import { PlanPage } from './pages/PlanPage';
+import { PlanScrollPage } from './pages/PlanScrollPage';
 import { ConnectPage } from './pages/ConnectPage';
 import { PmrPreBookingPage } from './pages/PmrPreBookingPage';
 import { CheckoutPage } from './pages/CheckoutPage';
@@ -25,6 +26,7 @@ export default function App() {
           <CartAddToastBridge />
           <Routes>
             <Route path="/" element={<PlanPage />} />
+            <Route path="/scroll" element={<PlanScrollPage />} />
             <Route element={<CheckoutLayout />}>
               <Route path="/event/:eventId/connect" element={<ConnectPage />} />
               <Route path="/event/:eventId/pmr-questions" element={<PmrPreBookingPage />} />
