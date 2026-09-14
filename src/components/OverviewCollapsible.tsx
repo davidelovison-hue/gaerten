@@ -26,7 +26,7 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
         />
       </div>
 
-        <div className={`planOverviewFold ${isOpen ? 'planOverviewFoldOpen' : 'planOverviewFoldPeek'}`}>
+      <div className={`planOverviewFold ${isOpen ? 'planOverviewFoldOpen' : 'planOverviewFoldPeek'}`}>
         <button
           type="button"
           className="planOverviewToggle"
@@ -64,7 +64,9 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
             <div
               id="plan-overview-panel"
               className="planOverviewPanel"
-              inert={!isOpen ? true : undefined}
+              ref={(el) => {
+                if (el) el.inert = !isOpen;
+              }}
               aria-hidden={!isOpen || undefined}
             >
               <OverviewSection />
