@@ -5,7 +5,9 @@ import {
   GALLERY_IMAGES,
   HERO_FACTS,
 } from '../data/festivalConfig';
+import { findEntity } from '../data/planCatalog';
 import { FESTIVAL_EVENT } from '../lib/festivalEvent';
+import { formatPrice } from '../lib/formatPrice';
 import {
   buildGalleryItems,
   FestivalGalleryModal,
@@ -53,6 +55,7 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
     () => buildGalleryItems(GALLERY_IMAGE_URLS, config.video, config.videoPoster),
     [config.video, config.videoPoster],
   );
+  const fromPrice = formatPrice(findEntity('ticket-ga')?.price ?? 49);
 
   const canOpenGallery = galleryItems.length > 0;
 
@@ -94,23 +97,31 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
               <div className="eventMediaHero__metaRow">
                 <p className="eventMediaHero__venue">{FESTIVAL_EVENT.venue}</p>
               </div>
-              <ul className="eventMediaHero__facts" aria-label="Event highlights">
-                {HERO_FACTS.map((fact) => (
-                  <li key={fact.label} className="eventMediaHero__fact">
-                    <span className="eventMediaHero__factLabel">{fact.label}</span>
-                    <span className="eventMediaHero__factValue">{fact.value}</span>
-                  </li>
-                ))}
-              </ul>
-              {onBuyTickets ? (
-                <button
-                  type="button"
-                  className="eventMediaHero__buyBtn"
-                  onClick={onBuyTickets}
-                >
-                  Buy tickets
-                </button>
-              ) : null}
+              <div className="eventMediaHero__footer">
+                <ul className="eventMediaHero__facts" aria-label="Event highlights">
+                  {HERO_FACTS.map((fact) => (
+                    <li key={fact.label} className="eventMediaHero__fact">
+                      <span className="eventMediaHero__factLabel">{fact.label}</span>
+                      <span className="eventMediaHero__factValue">{fact.value}</span>
+                    </li>
+                  ))}
+                </ul>
+                {onBuyTickets ? (
+                  <div className="eventMediaHero__cta">
+                    <p className="eventMediaHero__from">
+                      <span className="eventMediaHero__fromLabel">From</span>
+                      <span className="eventMediaHero__fromPrice">{fromPrice}</span>
+                    </p>
+                    <button
+                      type="button"
+                      className="eventMediaHero__buyBtn"
+                      onClick={onBuyTickets}
+                    >
+                      Get tickets
+                    </button>
+                  </div>
+                ) : null}
+              </div>
             </div>
             {canOpenGallery ? (
               <GalleryButton

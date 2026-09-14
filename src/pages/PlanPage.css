@@ -14,8 +14,10 @@
 
 @media (max-width: 900px) {
   .planPage {
-    --festival-nav-height: calc(0.45rem + 2rem + 0.45rem);
+    /* Match FestivalNavbar: 0.45rem padding + 2.75rem icon buttons + 1px border */
+    --festival-nav-height: calc(0.45rem + 2.75rem + 0.45rem + 1px);
     --sticky-tabs-height: 3.6rem;
+    --hero-extra-tail: 1.5rem;
   }
 }
 
@@ -374,8 +376,9 @@
 
   .planHeroSlot--immersive {
     flex: 0 0 auto;
-    height: calc(100svh - var(--festival-nav-height));
-    min-height: calc(100svh - var(--festival-nav-height));
+    height: calc(100dvh - var(--festival-nav-height) + var(--hero-extra-tail, 0px));
+    min-height: calc(100dvh - var(--festival-nav-height) + var(--hero-extra-tail, 0px));
+    max-height: none;
   }
 
   .planHeroSlot--immersive .festivalGalleryBand {

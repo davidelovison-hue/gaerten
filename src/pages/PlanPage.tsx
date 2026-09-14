@@ -175,7 +175,7 @@ function scheduleScrollToPlanTab(tabId: string) {
   };
 }
 
-/** Hero "Buy tickets" CTA: always scroll to the ticket tabs + cards. */
+/** Hero "Get tickets" CTA: always scroll to the ticket tabs + cards. */
 function scrollToTicketSection() {
   const top = getTicketSectionScrollTop();
   if (top == null) return;
