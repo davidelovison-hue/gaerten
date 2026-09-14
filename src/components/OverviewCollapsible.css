@@ -73,7 +73,7 @@
 
 .planOverviewToggleChevron {
   flex-shrink: 0;
-  transition: transform 0.18s ease;
+  transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 .planOverviewCollapsibleOpen .planOverviewToggleChevron {
@@ -96,15 +96,102 @@
   text-overflow: ellipsis;
 }
 
+.planOverviewFold {
+  position: relative;
+  min-width: 0;
+}
+
+.planOverviewFoldPeek .planOverviewToggle {
+  padding-bottom: 0.55rem;
+}
+
+.planOverviewReveal {
+  display: grid;
+  grid-template-rows: 5.5rem;
+  transition: grid-template-rows 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.planOverviewFoldOpen .planOverviewReveal {
+  grid-template-rows: 1fr;
+}
+
+.planOverviewRevealInner {
+  min-height: 0;
+  overflow: hidden;
+}
+
 .planOverviewPanel {
   box-sizing: border-box;
   margin-top: 0;
-  padding: 0.35rem 0 0.5rem;
+  padding: 0.15rem 0 0.85rem;
   background: transparent;
 }
 
-.planOverviewPanel[hidden] {
-  display: none;
+.planOverviewFoldPeek .planOverviewPanel {
+  pointer-events: none;
+  user-select: none;
+}
+
+.planOverviewPanel .overview {
+  opacity: 0.42;
+  transform: translateY(0.2rem);
+  transition:
+    opacity 0.45s cubic-bezier(0.22, 1, 0.36, 1),
+    transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.planOverviewFoldOpen .planOverviewPanel .overview {
+  opacity: 1;
+  transform: none;
+}
+
+.planOverviewPeekFade {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 4.25rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(255 255 255 / 0) 0%,
+    rgb(255 255 255 / 0.55) 48%,
+    rgb(255 255 255 / 0.96) 82%,
+    #fff 100%
+  );
+  opacity: 1;
+  transition: opacity 0.4s ease, height 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.planOverviewFoldOpen .planOverviewPeekFade {
+  opacity: 0;
+  height: 0;
+}
+
+.planOverviewPeekHit {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5.5rem;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  appearance: none;
+  transition: opacity 0.25s ease;
+}
+
+.planOverviewFoldOpen .planOverviewPeekHit {
+  pointer-events: none;
+  opacity: 0;
+}
+
+.planOverviewPeekHit:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: -2px;
 }
 
 @media (min-width: 901px) {
@@ -112,8 +199,34 @@
     padding: 1.3rem 0;
   }
 
+  .planOverviewFoldPeek .planOverviewToggle {
+    padding-bottom: 0.6rem;
+  }
+
   .planOverviewPanel {
-    padding: 0.9rem 0 0.5rem;
+    padding: 0.35rem 0 0.7rem;
+  }
+
+  .planOverviewReveal {
+    grid-template-rows: 6.15rem;
+  }
+
+  .planOverviewPeekHit {
+    height: 6.15rem;
+  }
+
+  .planOverviewPeekFade {
+    height: 4.75rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planOverviewReveal,
+  .planOverviewPanel .overview,
+  .planOverviewPeekFade,
+  .planOverviewPeekHit,
+  .planOverviewToggleChevron {
+    transition: none;
   }
 }
 
