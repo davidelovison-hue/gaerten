@@ -35,7 +35,12 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
     );
 
   const goToLandingTop = () => {
-    const home = location.pathname === '/scroll' ? '/scroll' : '/';
+    const home =
+      location.pathname === '/scroll'
+        ? '/scroll'
+        : location.pathname === '/immersive'
+          ? '/immersive'
+          : '/';
     navigate(home);
     scrollPageToTop();
   };

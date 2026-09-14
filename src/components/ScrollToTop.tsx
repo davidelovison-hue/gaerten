@@ -12,7 +12,7 @@ export function ScrollToTop() {
   }, [pathname]);
 
   useLayoutEffect(() => {
-    if (pathname === '/scroll') return;
+    if (pathname === '/scroll' || pathname === '/immersive') return;
     return scrollPageToTop();
   }, [pathname, search, hash, key]);
 

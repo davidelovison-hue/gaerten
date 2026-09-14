@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
@@ -20,6 +20,11 @@ import {
   type PlanStepId,
 } from '../data/planCatalog';
 import './PlanPage.css';
+
+type PlanPageProps = {
+  homePath?: string;
+  overview?: ReactNode;
+};
 
 function getTabFromHash(): PlanStepId {
   const hash = window.location.hash.replace(/^#/, '');
@@ -199,7 +204,7 @@ function scheduleScrollToTicketSection() {
   };
 }
 
-export function PlanPage() {
+export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
   const location = useLocation();
   const { items } = useCart();
   const isMobile = useIsMobile();
@@ -213,12 +218,12 @@ export function PlanPage() {
 
   // Logo / home: land at the very top of the page (no section jump).
   useLayoutEffect(() => {
-    if (location.pathname !== '/') return;
+    if (location.pathname !== homePath) return;
     const hash = location.hash.replace(/^#/, '');
     if (hash) return;
     setIsOverviewOpen(false);
     return scrollPageToTop();
-  }, [location.pathname, location.hash, location.key]);
+  }, [homePath, location.pathname, location.hash, location.key]);
 
   const handleTabChange = useCallback(
     (tabId: PlanStepId) => {
@@ -303,7 +308,9 @@ export function PlanPage() {
       <div className="planDesktopShell">
         <div className="planIntroBand">
           <div className="planOverviewSlot">
-            <OverviewCollapsible isOpen={isOverviewOpen} onToggle={handleOverviewToggle} />
+            <OverviewCollapsible isOpen={isOverviewOpen} onToggle={handleOverviewToggle}>
+              {overview}
+            </OverviewCollapsible>
           </div>
 
           <h2 className="planTicketsHeading">Tickets</h2>

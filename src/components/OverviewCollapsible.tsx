@@ -1,3 +1,4 @@
+import type { ReactNode } from 'react';
 import { LINEUP_HINT, LINEUP_TITLE } from '../data/festivalConfig';
 import { FESTIVAL_ARTISTS } from '../data/festivalArtists';
 import { FestivalArtistsCarousel } from './FestivalArtistsCarousel';
@@ -8,9 +9,15 @@ type OverviewCollapsibleProps = {
   isOpen: boolean;
   onToggle: () => void;
   id?: string;
+  children?: ReactNode;
 };
 
-export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: OverviewCollapsibleProps) {
+export function OverviewCollapsible({
+  isOpen,
+  onToggle,
+  id = 'overview',
+  children,
+}: OverviewCollapsibleProps) {
   return (
     <section
       id={id}
@@ -69,7 +76,7 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
               }}
               aria-hidden={!isOpen || undefined}
             >
-              <OverviewSection />
+              {children ?? <OverviewSection />}
             </div>
           </div>
         </div>
@@ -78,10 +85,8 @@ export function OverviewCollapsible({ isOpen, onToggle, id = 'overview' }: Overv
         <button
           type="button"
           className="planOverviewPeekHit"
-          onClick={onToggle}
-          tabIndex={isOpen ? -1 : 0}
-          aria-hidden={isOpen || undefined}
-          aria-label="Show event info"
+          tabIndex={-1}
+          aria-hidden="true"
         />
       </div>
     </section>

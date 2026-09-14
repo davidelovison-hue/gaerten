@@ -9,6 +9,11 @@ export function scrollPlanPath(hash?: string): string {
   return hash ? `/scroll#${hash.replace(/^#/, '')}` : '/scroll';
 }
 
+/** Fever-style immersive overview + stacked tickets. */
+export function immersivePlanPath(hash?: string): string {
+  return hash ? `/immersive#${hash.replace(/^#/, '')}` : '/immersive';
+}
+
 export function eventPath(eventId: string, hash?: string): string {
   void eventId;
   return planPath(hash ?? 'entry');

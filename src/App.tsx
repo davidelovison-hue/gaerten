@@ -1,5 +1,6 @@
 import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom';
 import { CartAddToastBridge } from './components/CartAddToastBridge';
+import { ImmersiveOverview } from './components/ImmersiveOverview';
 import { ScrollToTop } from './components/ScrollToTop';
 import { CartProvider } from './lib/cartContext';
 import { ToastProvider } from './lib/toastContext';
@@ -27,6 +28,10 @@ export default function App() {
           <Routes>
             <Route path="/" element={<PlanPage />} />
             <Route path="/scroll" element={<PlanScrollPage />} />
+            <Route
+              path="/immersive"
+              element={<PlanScrollPage homePath="/immersive" overview={<ImmersiveOverview />} />}
+            />
             <Route element={<CheckoutLayout />}>
               <Route path="/event/:eventId/connect" element={<ConnectPage />} />
               <Route path="/event/:eventId/pmr-questions" element={<PmrPreBookingPage />} />

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
 import { useLocation } from 'react-router-dom';
 import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
@@ -57,12 +57,19 @@ function activeStepFromScroll(): PlanStepId {
   return current;
 }
 
-export function PlanScrollPage() {
+type PlanScrollPageProps = {
+  homePath?: string;
+  overview?: ReactNode;
+};
+
+export function PlanScrollPage({ homePath = '/scroll', overview }: PlanScrollPageProps) {
   const location = useLocation();
   const { items } = useCart();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState<PlanStepId>(getTabFromHash);
-  const [isOverviewOpen, setIsOverviewOpen] = useState(false);
+  const [isOverviewOpen, setIsOverviewOpen] = useState(
+    () => window.location.hash.replace(/^#/, '') === 'overview',
+  );
   const hasCart = items.length > 0;
   const suppressSpyUntilRef = useRef(0);
   const didInitialHashScroll = useRef(false);
@@ -88,10 +95,10 @@ export function PlanScrollPage() {
   );
 
   useLayoutEffect(() => {
-    if (location.pathname !== '/scroll') return;
+    if (location.pathname !== homePath) return;
     if (location.hash) return;
     return scrollPageToTop();
-  }, [location.pathname, location.hash, location.key]);
+  }, [homePath, location.pathname, location.hash, location.key]);
 
   useEffect(() => {
     if (didInitialHashScroll.current) return;
@@ -160,7 +167,12 @@ export function PlanScrollPage() {
       <div className="planDesktopShell">
         <div className="planIntroBand">
           <div className="planOverviewSlot">
-            <OverviewCollapsible isOpen={isOverviewOpen} onToggle={() => setIsOverviewOpen((open) => !open)} />
+            <OverviewCollapsible
+              isOpen={isOverviewOpen}
+              onToggle={() => setIsOverviewOpen((open) => !open)}
+            >
+              {overview}
+            </OverviewCollapsible>
           </div>
           <h2 className="planTicketsHeading">Tickets</h2>
         </div>
