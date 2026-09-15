@@ -457,6 +457,14 @@ body:has(.planPage--snap) {
     padding-right: 1rem;
   }
 
+  .planPage--snap .planSnap--hero .eventMediaHero__overlay {
+    padding-bottom: 3.85rem;
+  }
+
+  .planPage--snap .planSnap--hero .planSnapContinue {
+    bottom: 0.4rem;
+  }
+
   .planPage--snap .planSnapContinue {
     bottom: 1.35rem;
   }
