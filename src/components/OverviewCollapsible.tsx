@@ -78,16 +78,36 @@ export function OverviewCollapsible({
             >
               {children ?? <OverviewSection />}
             </div>
+            <div className="planOverviewPeekFade" aria-hidden="true" />
+            <button
+              type="button"
+              className="planOverviewPeekHit"
+              tabIndex={-1}
+              aria-hidden="true"
+            />
           </div>
         </div>
-
-        <div className="planOverviewPeekFade" aria-hidden="true" />
-        <button
-          type="button"
-          className="planOverviewPeekHit"
-          tabIndex={-1}
-          aria-hidden="true"
-        />
+        {!isOpen ? (
+          <button type="button" className="planOverviewShowMore" onClick={onToggle}>
+            Show more
+            <svg
+              className="planOverviewShowMoreChevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              aria-hidden="true"
+            >
+              <path
+                d="M6 9.5L12 15.5L18 9.5"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
+        ) : null}
       </div>
     </section>
   );

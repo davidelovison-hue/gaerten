@@ -6,7 +6,7 @@ export function scrollPageToTop(): () => void {
     document.body.scrollTop = 0
 
     document
-      .querySelectorAll<HTMLElement>('.appShell, .connectPage, .checkoutPage, .orderConfirmPage, .accountPage, .pmrPreBookingPage')
+      .querySelectorAll<HTMLElement>('.appShell, .connectPage, .checkoutPage, .orderConfirmPage, .accountPage, .pmrPreBookingPage, .planPage--snap')
       .forEach((el) => {
         el.scrollTop = 0
       })

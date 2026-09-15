@@ -20,3 +20,455 @@
     top: calc(var(--festival-nav-height) + var(--cart-column-top-gap));
   }
 }
+
+html:has(.planPage--snap),
+body:has(.planPage--snap) {
+  height: 100%;
+  overflow: hidden;
+}
+
+.planPage--snap {
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior-y: contain;
+  scroll-snap-type: y mandatory;
+  scroll-behavior: auto;
+}
+
+.planPage--snap .planStickyNav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  z-index: 300;
+}
+
+.planPage--snap .planSnap {
+  position: relative;
+  box-sizing: border-box;
+  flex: 0 0 100dvh;
+  width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  padding-top: var(--festival-nav-height);
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+}
+
+.planPage--snap .planSnap--hero {
+  display: flex;
+  flex-direction: column;
+  padding-top: var(--festival-nav-height);
+  background: #000;
+}
+
+.planPage--snap .planSnap--hero .planHeroSlot {
+  flex: 1 1 auto;
+  min-height: 0;
+  height: auto;
+  max-height: none;
+}
+
+.planPage--snap .planSnap--hero .festivalGalleryBand,
+.planPage--snap .planSnap--hero .eventMediaHero--immersive {
+  height: 100%;
+  min-height: 100%;
+  --event-media-hero-height: 100%;
+}
+
+.planPage--snap .planSnap--intro {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  background: #f4f5f6;
+  overflow-x: hidden;
+  overflow-y: auto;
+}
+
+.planPage--snap .planSnapIntroInner {
+  box-sizing: border-box;
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 1.1rem 1.5rem 5.25rem;
+}
+
+.planPage--snap .planSnapIntroInner .planOverviewSlot,
+.planPage--snap .planSnapIntroInner .planOverviewCollapsible {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.planPage--snap .planSnap--intro .planOverviewLineup {
+  flex: 0 0 auto;
+  padding-bottom: 1.15rem;
+}
+
+.planPage--snap .planSnap--intro .festivalArtistsCarousel__outer[data-scrollable='true']::before {
+  background: linear-gradient(90deg, #f4f5f6 30%, transparent);
+}
+
+.planPage--snap .planSnap--intro .festivalArtistsCarousel__outer[data-scrollable='true']::after {
+  background: linear-gradient(270deg, #f4f5f6 30%, transparent);
+}
+
+.planPage--snap .planSnap--intro .planOverviewFold {
+  flex: 1 1 auto;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.planPage--snap .planSnap--intro .planOverviewToggle {
+  flex: 0 0 auto;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .planOverviewReveal {
+  flex: 0 0 auto;
+  display: block;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .planOverviewRevealInner {
+  overflow: visible;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .planOverviewPeekFade,
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .planOverviewPeekHit {
+  display: none;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvNavTabs,
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvBlock:nth-child(n + 3) {
+  display: none;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvSections {
+  gap: 1.5rem;
+  padding-top: 0.2rem;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvSection {
+  gap: 0.75rem;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvReadMore__content {
+  display: block;
+  overflow: visible;
+  -webkit-line-clamp: unset;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvReadMore__inner p:nth-child(n + 2),
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvReadMore__btn,
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvHighlight__caption {
+  display: none;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvHighlight__image {
+  height: min(10.5rem, 22vh);
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvHighlights {
+  position: relative;
+}
+
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .fvHighlights::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 5.5rem;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgb(244 245 246 / 0) 0%,
+    rgb(244 245 246 / 0.45) 55%,
+    #f4f5f6 100%
+  );
+  backdrop-filter: blur(7px);
+  -webkit-backdrop-filter: blur(7px);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 55%);
+  mask-image: linear-gradient(to bottom, transparent 0%, #000 55%);
+}
+
+.planPage--snap .planSnap--intro .planOverviewToggleAction {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.9rem;
+  border: 1px solid #d0d4d8;
+  border-radius: 999px;
+  background: #fff;
+  font-size: 0.8125rem;
+  font-weight: 700;
+}
+
+.planPage--snap .planSnap--intro .planOverviewToggle:hover .planOverviewToggleAction {
+  border-color: #031419;
+}
+
+.planPage--snap .planSnap--intro .planOverviewToggle:hover .planOverviewToggleActionText {
+  text-decoration: none;
+}
+
+.planPage--snap .planSnap--intro .planOverviewShowMore,
+.planPage--snap .planSnap--intro .planOverviewFoldPeek .planOverviewShowMore {
+  display: none;
+}
+
+.planPage--snap .planSnapIntroDock {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2.1rem 1rem 0.95rem;
+  background: linear-gradient(to top, #f4f5f6 58%, rgb(244 245 246 / 0));
+  pointer-events: none;
+}
+
+.planPage--snap .planSnapIntroDock .planSnapContinue {
+  pointer-events: auto;
+  position: static;
+  left: auto;
+  bottom: auto;
+  transform: none;
+  color: #031419;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.planPage--snap.planPage--snapOverviewOpen {
+  scroll-snap-type: none;
+}
+
+.planPage--snap.planPage--snapOverviewOpen .planSnap.planSnap--intro {
+  flex: none;
+  height: auto;
+  max-height: none;
+  min-height: 100dvh;
+  overflow-x: clip;
+  overflow-y: visible;
+  scroll-snap-type: none;
+  scroll-snap-align: none;
+  scroll-snap-stop: normal;
+}
+
+.planPage--snap .planSnap--introOpen .planSnapIntroInner {
+  padding-bottom: 5.5rem;
+  overflow-x: hidden;
+  max-width: min(1280px, 100%);
+}
+
+.planPage--snap .planSnap--introOpen .planSnapIntroDock {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 6;
+}
+
+.planPage--snap .planSnapIntroDock--hidden {
+  display: none;
+}
+
+.planPage--snap .planSnap--introOpen .planSnapIntroInner,
+.planPage--snap .planSnap--introOpen .planOverviewSlot,
+.planPage--snap .planSnap--introOpen .planOverviewCollapsible,
+.planPage--snap .planSnap--introOpen .planOverviewFold,
+.planPage--snap .planSnap--introOpen .planOverviewReveal,
+.planPage--snap .planSnap--introOpen .planOverviewRevealInner,
+.planPage--snap .planSnap--introOpen .planOverviewPanel {
+  flex: none;
+  height: auto;
+  max-height: none;
+  min-height: 0;
+  overflow: visible;
+}
+
+.planPage--snap .planSnap--introOpen .planOverviewFoldOpen .planOverviewReveal {
+  display: block;
+  grid-template-rows: none;
+}
+
+.planPage--snap .planSnap--introOpen .fvHighlights__list {
+  max-width: 100%;
+}
+
+.planPage--snap .planSnap--introOpen .planOverviewFoldOpen .planOverviewPeekFade,
+.planPage--snap .planSnap--introOpen .planOverviewFoldOpen .planOverviewPeekHit {
+  display: none;
+}
+
+.planPage--snap .planSnap--tickets {
+  background: #fff;
+  overflow: hidden;
+}
+
+.planPage--snap .planSnap--tickets .planDesktopShell {
+  height: 100%;
+  max-height: 100%;
+  min-height: 0;
+  padding-bottom: 1rem;
+}
+
+.planPage--snap .planSnap--tickets .planIntroBand {
+  padding-top: 0.85rem;
+  padding-bottom: 0.15rem;
+}
+
+.planPage--snap .planSnap--tickets .planTicketsHeading {
+  margin: 0;
+}
+
+.planPage--snap .planSnap--tickets .planContentColumn {
+  padding-bottom: 2.5rem;
+}
+
+.planPage--snap .planSnapContinue {
+  position: absolute;
+  left: 50%;
+  bottom: 1.15rem;
+  z-index: 4;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin: 0;
+  padding: 0.35rem 0.7rem;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.88);
+  font: inherit;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  transform: translateX(-50%);
+  cursor: pointer;
+}
+
+.planPage--snap .planSnapContinue--onLight {
+  color: #031419;
+}
+
+.planPage--snap .planSnapContinueChevron {
+  width: 0.7rem;
+  height: 0.7rem;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  opacity: 0.85;
+}
+
+@media (min-width: 901px) {
+  .planPage--snap .planSnap--tickets .planDesktopShell {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
+    grid-template-rows: auto auto minmax(0, 1fr);
+    grid-template-areas:
+      "intro intro"
+      "tabs cart"
+      "main cart";
+    align-items: start;
+  }
+
+  .planPage--snap .planSnap--tickets .planIntroBand {
+    grid-area: intro;
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .planPage--snap .planSnap--tickets .planMainShell {
+    min-height: 0;
+    overflow: hidden;
+    padding: 0.85rem 0 0;
+  }
+
+  .planPage--snap .planSnap--tickets .planMainColumn,
+  .planPage--snap .planSnap--tickets .planContentColumn {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .planPage--snap .planSnap--tickets .planContentColumn {
+    overflow-x: hidden;
+    overflow-y: auto;
+  }
+
+  .planPage--snap .planSnap--tickets .planTabsSlot {
+    position: relative;
+    top: auto;
+  }
+
+  .planPage--snap .planSnap--tickets .planCartColumn {
+    position: sticky;
+    top: 0;
+    height: auto;
+    min-height: 0;
+    align-self: start;
+  }
+
+  .planPage--snap .planSnap--tickets .planCartColumn .cartPanelReveal,
+  .planPage--snap .planSnap--tickets .planCartColumn .cartPanel {
+    height: auto;
+    max-height: calc(
+      100dvh - var(--festival-nav-height) - var(--sticky-tabs-height, 2.75rem) - 3rem
+    );
+  }
+}
+
+@media (max-width: 900px) {
+  .planPage--snap .planSnapIntroInner {
+    padding: 1rem 1rem 5.25rem;
+  }
+
+  .planPage--snap .planSnap--hero .planHeroSlot--immersive {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  .planPage--snap .planSnap--tickets {
+    overflow-y: auto;
+  }
+
+  .planPage--snap .planSnap--tickets .planDesktopShell {
+    height: auto;
+    min-height: 100%;
+    padding-bottom: 5.5rem;
+  }
+
+  .planPage--snap .planSnap--tickets .planIntroBand {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+
+  .planPage--snap .planSnapContinue {
+    bottom: 1.35rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .planPage--snap {
+    scroll-snap-type: y proximity;
+  }
+
+  .planPage--snap .planSnap--intro .planOverviewFoldPeek .planOverviewPeekFade {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+  }
+}
