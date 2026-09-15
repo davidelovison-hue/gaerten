@@ -22,7 +22,7 @@ function ArtistChipAvatar({ artist }: { artist: FestivalArtist }) {
     <img
       className="festivalArtistChip__img"
       src={src}
-      alt=""
+      alt={artist.name}
       width={92}
       height={92}
       loading="lazy"

@@ -18,17 +18,16 @@ function artist(id: string, name: string, image: string): FestivalArtist {
 
 /** Headliner plus Gärten Project collection artists. */
 export const FESTIVAL_ARTISTS: FestivalArtist[] = [
-  artist('artbat', 'ARTBAT', `${BASE}festival-poster.jpg`),
+  artist('artbat', 'ARTBAT', `${BASE}artist-artbat.jpg`),
   artist('solomun', 'Solomun', `${BASE}artist-solomun.jpg`),
   artist('sofiane-pamart', 'Sofiane Pamart', `${BASE}artist-pamart.jpg`),
-  artist('carl-cox', 'Carl Cox', `${BASE}hero-grid-4.jpg`),
-  artist('mau-p', 'Mau P', `${BASE}hero-grid-3.jpg`),
-  artist('black-coffee', 'Black Coffee', `${BASE}merch-black-coffee.jpg`),
-  artist('mind-against', 'Mind Against', `${BASE}artist-eiffel.jpg`),
-  artist('ludovico-einaudi', 'Ludovico Einaudi', `${BASE}hero-grid-1.jpg`),
-  artist('mathame', 'Mathame', `${BASE}hero-grid-2.jpg`),
-  artist('stephan-bodzin', 'Stephan Bodzin', `${BASE}hero-crowd-1.jpg`),
-  artist('agents-of-time', 'Agents of Time', `${BASE}hero-crowd-2.jpg`),
-  artist('nto', 'NTO', `${BASE}hero-crowd-3.jpg`),
-  artist('yuksek', 'Yuksek', `${BASE}hero-crowd-4.jpg`),
+  artist('carl-cox', 'Carl Cox', `${BASE}artist-carl-cox.jpg`),
+  artist('mau-p', 'Mau P', `${BASE}artist-mau-p.jpg`),
+  artist('black-coffee', 'Black Coffee', `${BASE}artist-black-coffee.jpg`),
+  artist('mind-against', 'Mind Against', `${BASE}artist-mind-against.jpg`),
+  artist('mathame', 'Mathame', `${BASE}artist-mathame.jpg`),
+  artist('stephan-bodzin', 'Stephan Bodzin', `${BASE}artist-bodzin.jpg`),
+  artist('agents-of-time', 'Agents of Time', `${BASE}artist-agents-of-time.jpg`),
+  artist('nto', 'NTO', `${BASE}artist-nto.jpg`),
+  artist('yuksek', 'Yuksek', `${BASE}artist-yuksek.jpg`),
 ];

@@ -231,8 +231,8 @@ const BASE = import.meta.env.BASE_URL;
 export const DEFAULT_TICKET_IMAGE = `${BASE}entity-ticket.jpg`;
 
 export const ENTITY_IMAGES: Record<string, string> = {
-  'ticket-ga': `${BASE}abono-general.jpg`,
-  'ticket-vip': `${BASE}abono-vipsound.jpg`,
+  'ticket-ga': `${BASE}ticket-ga-chateau.jpg`,
+  'ticket-vip': `${BASE}ticket-vip-booth.jpg`,
   'merch-tee-black-coffee': `${BASE}merch-black-coffee-front.jpg`,
   'merch-tee-gaerten-2026': `${BASE}merch-gaerten-2026.jpg`,
   'merch-tee-gaerten-project': `${BASE}merch-gaerten-project.jpg`,
@@ -240,6 +240,8 @@ export const ENTITY_IMAGES: Record<string, string> = {
 };
 
 export const ENTITY_GALLERIES: Record<string, string[]> = {
+  'ticket-ga': [`${BASE}ticket-ga-chateau.jpg`, `${BASE}ticket-ga-grounds.jpg`],
+  'ticket-vip': [`${BASE}ticket-vip-booth.jpg`, `${BASE}ticket-vip-decks.jpg`],
   'merch-tee-black-coffee': [
     `${BASE}merch-black-coffee-front.jpg`,
     `${BASE}merch-black-coffee-back.jpg`,

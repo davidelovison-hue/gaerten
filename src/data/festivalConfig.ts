@@ -90,7 +90,7 @@ export const IMMERSIVE_HIGHLIGHT_CARDS = [
   },
   {
     title: 'A lineup built to be felt',
-    text: 'Solomun, Carl Cox, Black Coffee, Sofiane Pamart, Ludovico Einaudi and more — electronic and live artists across one outdoor evening.',
+    text: 'Solomun, Carl Cox, Black Coffee, Sofiane Pamart and more — electronic and live artists across one outdoor evening.',
     image: `${BASE}hero-grid-2.jpg`,
   },
   {
