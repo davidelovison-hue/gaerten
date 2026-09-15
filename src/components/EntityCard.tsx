@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import type { PlanEntity, VariantAxis } from '../data/planCatalog';
-import { getEntityImages, getEntityUnitPrice } from '../data/planCatalog';
+import { ENTRY_TICKET_IDS, getEntityImages, getEntityUnitPrice } from '../data/planCatalog';
 import { getDefaultSelections, useCart } from '../lib/cartContext';
 import {
   formatEntityTotalPrice,
@@ -46,6 +46,7 @@ export function EntityCard({ entity }: EntityCardProps) {
   const images = getEntityImages(entity.id);
   const hideImage =
     entity.hideImage || entity.id.startsWith('park-') || entity.id.startsWith('bus-');
+  const isAdmissionTicket = (ENTRY_TICKET_IDS as readonly string[]).includes(entity.id);
   const hasImages = !hideImage && images.length > 0;
   const hasGallery = hasImages && images.length > 1;
   const listingTone = getListingTagTone(entity.listingTag);
@@ -163,10 +164,19 @@ export function EntityCard({ entity }: EntityCardProps) {
     );
   };
 
+  const cardClass = [
+    'card',
+    isSoldOut ? 'cardSoldOut' : '',
+    hideImage ? 'cardNoImage' : '',
+    isAdmissionTicket ? 'cardAdmission' : '',
+  ]
+    .filter(Boolean)
+    .join(' ');
+
   return (
     <article
       id={`plan-entity-${entity.id}`}
-      className={isSoldOut ? 'card cardSoldOut' : hideImage ? 'card cardNoImage' : 'card'}
+      className={cardClass}
     >
       {hasImages ? (
         <div className="imageWrapper">

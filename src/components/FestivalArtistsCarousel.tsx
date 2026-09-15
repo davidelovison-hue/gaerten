@@ -19,18 +19,23 @@ function ArtistChipAvatar({ artist }: { artist: FestivalArtist }) {
   }, [artist.id, artist.image]);
 
   return (
-    <img
-      className="festivalArtistChip__img"
-      src={src}
-      alt={artist.name}
-      width={92}
-      height={92}
-      loading="lazy"
-      decoding="async"
-      onError={() => {
-        if (src !== artist.fallbackImage) setSrc(artist.fallbackImage);
-      }}
-    />
+    <span
+      className="festivalArtistChip__avatarFill"
+      style={{ backgroundImage: `url("${src.replace(/"/g, '\\"')}")` }}
+    >
+      <img
+        className="festivalArtistChip__img"
+        src={src}
+        alt={artist.name}
+        width={92}
+        height={92}
+        loading="eager"
+        decoding="async"
+        onError={() => {
+          if (src !== artist.fallbackImage) setSrc(artist.fallbackImage);
+        }}
+      />
+    </span>
   );
 }
 
@@ -63,6 +68,13 @@ export function FestivalArtistsCarousel({
   useLayoutEffect(() => {
     updateScrollState();
   }, [artists.length, updateScrollState]);
+
+  useEffect(() => {
+    for (const artist of artists) {
+      const preload = new Image();
+      preload.src = artist.image;
+    }
+  }, [artists]);
 
   useEffect(() => {
     const element = scrollRef.current;
@@ -99,6 +111,11 @@ export function FestivalArtistsCarousel({
         {hint != null && hint !== '' ? (
           <p className="festivalArtistsCarousel__hint">{hint}</p>
         ) : null}
+      </div>
+      <div className="festivalArtistsCarousel__preload" aria-hidden="true">
+        {artists.map((artist) => (
+          <img key={artist.id} src={artist.image} alt="" />
+        ))}
       </div>
       <div
         className="festivalArtistsCarousel__outer"
