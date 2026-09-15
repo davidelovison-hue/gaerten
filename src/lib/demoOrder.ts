@@ -7,7 +7,7 @@ export const DEMO_ORDER_EVENT_ID = FESTIVAL_EVENT_ID;
 
 export function ensureDemoOrder(): OrderConfirmationState | null {
   const session = getUserSession();
-  const ticketSubtotal = 49;
+  const ticketSubtotal = 69;
   const serviceFee = computeServiceFee(ticketSubtotal);
   const total = ticketSubtotal + serviceFee;
 

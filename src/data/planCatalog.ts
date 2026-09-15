@@ -1,5 +1,5 @@
 /**
- * Gärten 2026 ticket catalog.
+ * Gärten 2027 ticket catalog.
  * Entry pass: one GA card and one VIP card, each with release waves.
  */
 import { formatPrice } from '../lib/formatPrice';
@@ -108,7 +108,7 @@ export const PLAN_CATALOG: PlanCategory[] = [
           {
             id: 'ticket-ga',
             name: 'General access',
-            price: 49,
+            price: 69,
             type: 'configurable_single',
             listingTag: 'SELLING FAST',
             description: 'General admission to Gärten. Valid for 1 person. Choose your release wave.',
@@ -121,17 +121,17 @@ export const PLAN_CATALOG: PlanCategory[] = [
               },
             ],
             optionPrices: {
-              'First wave': 49,
-              'Second wave': 49,
-              'Third wave': 49,
+              'First wave': 69,
+              'Second wave': 69,
+              'Third wave': 69,
             },
-            cardPreviewBullets: ['Valid for 1 person', 'All waves €49'],
+            cardPreviewBullets: ['Valid for 1 person', 'All waves €69'],
             includedItems: ['Festival entry', 'General access area'],
           },
           {
             id: 'ticket-vip',
             name: 'VIP area',
-            price: 199,
+            price: 249,
             type: 'configurable_single',
             listingTag: 'LIMITED',
             pricingMode: 'dynamic',
@@ -146,7 +146,7 @@ export const PLAN_CATALOG: PlanCategory[] = [
               },
             ],
             optionPrices: {
-              'First release': 199,
+              'First release': 249,
               'Second release': 249,
             },
             cardPreviewBullets: ['Stage VIP next to DJ booth', 'Private WC · bottle service'],
@@ -207,8 +207,8 @@ export const PLAN_CATALOG: PlanCategory[] = [
             type: 'configurable_single',
             listingTag: 'LIMITED',
             description:
-              'Limited capacity. Return bus from the Château de Fontainebleau to Paris-Bercy. Navette retour au départ du Château de Fontainebleau vers Paris-Bercy.',
-            cardPreviewBullets: ['Limited capacity', 'Fontainebleau → Paris-Bercy'],
+              'Limited capacity. Night shuttle after the event. Exact route to be confirmed.',
+            cardPreviewBullets: ['Limited capacity', 'Night shuttle'],
             includedItems: ['One-way return seat to Paris-Bercy'],
             variantAxes: [
               {

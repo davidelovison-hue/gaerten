@@ -55,7 +55,7 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
     () => buildGalleryItems(GALLERY_IMAGE_URLS, config.video, config.videoPoster),
     [config.video, config.videoPoster],
   );
-  const fromPrice = formatPrice(findEntity('ticket-ga')?.price ?? 49);
+  const fromPrice = formatPrice(findEntity('ticket-ga')?.price ?? 69);
 
   const canOpenGallery = galleryItems.length > 0;
 

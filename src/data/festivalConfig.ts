@@ -1,6 +1,6 @@
 /**
- * Festival-specific branding and copy for Gärten Project —
- * ARTBAT @ Château de Fontainebleau, 12 September 2026.
+ * Festival-specific branding and copy for Gärten —
+ * Black Coffee @ Grand Palais, 15 May 2027.
  */
 
 export type PlanCategory = {
@@ -22,7 +22,7 @@ export const DEFAULT_PLAN_TAB = 'entry';
 const BASE = import.meta.env.BASE_URL;
 
 export const HERO_GRID_IMAGES = [
-  `${BASE}hero-grid-1.jpg`,
+  `${BASE}venue-grand-palais.jpg`,
   `${BASE}hero-grid-2.jpg`,
   `${BASE}hero-grid-3.jpg`,
   `${BASE}hero-grid-4.jpg`,
@@ -30,24 +30,24 @@ export const HERO_GRID_IMAGES = [
 
 export const GALLERY_IMAGES = [
   {
-    src: `${BASE}festival-poster.jpg`,
-    alt: 'ARTBAT @ Château de Fontainebleau — Gärten Project',
-  },
-  {
-    src: HERO_GRID_IMAGES[0],
-    alt: 'ARTBAT at Château de Fontainebleau',
+    src: `${BASE}venue-grand-palais.jpg`,
+    alt: 'Black Coffee @ Grand Palais — Gärten',
   },
   {
     src: HERO_GRID_IMAGES[1],
-    alt: 'Gärten Project night at a French château',
+    alt: 'Gärten night under the lights',
   },
   {
     src: HERO_GRID_IMAGES[2],
-    alt: 'Crowd at a Gärten Project château night',
+    alt: 'Crowd at a Gärten night',
   },
   {
     src: HERO_GRID_IMAGES[3],
-    alt: 'Gärten Project — Carl Cox & Mau P at Chantilly',
+    alt: 'Gärten — electronic music in Paris',
+  },
+  {
+    src: `${BASE}abono-vipsound.jpg`,
+    alt: 'Night at a Gärten event',
   },
 ];
 
@@ -56,7 +56,7 @@ export const FESTIVAL_HERO_VIDEO = `${BASE}hero-video-festival.mp4`;
 export const FESTIVAL_MEDIA_HERO = {
   video: FESTIVAL_HERO_VIDEO,
   videoPoster: `${BASE}hero-video-poster.jpg`,
-  grid: GALLERY_IMAGES.slice(1, 5).map((image) => image.src) as [string, string, string, string],
+  grid: HERO_GRID_IMAGES,
 };
 
 export const GALLERY_IMAGE_URLS = GALLERY_IMAGES.map((image) => image.src);
@@ -65,42 +65,42 @@ export const POSTER_IMAGE = `${BASE}festival-poster.jpg`;
 
 export const AVATAR_URL = `${BASE}favicon.png`;
 
-export const VENUE_IMAGE = `${BASE}hero-grid-1.jpg`;
+export const VENUE_IMAGE = `${BASE}venue-grand-palais.jpg`;
 
 export const HERO_FACTS = [
-  { label: 'Date', value: '12 Sep' },
-  { label: 'Doors', value: '19:00' },
-  { label: 'Format', value: 'Outdoor' },
-  { label: 'City', value: 'Fontainebleau' },
+  { label: 'Date', value: '15 May' },
+  { label: 'Doors', value: '20:00' },
+  { label: 'Format', value: 'Indoor' },
+  { label: 'City', value: 'Paris' },
 ] as const;
 
 export const LINEUP_TITLE = 'Lineup';
-export const LINEUP_HINT = 'Saturday 12 September 2026';
+export const LINEUP_HINT = 'Saturday 15 May 2027';
 
 export const IMMERSIVE_EXPECT = [
-  'We are proud to present ARTBAT at the Château de Fontainebleau — Paris, this Saturday 12 September 2026. An intimate evening blending power, elegance and emotion at the heart of a jewel of French heritage.',
-  'Produced by Gärten: the first luxury musical events brand. Entry passes from €49, with VIP next to the DJ booth, a cashless bar, and a limited return shuttle to Paris-Bercy.',
+  'We are proud to present Black Coffee at the Grand Palais, Paris, on Saturday 15 May 2027. A night of deep, soulful house beneath the largest glass roof in Europe, where French heritage meets cutting-edge electronic music.',
+  'Produced by Gärten: the first luxury musical events brand. Entry passes from €69, with VIP next to the DJ booth, a cashless bar, and Metro access at Champs-Élysées – Clemenceau.',
 ] as const;
 
 export const IMMERSIVE_HIGHLIGHT_CARDS = [
   {
-    title: 'ARTBAT at a French château',
-    text: 'An intimate Gärten Project night with ARTBAT in the grounds of the Château de Fontainebleau — power, elegance, and emotion in a UNESCO setting.',
-    image: `${BASE}hero-grid-1.jpg`,
+    title: 'Black Coffee at the Grand Palais',
+    text: 'A Gärten night with Black Coffee under the largest glass roof in Europe — deep, soulful house in one of the most spectacular rooms in Paris.',
+    image: `${BASE}venue-grand-palais.jpg`,
   },
   {
     title: 'A lineup built to be felt',
-    text: 'Solomun, Carl Cox, Black Coffee, Sofiane Pamart and more — electronic and live artists across one outdoor evening.',
+    text: 'Keinemusik, Dixon, Âme, Themba, Sofiane Pamart and more — house and electronic artists across one indoor evening.',
     image: `${BASE}hero-grid-2.jpg`,
   },
   {
     title: 'Heritage after dark',
-    text: 'Cutting-edge music in the château grounds: French luxury, a unique venue, and an outdoor night under the Fontainebleau sky.',
+    text: 'Cutting-edge electronic music in the Nef: French luxury, a unique venue, and one night under steel and glass.',
     image: `${BASE}hero-grid-3.jpg`,
   },
   {
-    title: 'VIP, bar, and the way home',
-    text: 'VIP beside the DJ booth with private WC and bottle service. Cashless bar on site. A limited shuttle runs back to Paris-Bercy.',
+    title: 'VIP, bar, and the way in',
+    text: 'VIP beside the DJ booth with private WC and bottle service. Cashless bar on site. Metro lines 1 and 13 at Champs-Élysées – Clemenceau.',
     image: `${BASE}hero-grid-4.jpg`,
   },
 ] as const;
@@ -108,17 +108,17 @@ export const IMMERSIVE_HIGHLIGHT_CARDS = [
 export const IMMERSIVE_DAY_STEPS = [
   {
     title: 'Arrive a little early',
-    text: 'Doors at 19:00. Come through, grab a cashless top-up at the bar, and settle in before ARTBAT.',
+    text: 'Doors at 20:00. Come through, grab a cashless top-up at the bar, and settle in before Black Coffee.',
     tone: 'violet' as const,
   },
   {
     title: 'Take your place',
-    text: 'General access across the château grounds, or VIP next to the DJ booth with private WC and bottle service.',
+    text: 'General access in the Nef, or VIP next to the DJ booth with private WC and bottle service.',
     tone: 'orange' as const,
   },
   {
     title: 'Stay for the last record',
-    text: 'An outdoor night through to the close, then a limited return shuttle to Paris-Bercy.',
+    text: 'An indoor night through to the close, under the glass roof of the Grand Palais.',
     tone: 'blue' as const,
   },
 ] as const;
@@ -134,7 +134,7 @@ export const IMMERSIVE_FAQS = [
   },
   {
     q: 'What time do doors open?',
-    a: 'Doors open at 19:00 on Saturday 12 September 2026.',
+    a: 'Doors open at 20:00 on Saturday 15 May 2027.',
   },
   {
     q: 'Is there an age requirement?',
@@ -145,8 +145,8 @@ export const IMMERSIVE_FAQS = [
     a: 'Yes. On site is cashless only — card and mobile payments. No outside food or drinks.',
   },
   {
-    q: 'How do I get back to Paris?',
-    a: 'A limited return shuttle runs to Paris-Bercy after the night. Add it in the Shuttle tab when you book.',
+    q: 'How do I get there?',
+    a: 'Grand Palais, Avenue Winston Churchill, 75008 Paris. Metro: Champs-Élysées – Clemenceau (lines 1 and 13).',
   },
   {
     q: 'What does VIP include?',
@@ -158,12 +158,12 @@ export const OVERVIEW_INFO = [
   {
     icon: '📅',
     label: 'Date',
-    text: 'Saturday 12 September 2026 at the Château de Fontainebleau. An intimate evening produced by Gärten.',
+    text: 'Saturday 15 May 2027 at the Grand Palais. An evening produced by Gärten.',
   },
   {
     icon: '📍',
     label: 'Location',
-    text: 'Château de Fontainebleau, 77300 Fontainebleau, France',
+    text: 'Grand Palais, Avenue Winston Churchill, 75008 Paris, France',
   },
   {
     icon: '🔞',
@@ -173,7 +173,7 @@ export const OVERVIEW_INFO = [
   {
     icon: '♿',
     label: 'On site',
-    text: 'Cashless only — card and mobile payments. No outside food or drinks. VIP includes a private WC and bottle service.',
+    text: 'Cashless only, card and mobile payments. No outside food or drinks. VIP includes a private WC and bottle service.',
   },
 ];
 
@@ -184,23 +184,24 @@ export const FESTIVAL_CURRENCY = {
 
 export const FESTIVAL_COPY = {
   intro:
-    'We are proud to present ARTBAT at the Château de Fontainebleau — Paris, this Saturday 12 September 2026. An intimate evening blending power, elegance and emotion at the heart of a jewel of French heritage. Produced by Gärten: the first luxury musical events brand.',
-  introCta: 'Entry passes from €49.',
+    'We are proud to present Black Coffee at the Grand Palais, Paris, on Saturday 15 May 2027. A night of deep, soulful house beneath the largest glass roof in Europe, where French heritage meets cutting-edge electronic music. Produced by Gärten: the first luxury musical events brand.',
+  introCta: 'Entry passes from €69.',
   ticketTabs:
-    'Browse Entry pass, Merch, Bar, and Shuttle. General access and VIP are sold in waves. Bar is cashless. A limited return shuttle runs to Paris-Bercy after the night.',
+    'Browse Entry pass, Merch, Bar, and Shuttle. General access and VIP are sold in waves. Bar is cashless. Metro: Champs-Élysées – Clemenceau (lines 1 and 13).',
   supportEmail: 'help@feverup.com',
   privacyUrl: 'https://www.gartenproject.com/privacy-policy',
   officialSiteUrl: 'https://www.gartenproject.com/',
   officialSiteLabel: 'gartenproject.com',
-  marketingBrand: 'Gärten Project',
+  marketingBrand: 'Gärten',
   venue: {
-    name: 'Château de Fontainebleau',
-    text: 'A UNESCO jewel of French heritage. Gärten brings cutting-edge electronic music into the château grounds — a blend of French luxury, unique venues, and an intimate night with ARTBAT.',
+    name: 'Grand Palais',
+    text: 'Built for the 1900 World’s Fair and crowned by the largest glass roof in Europe, the Nef is one of the most spectacular rooms in Paris. Gärten brings cutting-edge electronic music under its steel and glass canopy, for one night, with Black Coffee.',
   },
   gettingThere: {
-    name: 'Château de Fontainebleau',
-    address: 'Château de Fontainebleau\n77300 Fontainebleau\nFrance',
-    mapQuery: 'Château de Fontainebleau',
+    name: 'Grand Palais',
+    address:
+      'Grand Palais\nAvenue Winston Churchill\n75008 Paris, France\nMetro: Champs-Élysées – Clemenceau (lines 1 and 13)',
+    mapQuery: 'Grand Palais, Avenue Winston Churchill, 75008 Paris',
   },
   accessibility:
     'Please contact the organiser for access needs. 18+ event. Cashless only on site.',

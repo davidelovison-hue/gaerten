@@ -16,18 +16,18 @@ function artist(id: string, name: string, image: string): FestivalArtist {
   return { id, name, image, fallbackImage: LINEUP_FALLBACK_IMAGE };
 }
 
-/** Headliner plus Gärten Project collection artists. */
+/** Headliner plus supporting artists. */
 export const FESTIVAL_ARTISTS: FestivalArtist[] = [
-  artist('artbat', 'ARTBAT', `${BASE}artist-artbat.jpg`),
-  artist('solomun', 'Solomun', `${BASE}artist-solomun.jpg`),
-  artist('sofiane-pamart', 'Sofiane Pamart', `${BASE}artist-pamart.jpg`),
-  artist('carl-cox', 'Carl Cox', `${BASE}artist-carl-cox.jpg`),
-  artist('mau-p', 'Mau P', `${BASE}artist-mau-p.jpg`),
   artist('black-coffee', 'Black Coffee', `${BASE}artist-black-coffee.jpg`),
+  artist('keinemusik', 'Keinemusik', `${BASE}artist-keinemusik.jpg`),
+  artist('dixon', 'Dixon', `${BASE}artist-dixon.jpg`),
+  artist('ame', 'Âme', `${BASE}artist-ame.jpg`),
+  artist('themba', 'Themba', `${BASE}artist-themba.jpg`),
+  artist('da-capo', 'Da Capo', `${BASE}artist-da-capo.jpg`),
+  artist('culoe-de-song', 'Culoe De Song', `${BASE}artist-culoe.jpg`),
+  artist('shimza', 'Shimza', `${BASE}artist-shimza.jpg`),
+  artist('jimi-jules', 'Jimi Jules', `${BASE}artist-jimi-jules.jpg`),
+  artist('trikk', 'Trikk', `${BASE}artist-trikk.jpg`),
   artist('mind-against', 'Mind Against', `${BASE}artist-mind-against.jpg`),
-  artist('mathame', 'Mathame', `${BASE}artist-mathame.jpg`),
-  artist('stephan-bodzin', 'Stephan Bodzin', `${BASE}artist-bodzin.jpg`),
-  artist('agents-of-time', 'Agents of Time', `${BASE}artist-agents-of-time.jpg`),
-  artist('nto', 'NTO', `${BASE}artist-nto.jpg`),
-  artist('yuksek', 'Yuksek', `${BASE}artist-yuksek.jpg`),
+  artist('sofiane-pamart', 'Sofiane Pamart', `${BASE}artist-pamart.jpg`),
 ];
