@@ -34,9 +34,10 @@ jobs:
         run: |
           touch dist/.nojekyll
           cp dist/index.html dist/404.html
-          mkdir -p dist/scroll dist/immersive
+          mkdir -p dist/scroll dist/immersive dist/ForcedStepper
           cp dist/index.html dist/scroll/index.html
           cp dist/index.html dist/immersive/index.html
+          cp dist/index.html dist/ForcedStepper/index.html
 
       - uses: actions/upload-pages-artifact@v3
         with:

@@ -1,16 +1,10 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatCartSelections, useCart, type CartItem } from '../lib/cartContext';
-import {
-  cartHasTicketsWithoutAddons,
-  hasAddonCheckoutPromptBeenShown,
-  markAddonCheckoutPromptShown,
-} from '../lib/cartAddonPrompt';
 import { buildCheckoutFromCart } from '../lib/buildCheckoutFromCart';
 import { persistCheckoutBasket } from '../lib/checkoutFlowStorage';
 import { connectPath } from '../lib/routes';
 import { formatPrice } from '../lib/theme';
-import { AddonCheckoutPrompt } from './AddonCheckoutPrompt';
 import { AddToCartToast } from './AddToCartToast';
 import './CartPanel.css';
 
@@ -33,6 +27,14 @@ function TrashIcon() {
   );
 }
 
+function BackArrowIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.25" aria-hidden="true">
+      <path d="M15 18l-6-6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function formatSummaryPrice(price: number) {
   return formatPrice(price);
 }
@@ -48,15 +50,21 @@ function toCartEntity(item: CartItem) {
 
 type CartPanelProps = {
   mode: 'desktop' | 'mobile';
-  onSelectPlanTab?: (tabId: string) => void;
+  continueInsteadOfCheckout?: boolean;
+  onContinue?: () => boolean | void;
+  onBack?: () => void;
 };
 
-export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
+export function CartPanel({
+  mode,
+  continueInsteadOfCheckout = false,
+  onContinue,
+  onBack,
+}: CartPanelProps) {
   const navigate = useNavigate();
   const cartTitleId = useId();
   const { items, setQuantity, removeItem, totalItems, totalPrice } = useCart();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [showAddonPrompt, setShowAddonPrompt] = useState(false);
   const [hideMobileBarForHero, setHideMobileBarForHero] = useState(false);
   const cartBodyRef = useRef<HTMLDivElement | null>(null);
   const [cartHasOverflow, setCartHasOverflow] = useState(false);
@@ -160,40 +168,15 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
   }, [items, navigate]);
 
   const handleCheckoutClick = useCallback(() => {
-    if (!hasAddonCheckoutPromptBeenShown() && cartHasTicketsWithoutAddons(items)) {
-      markAddonCheckoutPromptShown();
-      setShowAddonPrompt(true);
-      return;
+    if (continueInsteadOfCheckout && onContinue) {
+      const advanced = onContinue();
+      if (advanced !== false) {
+        closeMobileDrawer();
+        return;
+      }
     }
     proceedToCheckout();
-  }, [items, proceedToCheckout]);
-
-  const handleAddonTabSelect = useCallback(
-    (tabId: string) => {
-      setShowAddonPrompt(false);
-      closeMobileDrawer();
-      onSelectPlanTab?.(tabId);
-    },
-    [closeMobileDrawer, onSelectPlanTab],
-  );
-
-  const handleAddonPromptContinue = useCallback(() => {
-    setShowAddonPrompt(false);
-    proceedToCheckout();
-  }, [proceedToCheckout]);
-
-  const handleAddonPromptDismiss = useCallback(() => {
-    setShowAddonPrompt(false);
-  }, []);
-
-  const addonPrompt = (
-    <AddonCheckoutPrompt
-      open={showAddonPrompt}
-      onSelectTab={handleAddonTabSelect}
-      onContinueCheckout={handleAddonPromptContinue}
-      onDismiss={handleAddonPromptDismiss}
-    />
-  );
+  }, [closeMobileDrawer, continueInsteadOfCheckout, onContinue, proceedToCheckout]);
 
   const cartHeader = (showClose = false) => (
     <div className="cartHeader">
@@ -310,13 +293,23 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
 
   const checkoutButton = (
     <button type="button" className="cartCheckoutBtn" onClick={handleCheckoutClick}>
-      Go to checkout
+      {continueInsteadOfCheckout ? 'Continue' : 'Go to checkout'}
     </button>
+  );
+
+  const checkoutRow = (
+    <div className={onBack ? 'cartCheckout cartCheckout--withBack' : 'cartCheckout'}>
+      {onBack ? (
+        <button type="button" className="cartBackBtn" aria-label="Back" onClick={onBack}>
+          <BackArrowIcon />
+        </button>
+      ) : null}
+      {checkoutButton}
+    </div>
   );
 
   if (mode === 'desktop') {
     return (
-      <>
       <aside className="planCartColumn" aria-label="Shopping cart">
         <div className="cartPanelReveal">
           <div className="cartPanel cartPanelFloat" role="complementary">
@@ -338,14 +331,12 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
             <div className="cartFooter" aria-label="Cart summary and checkout">
               {showScrollHint ? <div className="cartScrollHint">Scroll to see more tickets</div> : null}
               {cartSummary}
-              <div className="cartCheckout">{checkoutButton}</div>
+              {checkoutRow}
             </div>
           </div>
         </div>
         <AddToCartToast variant="desktop" />
       </aside>
-      {addonPrompt}
-      </>
     );
   }
 
@@ -353,7 +344,7 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
     <>
       {!isMobileDrawerOpen ? (
         <div
-          className={`cartMobileBar${hideMobileBarForHero ? ' cartMobileBar--heroImmersive' : ''}`}
+          className={`cartMobileBar${hideMobileBarForHero ? ' cartMobileBar--heroImmersive' : ''}${onBack ? ' cartMobileBar--withBack' : ''}`}
           role="region"
           aria-label="Cart actions"
           aria-hidden={hideMobileBarForHero}
@@ -374,8 +365,13 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
             </span>
             <span className="cartMobileTriggerPrice">{formatPrice(totalPrice)}</span>
           </button>
+          {onBack ? (
+            <button type="button" className="cartMobileBackBtn" aria-label="Back" onClick={onBack}>
+              <BackArrowIcon />
+            </button>
+          ) : null}
           <button type="button" className="cartMobileCheckoutPill" onClick={handleCheckoutClick}>
-            Go to checkout
+            {continueInsteadOfCheckout ? 'Continue' : 'Go to checkout'}
           </button>
         </div>
       ) : null}
@@ -414,13 +410,12 @@ export function CartPanel({ mode, onSelectPlanTab }: CartPanelProps) {
               <div className="cartFooter">
                 {showScrollHint ? <div className="cartScrollHint">Scroll to see more tickets</div> : null}
                 {cartSummary}
-                <div className="cartCheckout">{checkoutButton}</div>
+                {checkoutRow}
               </div>
             </div>
           </div>
         </>
       ) : null}
-      {addonPrompt}
     </>
   );
 }

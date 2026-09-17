@@ -1,7 +1,36 @@
 /** Paths for React Router (basename applied by BrowserRouter). */
 
+export const FORCED_STEPPER_PATH = '/ForcedStepper';
+
+const PLAN_ORIGIN_KEY = 'gaerten.planOrigin';
+
+export function isForcedStepperPath(pathname: string): boolean {
+  return pathname.replace(/\/$/, '') === FORCED_STEPPER_PATH;
+}
+
+export function rememberPlanOrigin(pathname: string): void {
+  const origin = isForcedStepperPath(pathname) ? FORCED_STEPPER_PATH : '/';
+  try {
+    sessionStorage.setItem(PLAN_ORIGIN_KEY, origin);
+  } catch {
+    /* ignore */
+  }
+}
+
+export function planHomePath(): string {
+  try {
+    if (sessionStorage.getItem(PLAN_ORIGIN_KEY) === FORCED_STEPPER_PATH) {
+      return FORCED_STEPPER_PATH;
+    }
+  } catch {
+    /* ignore */
+  }
+  return '/';
+}
+
 export function planPath(hash?: string): string {
-  return hash ? `/#${hash.replace(/^#/, '')}` : '/';
+  const home = planHomePath();
+  return hash ? `${home}#${hash.replace(/^#/, '')}` : home;
 }
 
 /** Stacked-category plan. Later this can ship as its own Pages path. */

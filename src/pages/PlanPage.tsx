@@ -3,18 +3,22 @@ import { useLocation } from 'react-router-dom';
 import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
 import { FestivalNavbar } from '../components/FestivalNavbar';
+import { ForcedPlanProgress } from '../components/ForcedPlanProgress';
 import { OverviewCollapsible } from '../components/OverviewCollapsible';
 import { PlanCategorySection } from '../components/PlanCategorySection';
 import { PlanCrossSellStrip } from '../components/PlanCrossSellStrip';
 import { PlanTabs } from '../components/PlanTabs';
 import { useCart } from '../lib/cartContext';
+import { rememberPlanOrigin } from '../lib/routes';
 import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { useIsMobile } from '../lib/useIsMobile';
 import {
   DEFAULT_PLAN_STEP,
   PLAN_CORE_STEP_IDS,
+  PLAN_STEPS,
   getCategoriesForStep,
   getPlanStep,
+  getPlanStepIndex,
   getStepIdFromHash,
   shouldPrefixCategory,
   type PlanStepId,
@@ -24,7 +28,10 @@ import './PlanPage.css';
 type PlanPageProps = {
   homePath?: string;
   overview?: ReactNode;
+  guided?: boolean;
 };
+
+const LAST_STEP_INDEX = PLAN_STEPS.length - 1;
 
 function getTabFromHash(): PlanStepId {
   const hash = window.location.hash.replace(/^#/, '');
@@ -149,7 +156,8 @@ function getTicketSectionScrollTop() {
 }
 
 function focusPlanTab(tabId: string) {
-  const tabButton = document.getElementById(`plan-tab-${tabId}`);
+  const tabButton =
+    document.getElementById(`plan-tab-${tabId}`) ?? document.getElementById(`plan-step-${tabId}`);
   tabButton?.scrollIntoView({ block: 'nearest', inline: 'nearest', behavior: 'auto' });
   tabButton?.focus({ preventScroll: true });
 }
@@ -204,7 +212,7 @@ function scheduleScrollToTicketSection() {
   };
 }
 
-export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
+export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageProps) {
   const location = useLocation();
   const { items } = useCart();
   const isMobile = useIsMobile();
@@ -212,9 +220,15 @@ export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
   const [isOverviewOpen, setIsOverviewOpen] = useState(shouldOpenOverviewFromHash);
   const hasInitialTabScrollRef = useRef(false);
   const hasCart = items.length > 0;
+  const stepIndex = getPlanStepIndex(activeTab);
   const stepCategories = getCategoriesForStep(activeTab);
+  const isLastStep = stepIndex >= LAST_STEP_INDEX;
   // A category heading that repeats the selected tab adds nothing.
   const activeStepTitle = getPlanStep(activeTab)?.title;
+
+  useEffect(() => {
+    rememberPlanOrigin(location.pathname);
+  }, [location.pathname]);
 
   // Logo / home: land at the very top of the page (no section jump).
   useLayoutEffect(() => {
@@ -225,25 +239,53 @@ export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
     return scrollPageToTop();
   }, [homePath, location.pathname, location.hash, location.key]);
 
+  const goToStep = useCallback(
+    (stepId: PlanStepId, scrollToBar = false) => {
+      const targetIndex = getPlanStepIndex(stepId);
+      if (guided && targetIndex > stepIndex + 1) return;
+      setIsOverviewOpen(false);
+      setActiveTab(stepId);
+      const nextHash = `#${stepId}`;
+      if (window.location.hash !== nextHash) {
+        window.history.pushState(null, '', nextHash);
+      }
+      if (scrollToBar) scheduleScrollToPlanTab(stepId);
+    },
+    [guided, stepIndex],
+  );
+
   const handleTabChange = useCallback(
     (tabId: PlanStepId) => {
       if (tabId === activeTab) return;
-      setActiveTab(tabId);
-      window.history.pushState(null, '', `#${tabId}`);
+      goToStep(tabId);
     },
-    [activeTab],
+    [activeTab, goToStep],
   );
 
-  const selectPlanTab = useCallback((tabId: string) => {
-    const stepId = getStepIdFromHash(tabId);
-    setIsOverviewOpen(false);
-    setActiveTab(stepId);
-    const nextHash = `#${stepId}`;
-    if (window.location.hash !== nextHash) {
-      window.history.pushState(null, '', nextHash);
-    }
-    scheduleScrollToPlanTab(stepId);
-  }, []);
+  const selectPlanTab = useCallback(
+    (tabId: string) => {
+      goToStep(getStepIdFromHash(tabId), true);
+    },
+    [goToStep],
+  );
+
+  const goToNextStep = useCallback(() => {
+    const next = PLAN_STEPS[stepIndex + 1];
+    if (!next) return false;
+    goToStep(next.id, true);
+    return true;
+  }, [goToStep, stepIndex]);
+
+  const goToPrevStep = useCallback(() => {
+    const prev = PLAN_STEPS[stepIndex - 1];
+    if (!prev) return;
+    goToStep(prev.id, true);
+  }, [goToStep, stepIndex]);
+
+  const handleCartContinue = useCallback(() => {
+    if (isLastStep) return false;
+    return goToNextStep();
+  }, [goToNextStep, isLastStep]);
 
   const handleGoToTickets = useCallback(() => {
     setIsOverviewOpen(false);
@@ -267,7 +309,12 @@ export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
         setIsOverviewOpen(true);
         return;
       }
-      setActiveTab(getTabFromHash());
+      const next = getTabFromHash();
+      if (guided) {
+        const nextIndex = getPlanStepIndex(next);
+        if (nextIndex > stepIndex + 1) return;
+      }
+      setActiveTab(next);
     };
 
     window.addEventListener('popstate', syncFromHash);
@@ -276,7 +323,7 @@ export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
       window.removeEventListener('popstate', syncFromHash);
       window.removeEventListener('hashchange', syncFromHash);
     };
-  }, []);
+  }, [guided, stepIndex]);
 
   useEffect(() => {
     if (!isOverviewOpen) return;
@@ -317,8 +364,12 @@ export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
         </div>
 
         <div className="planTabsScrollAnchor" aria-hidden="true" />
-        <div className="planTabsSlot">
-          <PlanTabs activeTab={activeTab} onTabChange={handleTabChange} />
+        <div className={`planTabsSlot${guided ? ' planTabsSlot--forced' : ''}`}>
+          {guided ? (
+            <ForcedPlanProgress activeStep={activeTab} />
+          ) : (
+            <PlanTabs activeTab={activeTab} onTabChange={handleTabChange} />
+          )}
         </div>
 
         <div className="planMainShell">
@@ -336,15 +387,29 @@ export function PlanPage({ homePath = '/', overview }: PlanPageProps) {
                   )}
                 />
               ))}
-              {PLAN_CORE_STEP_IDS.includes(activeTab) ? (
+              {!guided && PLAN_CORE_STEP_IDS.includes(activeTab) ? (
                 <PlanCrossSellStrip activeTab={activeTab} onSelectTab={selectPlanTab} />
               ) : null}
             </div>
           </div>
         </div>
 
-        {isMobile && hasCart ? <CartPanel mode="mobile" onSelectPlanTab={selectPlanTab} /> : null}
-        {!isMobile ? <CartPanel mode="desktop" onSelectPlanTab={selectPlanTab} /> : null}
+        {isMobile && hasCart ? (
+          <CartPanel
+            mode="mobile"
+            continueInsteadOfCheckout={guided && !isLastStep}
+            onContinue={guided ? handleCartContinue : undefined}
+            onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
+          />
+        ) : null}
+        {!isMobile ? (
+          <CartPanel
+            mode="desktop"
+            continueInsteadOfCheckout={guided && !isLastStep}
+            onContinue={guided ? handleCartContinue : undefined}
+            onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
+          />
+        ) : null}
       </div>
     </div>
   );

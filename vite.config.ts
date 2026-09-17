@@ -15,6 +15,8 @@ function ghPagesSpa404(): import('vite').Plugin {
       copyFileSync(resolve(__dirname, 'dist/index.html'), resolve(__dirname, 'dist/scroll/index.html'));
       mkdirSync(resolve(__dirname, 'dist/immersive'), { recursive: true });
       copyFileSync(resolve(__dirname, 'dist/index.html'), resolve(__dirname, 'dist/immersive/index.html'));
+      mkdirSync(resolve(__dirname, 'dist/ForcedStepper'), { recursive: true });
+      copyFileSync(resolve(__dirname, 'dist/index.html'), resolve(__dirname, 'dist/ForcedStepper/index.html'));
     },
   };
 }

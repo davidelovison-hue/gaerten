@@ -27,6 +27,14 @@ export default function App() {
           <CartAddToastBridge />
           <Routes>
             <Route path="/" element={<PlanPage />} />
+            <Route
+              path="/ForcedStepper"
+              element={<PlanPage guided homePath="/ForcedStepper" />}
+            />
+            <Route
+              path="/ForcedStepper/"
+              element={<PlanPage guided homePath="/ForcedStepper" />}
+            />
             <Route path="/scroll" element={<PlanScrollPage />} />
             <Route
               path="/immersive"

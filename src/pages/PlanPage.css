@@ -180,6 +180,10 @@
   pointer-events: none;
 }
 
+.planTabsSlot--forced {
+  border-bottom: 1px solid #eceef0;
+}
+
 .planMainShell {
   flex: 1 1 auto;
   position: relative;

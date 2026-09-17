@@ -324,6 +324,11 @@ export function getPlanStep(stepId: string): PlanStep | undefined {
   return PLAN_STEPS.find((step) => step.id === stepId);
 }
 
+export function getPlanStepIndex(stepId: string): number {
+  const index = PLAN_STEPS.findIndex((step) => step.id === stepId);
+  return index >= 0 ? index : 0;
+}
+
 export function getCategoriesForStep(stepId: string): PlanCategory[] {
   const step = getPlanStep(stepId);
   if (!step) return [];

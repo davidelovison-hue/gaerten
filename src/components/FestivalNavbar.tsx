@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { FESTIVAL_EVENT_ID, FESTIVAL_EVENT, FESTIVAL_LOGO_SRC } from '../lib/festivalEvent';
+import { FORCED_STEPPER_PATH, isForcedStepperPath } from '../lib/routes';
 import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { TicketingProfileButton } from './TicketingProfileButton';
 import './FestivalNavbar.css';
@@ -40,7 +41,9 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
         ? '/scroll'
         : location.pathname === '/immersive'
           ? '/immersive'
-          : '/';
+          : isForcedStepperPath(location.pathname)
+            ? FORCED_STEPPER_PATH
+            : '/';
     navigate(home);
     scrollPageToTop();
   };
