@@ -1,10 +1,16 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { formatCartSelections, useCart, type CartItem } from '../lib/cartContext';
+import {
+  cartHasTicketsWithoutAddons,
+  hasAddonCheckoutPromptBeenShown,
+  markAddonCheckoutPromptShown,
+} from '../lib/cartAddonPrompt';
 import { buildCheckoutFromCart } from '../lib/buildCheckoutFromCart';
 import { persistCheckoutBasket } from '../lib/checkoutFlowStorage';
 import { connectPath } from '../lib/routes';
 import { formatPrice } from '../lib/theme';
+import { AddonCheckoutPrompt } from './AddonCheckoutPrompt';
 import { AddToCartToast } from './AddToCartToast';
 import './CartPanel.css';
 
@@ -53,6 +59,7 @@ type CartPanelProps = {
   continueInsteadOfCheckout?: boolean;
   onContinue?: () => boolean | void;
   onBack?: () => void;
+  onSelectPlanTab?: (tabId: string) => void;
 };
 
 export function CartPanel({
@@ -60,11 +67,13 @@ export function CartPanel({
   continueInsteadOfCheckout = false,
   onContinue,
   onBack,
+  onSelectPlanTab,
 }: CartPanelProps) {
   const navigate = useNavigate();
   const cartTitleId = useId();
   const { items, setQuantity, removeItem, totalItems, totalPrice } = useCart();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
+  const [showAddonPrompt, setShowAddonPrompt] = useState(false);
   const [hideMobileBarForHero, setHideMobileBarForHero] = useState(false);
   const cartBodyRef = useRef<HTMLDivElement | null>(null);
   const [cartHasOverflow, setCartHasOverflow] = useState(false);
@@ -175,8 +184,51 @@ export function CartPanel({
         return;
       }
     }
+    if (
+      onSelectPlanTab &&
+      !hasAddonCheckoutPromptBeenShown() &&
+      cartHasTicketsWithoutAddons(items)
+    ) {
+      markAddonCheckoutPromptShown();
+      setShowAddonPrompt(true);
+      return;
+    }
     proceedToCheckout();
-  }, [closeMobileDrawer, continueInsteadOfCheckout, onContinue, proceedToCheckout]);
+  }, [
+    closeMobileDrawer,
+    continueInsteadOfCheckout,
+    items,
+    onContinue,
+    onSelectPlanTab,
+    proceedToCheckout,
+  ]);
+
+  const handleAddonTabSelect = useCallback(
+    (tabId: string) => {
+      setShowAddonPrompt(false);
+      closeMobileDrawer();
+      onSelectPlanTab?.(tabId);
+    },
+    [closeMobileDrawer, onSelectPlanTab],
+  );
+
+  const handleAddonPromptContinue = useCallback(() => {
+    setShowAddonPrompt(false);
+    proceedToCheckout();
+  }, [proceedToCheckout]);
+
+  const handleAddonPromptDismiss = useCallback(() => {
+    setShowAddonPrompt(false);
+  }, []);
+
+  const addonPrompt = (
+    <AddonCheckoutPrompt
+      open={showAddonPrompt}
+      onSelectTab={handleAddonTabSelect}
+      onContinueCheckout={handleAddonPromptContinue}
+      onDismiss={handleAddonPromptDismiss}
+    />
+  );
 
   const cartHeader = (showClose = false) => (
     <div className="cartHeader">
@@ -310,6 +362,7 @@ export function CartPanel({
 
   if (mode === 'desktop') {
     return (
+      <>
       <aside className="planCartColumn" aria-label="Shopping cart">
         <div className="cartPanelReveal">
           <div className="cartPanel cartPanelFloat" role="complementary">
@@ -337,6 +390,8 @@ export function CartPanel({
         </div>
         <AddToCartToast variant="desktop" />
       </aside>
+      {addonPrompt}
+      </>
     );
   }
 
@@ -416,6 +471,7 @@ export function CartPanel({
           </div>
         </>
       ) : null}
+      {addonPrompt}
     </>
   );
 }

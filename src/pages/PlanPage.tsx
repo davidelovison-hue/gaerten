@@ -400,6 +400,7 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
             continueInsteadOfCheckout={guided && !isLastStep}
             onContinue={guided ? handleCartContinue : undefined}
             onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
+            onSelectPlanTab={guided ? undefined : selectPlanTab}
           />
         ) : null}
         {!isMobile ? (
@@ -408,6 +409,7 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
             continueInsteadOfCheckout={guided && !isLastStep}
             onContinue={guided ? handleCartContinue : undefined}
             onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
+            onSelectPlanTab={guided ? undefined : selectPlanTab}
           />
         ) : null}
       </div>

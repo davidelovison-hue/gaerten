@@ -227,6 +227,14 @@ export function PlanScrollPage({ homePath = '/scroll', overview }: PlanScrollPag
     [scrollToCategory],
   );
 
+  const selectPlanTab = useCallback(
+    (tabId: string) => {
+      setIsOverviewOpen(false);
+      scrollToCategory(getStepIdFromHash(tabId));
+    },
+    [scrollToCategory],
+  );
+
   const handleGoToTickets = useCallback(() => {
     setIsOverviewOpen(false);
     scrollToCategory(DEFAULT_PLAN_STEP);
@@ -268,8 +276,8 @@ export function PlanScrollPage({ homePath = '/scroll', overview }: PlanScrollPag
 
   const cartPanels = (
     <>
-      {isMobile && hasCart ? <CartPanel mode="mobile" /> : null}
-      {!isMobile ? <CartPanel mode="desktop" /> : null}
+      {isMobile && hasCart ? <CartPanel mode="mobile" onSelectPlanTab={selectPlanTab} /> : null}
+      {!isMobile ? <CartPanel mode="desktop" onSelectPlanTab={selectPlanTab} /> : null}
     </>
   );
 
