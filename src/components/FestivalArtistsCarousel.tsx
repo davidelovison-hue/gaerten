@@ -6,6 +6,7 @@ import './FestivalArtistsCarousel.css';
 type FestivalArtistsCarouselProps = {
   artists: FestivalArtist[];
   title?: string;
+  overline?: string;
   hint?: string | null;
   hideDay?: boolean;
   className?: string;
@@ -42,6 +43,7 @@ function ArtistChipAvatar({ artist }: { artist: FestivalArtist }) {
 export function FestivalArtistsCarousel({
   artists,
   title = 'Lineup',
+  overline,
   hint = null,
   hideDay = true,
   className = '',
@@ -106,12 +108,15 @@ export function FestivalArtistsCarousel({
       className={`festivalArtistsCarousel${className ? ` ${className}` : ''}`}
       aria-label="Themed gardens"
     >
-      <div className="festivalArtistsCarousel__head">
-        <h2 className="festivalArtistsCarousel__title">{title}</h2>
+      <header className="festivalArtistsCarousel__heading">
+        <h2 className="festivalArtistsCarousel__title">
+          {overline ? <span className="festivalArtistsCarousel__overline">{overline}</span> : null}
+          {title}
+        </h2>
         {hint != null && hint !== '' ? (
           <p className="festivalArtistsCarousel__hint">{hint}</p>
         ) : null}
-      </div>
+      </header>
       <div className="festivalArtistsCarousel__preload" aria-hidden="true">
         {artists.map((artist) => (
           <img key={artist.id} src={artist.image} alt="" />

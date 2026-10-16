@@ -7,19 +7,30 @@ import {
   IMMERSIVE_EXPECT,
   IMMERSIVE_FAQS,
   IMMERSIVE_HIGHLIGHT_CARDS,
+  LINEUP_TITLE,
   VENUE_IMAGE,
 } from '../data/festivalConfig';
+import { FESTIVAL_ARTISTS } from '../data/festivalArtists';
+import { FestivalArtistsCarousel } from './FestivalArtistsCarousel';
 import { FestivalGalleryModal } from './FestivalGalleryModal';
+import { FeverNavTabs } from './FeverNavTabs';
 import './ImmersiveOverview.css';
 
 const SECTION_NAV = [
-  { id: 'description-1', label: 'Overview' },
   { id: 'highlights-1', label: 'Highlights' },
   { id: 'gallery-1', label: 'Gallery' },
   { id: 'how-it-works-1', label: 'On the day' },
+  { id: 'description-1', label: 'Overview' },
   { id: 'venue-1', label: 'Venue' },
   { id: 'faqs-1', label: 'FAQs' },
 ] as const;
+
+const GALLERY_TILE_PATTERN = ['lead', 'wide', 'tile', 'tile', 'portrait', 'tile', 'tile'] as const;
+
+function galleryTileClass(index: number) {
+  const tile = GALLERY_TILE_PATTERN[index % GALLERY_TILE_PATTERN.length];
+  return tile === 'tile' ? 'fvGallery__item' : `fvGallery__item fvGallery__item--${tile}`;
+}
 
 function SectionHeader({
   overline,
@@ -59,7 +70,7 @@ function ReadMore({ children, lines }: { children: ReactNode; lines: number }) {
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
       >
-        <span>{open ? 'Read less' : 'Read more'}</span>
+        <span>{open ? 'Show less' : 'Show more'}</span>
         <svg width="12" height="12" viewBox="0 0 512 512" aria-hidden="true">
           {open ? (
             <path
@@ -78,43 +89,6 @@ function ReadMore({ children, lines }: { children: ReactNode; lines: number }) {
   );
 }
 
-function ClockIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
-      <circle cx="12" cy="12" r="7.25" stroke="#fff" strokeWidth="1.9" />
-      <path d="M12 8.2v4.1l2.8 1.7" stroke="#fff" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" />
-    </svg>
-  );
-}
-
-function ChairIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
-      <path
-        fill="#fff"
-        d="M8 5.2c0-.7.6-1.2 1.2-1.2h5.6c.7 0 1.2.5 1.2 1.2V11H8V5.2Zm-1.8 6.3h11.6v1.7H6.2v-1.7Zm2 1.7v5.2h1.6v-5.2H8.2Zm6 0v5.2h1.6v-5.2H14.2ZM6.4 18.2h4.2v1.4H6.4v-1.4Zm7 0h4.2v1.4H13.4v-1.4Z"
-      />
-    </svg>
-  );
-}
-
-function MusicIcon() {
-  return (
-    <svg viewBox="0 0 24 24" width="28" height="28" fill="none" aria-hidden="true">
-      <path
-        fill="#fff"
-        d="M9.6 16.7V7.4l8.2-1.8v9.3a2.55 2.55 0 1 1-1.8-2.44V8.05L11.4 9.3v7.4a2.55 2.55 0 1 1-1.8-2.44Z"
-      />
-    </svg>
-  );
-}
-
-const STEP_ICONS = {
-  violet: <ClockIcon />,
-  orange: <ChairIcon />,
-  blue: <MusicIcon />,
-} as const;
-
 function PinIcon() {
   return (
     <svg viewBox="0 0 384 512" width="16" height="16" aria-hidden="true">
@@ -126,38 +100,38 @@ function PinIcon() {
   );
 }
 
-function AccessIcon() {
-  return (
-    <svg viewBox="0 0 512 512" width="16" height="16" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M176 32a24 24 0 1 1 0 48 24 24 0 1 1 0-48zm0 80A56 56 0 1 0 176 0a56 56 0 1 0 0 112zm-32.4 96c-2-8.6-10.5-14-19.1-12.1C53.2 212.1 0 275.8 0 352c0 88.4 71.6 160 160 160c69.7 0 128.9-44.5 150.9-106.7c2.9-8.3-1.4-17.5-9.8-20.4s-17.5 1.4-20.4 9.8C263.1 444.4 215.7 480 160 480C89.3 480 32 422.7 32 352c0-60.9 42.5-111.9 99.5-124.8c8.6-2 14-10.5 12.1-19.1zm56-51.6c-2-8.6-10.5-14-19.1-12.1s-14 10.5-12.1 19.1l34.3 151.1c5 21.9 24.4 37.4 46.8 37.4H358.1l59.6 119.2c1.9 3.8 5.2 6.7 9.3 8s8.4 1 12.2-.9l64-32c7.9-4 11.1-13.6 7.2-21.5s-13.6-11.1-21.5-7.2l-49.7 24.8L386.7 337.7c-5.4-10.8-16.5-17.7-28.6-17.7H249.5c-7.5 0-13.9-5.2-15.6-12.5L215 224H352c8.8 0 16-7.2 16-16s-7.2-16-16-16H207.7l-8.1-35.5z"
-      />
-    </svg>
-  );
-}
+type ImmersiveOverviewProps = {
+  hideNav?: boolean;
+  only?: string | string[];
+};
 
-export function ImmersiveOverview() {
+export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewProps) {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
   const [activeSection, setActiveSection] = useState<string>(SECTION_NAV[0].id);
-  const navRef = useRef<HTMLDivElement>(null);
-  const indicatorRef = useRef<HTMLSpanElement>(null);
+  const highlightsListRef = useRef<HTMLUListElement>(null);
+  const visibleIds = only
+    ? new Set(Array.isArray(only) ? only : [only])
+    : null;
+  const showBlock = (id: string) => !visibleIds || visibleIds.has(id);
   const visibleFaqs = showAllFaqs ? IMMERSIVE_FAQS : IMMERSIVE_FAQS.slice(0, 3);
 
   const galleryThumbs = useMemo(() => {
-    const images = GALLERY_IMAGE_URLS.filter((src) => src !== FESTIVAL_MEDIA_HERO.videoPoster);
+    const poster = FESTIVAL_MEDIA_HERO.videoPoster;
+    const images = GALLERY_IMAGE_URLS.filter((src) => src !== poster);
     return [
-      { kind: 'video' as const, src: FESTIVAL_MEDIA_HERO.videoPoster, video: FESTIVAL_MEDIA_HERO.video },
+      { kind: 'video' as const, src: poster, video: FESTIVAL_MEDIA_HERO.video },
       ...images.map((src) => ({ kind: 'image' as const, src })),
     ];
   }, []);
+  const galleryListRef = useRef<HTMLUListElement>(null);
 
   const mapsUrl = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(FESTIVAL_COPY.gettingThere.mapQuery)}`;
   const mapEmbed = `https://maps.google.com/maps?q=${encodeURIComponent(FESTIVAL_COPY.gettingThere.mapQuery)}&z=14&output=embed&hl=en`;
 
   useEffect(() => {
+    if (hideNav) return undefined;
     const nodes = SECTION_NAV.map((item) => document.getElementById(item.id)).filter(
       (el): el is HTMLElement => Boolean(el),
     );
@@ -174,17 +148,7 @@ export function ImmersiveOverview() {
     );
     nodes.forEach((node) => observer.observe(node));
     return () => observer.disconnect();
-  }, []);
-
-  useEffect(() => {
-    const bar = navRef.current;
-    const indicator = indicatorRef.current;
-    if (!bar || !indicator) return;
-    const active = bar.querySelector<HTMLElement>(`[data-nav-id="${activeSection}"]`);
-    if (!active) return;
-    indicator.style.width = `${active.offsetWidth}px`;
-    indicator.style.transform = `translateX(${active.offsetLeft}px)`;
-  }, [activeSection]);
+  }, [hideNav]);
 
   const openGallery = (index: number) => {
     setGalleryIndex(index);
@@ -197,27 +161,154 @@ export function ImmersiveOverview() {
   };
 
   return (
-    <div className="fvOverview">
-      <nav className="fvNavTabs" aria-label="Experience sections">
-        <div className="fvNavTabs__bar" ref={navRef}>
-          <div className="fvNavTabs__scroll">
-            {SECTION_NAV.map((item) => (
-              <button
-                key={item.id}
-                type="button"
-                data-nav-id={item.id}
-                className={`fvNavTabs__tab${activeSection === item.id ? ' fvNavTabs__tab--active' : ''}`}
-                onClick={() => jumpTo(item.id)}
-              >
-                <span>{item.label}</span>
-              </button>
-            ))}
-          </div>
-          <span className="fvNavTabs__indicator" ref={indicatorRef} aria-hidden="true" />
-        </div>
-      </nav>
+    <div className={`fvOverview${hideNav ? ' fvOverview--embedded' : ''}`}>
+      {hideNav ? null : (
+        <FeverNavTabs
+          ariaLabel="Experience sections"
+          variant="bar"
+          tabs={SECTION_NAV.map((item) => ({ id: item.id, label: item.label }))}
+          activeId={activeSection}
+          onSelect={jumpTo}
+        />
+      )}
 
-      <div className="fvSections">
+      <div className={`fvSections${hideNav ? ' fvSections--embedded' : ''}`}>
+        {showBlock('highlights-1') ? (
+        <div id="highlights-1" className="fvBlock">
+          <section className="fvSection fvSection--highlights">
+            <SectionHeader overline="Experience highlights" title="Highlights" />
+            <div className="fvHighlights">
+              <div className="fvHighlights__host">
+                <ul className="fvHighlights__list" ref={highlightsListRef}>
+                  {IMMERSIVE_HIGHLIGHT_CARDS.map((card) => (
+                    <li key={card.title} className="fvHighlights__item">
+                      <article className="fvHighlight">
+                        <div className="fvHighlight__image">
+                          <img src={card.image} alt="" />
+                        </div>
+                        <div className="fvHighlight__caption">
+                          <h3 className="fvHighlight__title">{card.title}</h3>
+                          <p className="fvHighlight__desc">{card.text}</p>
+                        </div>
+                      </article>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  className="fvHighlights__next"
+                  aria-label="Next highlights"
+                  onClick={() => {
+                    highlightsListRef.current?.scrollBy({ left: 380, behavior: 'smooth' });
+                  }}
+                >
+                  <svg width="16" height="16" viewBox="0 0 320 512" aria-hidden="true">
+                    <path
+                      fill="currentColor"
+                      d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+                    />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </section>
+        </div>
+        ) : null}
+
+        {showBlock('lineup-1') ? (
+        <div id="lineup-1" className="fvBlock">
+          <section className="fvSection">
+            <div className="fvLineup">
+              <FestivalArtistsCarousel
+                artists={FESTIVAL_ARTISTS}
+                overline="Artists"
+                title={LINEUP_TITLE}
+                hideDay
+              />
+            </div>
+          </section>
+        </div>
+        ) : null}
+
+        {showBlock('gallery-1') ? (
+        <div id="gallery-1" className="fvBlock">
+          <section className="fvGallerySection">
+            <SectionHeader overline="Gallery" title="Photos from our fans" />
+            <div className="fvGalleryHost">
+              <ul className="fvGallery" ref={galleryListRef}>
+                {galleryThumbs.map((item, index) => (
+                  <li key={`${item.kind}-${item.src}`} className={galleryTileClass(index)}>
+                    <button
+                      type="button"
+                      className="fvGallery__btn"
+                      aria-label={item.kind === 'video' ? 'Play gallery video' : 'Open gallery photo'}
+                      onClick={() => openGallery(index)}
+                    >
+                      {item.kind === 'video' ? (
+                        <video
+                          className="fvGallery__video"
+                          muted
+                          playsInline
+                          loop
+                          preload="none"
+                          poster={item.src}
+                          src={item.video}
+                          aria-hidden="true"
+                        />
+                      ) : (
+                        <img src={item.src} alt="" />
+                      )}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+              <button
+                type="button"
+                className="fvGallery__next"
+                aria-label="Next gallery photos"
+                onClick={() => {
+                  galleryListRef.current?.scrollBy({ left: 420, behavior: 'smooth' });
+                }}
+              >
+                <svg width="16" height="16" viewBox="0 0 320 512" aria-hidden="true">
+                  <path
+                    fill="currentColor"
+                    d="M310.6 233.4c12.5 12.5 12.5 32.8 0 45.3l-192 192c-12.5 12.5-32.8 12.5-45.3 0s-12.5-32.8 0-45.3L242.7 256 73.4 86.6c-12.5-12.5-12.5-32.8 0-45.3s32.8-12.5 45.3 0l192 192z"
+                  />
+                </svg>
+              </button>
+            </div>
+          </section>
+        </div>
+        ) : null}
+
+        {showBlock('how-it-works-1') ? (
+        <div id="how-it-works-1" className="fvBlock">
+          <section className="fvSection">
+            <SectionHeader overline="On the day" title="How it works" />
+            <ol className="fvSteps">
+              {IMMERSIVE_DAY_STEPS.map((step) => (
+                <li key={step.title}>
+                  <div className="fvStep">
+                    <div className="fvStep__media">
+                      <div className="fvStep__picture">
+                        <img src={step.image} alt="" />
+                      </div>
+                    </div>
+                    <div className="fvStep__content">
+                      {step.time ? <p className="fvStep__time">{step.time}</p> : null}
+                      <p className="fvStep__title">{step.title}</p>
+                      <p className="fvStep__desc">{step.text}</p>
+                    </div>
+                  </div>
+                </li>
+              ))}
+            </ol>
+          </section>
+        </div>
+        ) : null}
+
+        {showBlock('description-1') ? (
         <div id="description-1" className="fvBlock">
           <section className="fvSection">
             <SectionHeader overline="In short" title="What to expect" />
@@ -230,86 +321,9 @@ export function ImmersiveOverview() {
             </div>
           </section>
         </div>
+        ) : null}
 
-        <div id="highlights-1" className="fvBlock">
-          <section className="fvSection">
-            <SectionHeader overline="Experience highlights" title="The experience" />
-            <div className="fvHighlights">
-              <ul className="fvHighlights__list">
-                {IMMERSIVE_HIGHLIGHT_CARDS.map((card) => (
-                  <li key={card.title} className="fvHighlights__item">
-                    <article className="fvHighlight">
-                      <div className="fvHighlight__image">
-                        <img src={card.image} alt={card.title} />
-                      </div>
-                      <div className="fvHighlight__caption">
-                        <h3 className="fvHighlight__title">{card.title}</h3>
-                        <p className="fvHighlight__desc">{card.text}</p>
-                      </div>
-                    </article>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </section>
-        </div>
-
-        <div id="gallery-1" className="fvBlock">
-          <section className="fvGallerySection">
-            <div className="fvGalleryCard">
-              <SectionHeader overline="Gallery" title="Experience the show" />
-              <div className="fvGalleryBody">
-                <ul className="fvGallery">
-                  {galleryThumbs.map((item, index) => (
-                    <li key={item.src}>
-                      <button
-                        type="button"
-                        className="fvGallery__btn"
-                        aria-label="Gallery"
-                        onClick={() => openGallery(index)}
-                      >
-                        {item.kind === 'video' ? (
-                          <video
-                            className="fvGallery__video"
-                            muted
-                            playsInline
-                            loop
-                            preload="none"
-                            poster={item.src}
-                            src={item.video}
-                            aria-hidden="true"
-                          />
-                        ) : (
-                          <img src={item.src} alt="" />
-                        )}
-                      </button>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            </div>
-          </section>
-        </div>
-
-        <div id="how-it-works-1" className="fvBlock">
-          <section className="fvSection">
-            <SectionHeader overline="On the day" title="How it works" />
-            <ol className="fvSteps">
-              {IMMERSIVE_DAY_STEPS.map((step) => (
-                <li key={step.title}>
-                  <div className="fvStep">
-                    <div className={`fvStep__picture fvStep__picture--${step.tone}`}>{STEP_ICONS[step.tone]}</div>
-                    <div className="fvStep__content">
-                      <p className="fvStep__title">{step.title}</p>
-                      <p className="fvStep__desc">{step.text}</p>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ol>
-          </section>
-        </div>
-
+        {showBlock('venue-1') ? (
         <div id="venue-1" className="fvBlock">
           <section className="fvVenueSection">
             <SectionHeader overline="About the venue" title={FESTIVAL_COPY.venue.name} titleHref={mapsUrl} />
@@ -343,21 +357,14 @@ export function ImmersiveOverview() {
                       <p className="fvVenueFact__value">{FESTIVAL_COPY.gettingThere.address.replace(/\n/g, ', ')}</p>
                     </span>
                   </li>
-                  <li className="fvVenueFact">
-                    <span className="fvVenueFact__icon">
-                      <AccessIcon />
-                    </span>
-                    <span className="fvVenueFact__content">
-                      <p className="fvVenueFact__label">Accessibility</p>
-                      <p className="fvVenueFact__value">{FESTIVAL_COPY.accessibility}</p>
-                    </span>
-                  </li>
                 </ul>
               </div>
             </div>
           </section>
         </div>
+        ) : null}
 
+        {showBlock('faqs-1') ? (
         <div id="faqs-1" className="fvBlock">
           <section className="fvSection">
             <SectionHeader overline="FAQs" title="Got questions? We've got answers" />
@@ -398,6 +405,7 @@ export function ImmersiveOverview() {
             </div>
           </section>
         </div>
+        ) : null}
       </div>
 
       {galleryOpen ? (

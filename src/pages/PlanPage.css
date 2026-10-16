@@ -9,16 +9,19 @@
   flex-direction: column;
   align-items: stretch;
   width: 100%;
+  max-width: 100%;
   min-width: 0;
+  overflow-x: clip;
 }
 
 @media (max-width: 900px) {
   .planPage {
     /* Match FestivalNavbar: 0.45rem padding + 2.75rem icon buttons + 1px border */
     --festival-nav-height: calc(0.45rem + 2.75rem + 0.45rem + 1px);
-    --sticky-tabs-height: 3.6rem;
-    --hero-extra-tail: 1.5rem;
+    --sticky-tabs-height: 2.6rem;
+    --hero-extra-tail: 0px;
   }
+
 }
 
 @media (min-width: 901px) {
@@ -44,6 +47,42 @@
   box-sizing: border-box;
 }
 
+.planPage--marketplace {
+  --festival-nav-height: calc(1.5rem + 4rem);
+  background: oklch(97% 0 0deg);
+}
+
+.planPage--marketplace .planStickyNav {
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  height: 0;
+  z-index: 200;
+  overflow: visible;
+  pointer-events: none;
+  background: transparent;
+}
+
+.planPage--marketplace.planPage--navScrolled .planStickyNav::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  inset-inline: 0;
+  z-index: -1;
+  height: calc(1.5rem + 4rem);
+  pointer-events: none;
+  backdrop-filter: blur(1.25rem);
+  -webkit-backdrop-filter: blur(1.25rem);
+  -webkit-mask-image: linear-gradient(180deg, #fff 50%, 85%, transparent);
+  mask-image: linear-gradient(180deg, #fff 50%, 85%, transparent);
+}
+
+@media (max-width: 900px) {
+  .planPage--marketplace {
+    --festival-nav-height: calc(0.75rem + 2.75rem);
+  }
+}
+
 .planHeroSlot {
   order: 2;
   width: 100%;
@@ -56,6 +95,12 @@
   max-width: none;
   margin: 0;
   padding: 0;
+}
+
+.planPage--marketplace .planHeroSlot--immersive {
+  margin-top: 0;
+  height: clamp(400px, calc(100svh + 1.5rem), 3840px);
+  min-height: clamp(400px, calc(100svh + 1.5rem), 3840px);
 }
 
 .planDesktopShell {
@@ -94,8 +139,63 @@
   width: 100%;
   min-width: 0;
   box-sizing: border-box;
-  padding: 1rem 1rem 0.6rem;
+  padding: 0;
   background: #fff;
+}
+
+.planPage--marketplace .planIntroBand {
+  width: 100%;
+  padding: 1.5rem 1rem;
+  background: #fff;
+}
+
+.planPage--marketplace .planIntroBand .planFold,
+.planPage--marketplace .planTickets {
+  max-width: 80rem;
+  margin-inline: auto;
+}
+
+.planTicketsSection {
+  width: 100%;
+  min-width: 0;
+  padding: 1.5rem 1rem 2.5rem;
+  background: transparent;
+  box-sizing: border-box;
+}
+
+.planTickets {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  width: 100%;
+  min-width: 0;
+}
+
+.planTicketsRail {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 2rem;
+  align-items: stretch;
+  width: 100%;
+  min-width: 0;
+}
+
+.planTicketsMain {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  min-width: 0;
+}
+
+.planTicketsCart {
+  display: none;
+}
+
+@media (max-width: 900px) {
+  .planPage--marketplace .fvSections {
+    padding-inline: 1rem;
+  }
 }
 
 .planTicketsHeading {
@@ -117,18 +217,6 @@
   border-top: 1px solid #eef0f2;
 }
 
-.planIntroBand .festivalArtistsCarousel__head {
-  margin-bottom: 0.75rem;
-}
-
-.planIntroBand .festivalArtistsCarousel__title {
-  font-size: 1.5rem;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #031419;
-}
-
 .planIntroBand .festivalArtistsCarousel__hint {
   font-size: 0.8125rem;
   line-height: 1.2;
@@ -147,7 +235,9 @@
 }
 
 .planTabsScrollAnchor {
-  flex: 0 0 auto;
+  position: absolute;
+  top: 0;
+  left: 0;
   width: 0;
   height: 0;
   margin: 0;
@@ -171,13 +261,22 @@
   border-bottom: none;
 }
 
-.planTabsSlot::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: #fff;
-  z-index: -1;
-  pointer-events: none;
+.planPage--marketplace {
+  --sticky-tabs-height: 2.75rem;
+}
+
+.planPage--marketplace .planIntroBand .fvNavTabs,
+.planPage--marketplace .planTabsSlot {
+  position: sticky;
+  top: calc(var(--festival-nav-height) + 0.5rem);
+  z-index: 110;
+  background: transparent;
+}
+
+.planPage--marketplace .planIntroBand .fvNavTabs,
+.planPage--marketplace .planTabsSlot .fvNavTabs {
+  z-index: 110;
+  background: transparent;
 }
 
 .planTabsSlot--forced {
@@ -239,15 +338,20 @@
 }
 
 @media (min-width: 901px) {
+  .planPage--marketplace {
+    --festival-nav-height: calc(1.5rem + 4rem);
+    --sticky-tabs-height: calc(2.5rem + 1px);
+  }
+
   .planDesktopShell {
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(240px, 340px);
     grid-template-rows: auto auto 1fr;
     grid-template-areas:
       "intro intro"
-      "tabs cart"
+      "tabs tabs"
       "main cart";
-    max-width: 1280px;
+    max-width: 80rem;
     width: 100%;
     margin: 0 auto;
     padding: 0 1rem;
@@ -267,6 +371,7 @@
     max-width: none;
     margin: 0;
     width: 100%;
+    height: 100%;
   }
 
   .eventTitle {
@@ -277,7 +382,57 @@
     grid-area: intro;
     grid-column: 1 / -1;
     width: 100%;
-    padding: 1.15rem 0 0.6rem;
+    padding: 0;
+  }
+
+  .planPage--marketplace .planDesktopShell {
+    display: flex;
+    flex-direction: column;
+    max-width: none;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .planPage--marketplace .planIntroBand {
+    grid-area: auto;
+    grid-column: auto;
+    padding: 1.5rem;
+  }
+
+  .planPage--marketplace .planTicketsSection {
+    padding: 1.5rem 1.5rem 2.5rem;
+  }
+
+  .planPage--marketplace .planTicketsRail {
+    grid-template-columns: minmax(0, 1fr) 400px;
+  }
+
+  .planPage--marketplace .planTicketsCart {
+    display: block;
+    min-width: 0;
+    align-self: stretch;
+  }
+
+  .planPage--marketplace .planTicketsCart .planCartColumn {
+    grid-area: auto;
+    position: sticky;
+    top: calc(var(--festival-nav-height) + 0.5rem);
+    width: 100%;
+    z-index: 89;
+    align-self: start;
+  }
+
+  .planPage--marketplace .planTabsScrollAnchor,
+  .planPage--marketplace .planTabsSlot {
+    grid-area: auto;
+    grid-column: auto;
+    width: 100%;
+  }
+
+  .planPage--marketplace .planMainShell {
+    grid-area: auto;
+    padding: 0 0 0.5rem;
   }
 
   .planOverviewSlot {
@@ -298,25 +453,12 @@
 
   .planTabsSlot {
     grid-area: tabs;
+    grid-column: 1 / -1;
     width: 100%;
     max-width: none;
     margin-left: 0;
     margin-right: 0;
     position: sticky;
-  }
-
-  .planTabsSlot .stickyTabsBar,
-  .planTabsSlot .tabsNav,
-  .planTabsSlot .tabsBarInner,
-  .planTabsSlot .tabsScroll {
-    background: transparent;
-  }
-
-  .planTabsSlot .tabsBarInner {
-    max-width: none;
-    margin: 0;
-    padding-left: 0;
-    padding-right: 0;
   }
 
   .planMainShell {
@@ -329,7 +471,7 @@
   .planCartColumn {
     grid-area: cart;
     position: sticky;
-    top: var(--festival-nav-height);
+    top: calc(var(--festival-nav-height) + var(--sticky-tabs-height));
     padding-top: 0;
     margin-top: 0;
     z-index: 89;
@@ -374,8 +516,12 @@
     display: none !important;
   }
 
-  .planIntroBand {
-    padding: 0.95rem 1rem 0.55rem;
+  .planPage--marketplace .planIntroBand {
+    padding: 1.5rem 1rem;
+  }
+
+  .planPage--marketplace .planMainShell {
+    padding: 0 0 calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }
 
   .planHeroSlot--immersive {
@@ -385,33 +531,39 @@
     max-height: none;
   }
 
+  /* First fold is exactly one screen: photo edge-to-edge, CTA on the viewport bottom. */
+  .planPage--marketplace .planHeroSlot--immersive {
+    flex: 0 0 var(--app-vh, 100svh);
+    flex-shrink: 0;
+    width: 100%;
+    height: var(--app-vh, 100svh);
+    min-height: var(--app-vh, 100svh);
+    max-height: var(--app-vh, 100svh);
+    overflow: hidden;
+  }
+
+  @supports (height: 100dvh) {
+    .planPage--marketplace .planHeroSlot--immersive {
+      flex-basis: var(--app-vh, 100dvh);
+      height: var(--app-vh, 100dvh);
+      min-height: var(--app-vh, 100dvh);
+      max-height: var(--app-vh, 100dvh);
+    }
+  }
+
   .planHeroSlot--immersive .festivalGalleryBand {
     height: 100%;
     min-height: 100%;
   }
 
   .planTabsSlot {
-    width: 100vw;
-    max-width: 100vw;
-    margin-left: calc(50% - 50vw);
-    margin-right: calc(50% - 50vw);
-    margin-top: 0;
-  }
-
-  .planTabsSlot .stickyTabsBar,
-  .planTabsSlot .tabsNav,
-  .planTabsSlot .tabsBarInner,
-  .planTabsSlot .tabsScroll {
-    background: transparent;
+    width: 100%;
+    max-width: none;
+    margin: 0;
   }
 
   .eventTitle {
     padding: 1.25rem 1rem 0.85rem;
-  }
-
-  .planTabsSlot .tabsBarInner {
-    padding-left: 1rem;
-    padding-right: 0;
   }
 
   .planMainShell {

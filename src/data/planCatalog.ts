@@ -23,6 +23,7 @@ export type PlanEntity = {
   listingTag?: 'SELLING FAST' | 'SOLD OUT' | 'LIMITED';
   description?: string;
   includedItems?: string[];
+  waveIncludes?: Record<string, string[]>;
   cardPreviewBullets?: string[];
   requires?: string[];
   displaySummary?: boolean;
@@ -99,55 +100,68 @@ export const PLAN_CATALOG: PlanCategory[] = [
   },
   {
     id: 'entry',
-    title: 'Entry pass',
+    title: 'Tickets',
     groups: [
       {
         id: 'entry-passes',
-        title: 'Choose your pass',
+        title: '',
         entities: [
           {
             id: 'ticket-ga',
-            name: 'General access',
+            name: 'General Access',
             price: 69,
             type: 'configurable_single',
             listingTag: 'SELLING FAST',
-            description: 'General admission to Gärten. Valid for 1 person. Choose your release wave.',
+            description: 'General admission to Gärten. Valid for 1 person. Choose your wave.',
             variantAxes: [
               {
                 id: 'wave',
                 label: 'Wave',
-                options: ['First wave', 'Second wave', 'Third wave'],
-                defaultOption: 'First wave',
+                options: ['First Wave', 'Second Wave'],
+                defaultOption: 'First Wave',
               },
             ],
             optionPrices: {
-              'First wave': 69,
-              'Second wave': 69,
-              'Third wave': 69,
+              'First Wave': 69,
+              'Second Wave': 69,
             },
             cardPreviewBullets: ['Valid for 1 person', 'All waves €69'],
             includedItems: ['Festival entry', 'General access area'],
+            waveIncludes: {
+              'First Wave': [
+                'Doors open at 20:00, last entry before close',
+                'Access to all Grand Palais general areas',
+                'Valid for 1 person',
+                'Transferable up to 48h before the event, non-refundable',
+              ],
+              'Second Wave': [
+                'Doors open at 20:00',
+                'Access to all Grand Palais general areas',
+                'Valid for 1 person',
+                'Non-refundable',
+              ],
+            },
           },
           {
             id: 'ticket-vip',
-            name: 'VIP area',
+            name: 'VIP Area',
             price: 249,
             type: 'configurable_single',
             listingTag: 'LIMITED',
             pricingMode: 'dynamic',
             description:
-              'Limited tickets. Valid for 1 person. Access to the VIP area on the stage next to the DJ booth throughout the show. Private WC. Bottle service. Fast-track entry.',
+              'Limited. Valid for 1 person. Stage VIP, private WC and fast-track.',
             variantAxes: [
               {
                 id: 'wave',
-                label: 'Release',
-                options: ['First release', 'Second release'],
-                defaultOption: 'First release',
+                label: 'Wave',
+                options: ['First Wave', 'Second Wave'],
+                defaultOption: 'First Wave',
               },
             ],
             optionPrices: {
-              'First release': 249,
-              'Second release': 249,
+              'First Wave': 249,
+              'Second Wave': 249,
             },
             cardPreviewBullets: ['Stage VIP next to DJ booth', 'Private WC · bottle service'],
             includedItems: [
@@ -156,6 +170,22 @@ export const PLAN_CATALOG: PlanCategory[] = [
               'Bottle service',
               'Fast-track entry',
             ],
+            waveIncludes: {
+              'First Wave': [
+                'Fast-track entry from 20:00',
+                'VIP area next to the DJ booth throughout the show',
+                'Private WC',
+                'Bottle service',
+                'Valid for 1 person',
+              ],
+              'Second Wave': [
+                'Fast-track entry from 20:00',
+                'VIP area next to the DJ booth throughout the show',
+                'Private WC and bottle service',
+                'Valid for 1 person',
+                'Non-refundable',
+              ],
+            },
           },
         ],
       },
@@ -167,7 +197,7 @@ export const PLAN_CATALOG: PlanCategory[] = [
     groups: [
       {
         id: 'merch-tees',
-        title: 'T-shirts',
+        title: '',
         entities: [
           merchTee('merch-tee-black-coffee', 'T-shirt — Black Coffee @Grand Palais', 40),
           merchTee('merch-tee-gaerten-2026', 'T-shirt Gärten 2026 — Black', 35),
@@ -182,7 +212,7 @@ export const PLAN_CATALOG: PlanCategory[] = [
     groups: [
       {
         id: 'addons-bar',
-        title: 'Bar',
+        title: '',
         entities: [
           barTopUp('bar-topup-20', 20),
           barTopUp('bar-topup-50', 50),
@@ -198,18 +228,23 @@ export const PLAN_CATALOG: PlanCategory[] = [
     groups: [
       {
         id: 'shuttle-paris',
-        title: 'Paris',
+        title: '',
         entities: [
           {
             id: 'shuttle-paris-return',
             name: 'Return shuttle to Paris',
             price: 15,
             type: 'configurable_single',
-            listingTag: 'LIMITED',
-            description:
-              'Limited capacity. Night shuttle after the event. Exact route to be confirmed.',
-            cardPreviewBullets: ['Limited capacity', 'Night shuttle'],
-            includedItems: ['One-way return seat to Paris-Bercy'],
+            cardPreviewBullets: [
+              'Pickup at Grand Palais after 03:00',
+              'Drop-off Paris-Bercy · about 25 minutes',
+            ],
+            includedItems: [
+              'Reserved seat on the return coach after the show',
+              'Pickup outside the Grand Palais after 03:00',
+              'Drop-off at Paris-Bercy · about 25 minutes',
+              'Valid with a GA or VIP ticket',
+            ],
             variantAxes: [
               {
                 id: 'option',
@@ -267,6 +302,21 @@ export function findEntity(entityId: string): PlanEntity | undefined {
   return undefined;
 }
 
+export function findEntityPlacement(entityId: string): {
+  categoryTitle: string;
+  groupTitle: string;
+} | undefined {
+  for (const category of PLAN_CATALOG) {
+    for (const group of category.groups) {
+      const entity = group.entities.find((item) => item.id === entityId);
+      if (entity) {
+        return { categoryTitle: category.title, groupTitle: entity.name };
+      }
+    }
+  }
+  return undefined;
+}
+
 export const PLAN_CORE_CATEGORY_IDS = ['entry'] as const;
 
 export const PLAN_ADDON_CATEGORIES = [
@@ -275,27 +325,39 @@ export const PLAN_ADDON_CATEGORIES = [
   { id: 'shuttle', label: 'Shuttle' },
 ] as const;
 
-export type PlanStepId = 'entry' | 'merch' | 'addons' | 'shuttle';
+export type TicketStepId = 'entry' | 'merch' | 'addons' | 'shuttle';
+export type PlanStepId = TicketStepId;
 
 export type PlanStep = {
-  id: PlanStepId;
+  id: TicketStepId;
   title: string;
   categoryIds: string[];
 };
 
-export const PLAN_CORE_STEP_IDS: PlanStepId[] = ['entry'];
+export type PlanPageTab = {
+  id: PlanStepId;
+  title: string;
+};
 
-export const DEFAULT_PLAN_STEP: PlanStepId = 'entry';
+export const PLAN_CORE_STEP_IDS: TicketStepId[] = ['entry'];
+
+export const DEFAULT_PLAN_STEP: TicketStepId = 'entry';
 
 export const PLAN_STEPS: PlanStep[] = [
-  { id: 'entry', title: 'Entry pass', categoryIds: ['entry'] },
+  { id: 'entry', title: 'Tickets', categoryIds: ['entry'] },
   { id: 'merch', title: 'Merch', categoryIds: ['merch'] },
   { id: 'addons', title: 'Bar', categoryIds: ['addons'] },
   { id: 'shuttle', title: 'Shuttle', categoryIds: ['shuttle'] },
 ];
 
+export const PLAN_PAGE_TABS: PlanPageTab[] = PLAN_STEPS.map((step) => ({
+  id: step.id,
+  title: step.title,
+}));
+
 const CATEGORY_TO_STEP: Record<string, PlanStepId> = {
   entry: 'entry',
+  vip: 'entry',
   merch: 'merch',
   addons: 'addons',
   shuttle: 'shuttle',
@@ -309,7 +371,8 @@ const HASH_TO_STEP: Record<string, PlanStepId> = {
   pass: 'entry',
   'entry-pass': 'entry',
   ga: 'entry',
-  vip: 'entry',
+  'general-access': 'entry',
+  'vip-area': 'entry',
   tshirt: 'merch',
   tees: 'merch',
   bar: 'addons',
@@ -319,6 +382,10 @@ const HASH_TO_STEP: Record<string, PlanStepId> = {
   navette: 'shuttle',
   paris: 'shuttle',
 };
+
+export function isTicketStepId(id: string): id is TicketStepId {
+  return PLAN_STEPS.some((step) => step.id === id);
+}
 
 export function getPlanStep(stepId: string): PlanStep | undefined {
   return PLAN_STEPS.find((step) => step.id === stepId);
@@ -333,6 +400,18 @@ export function getCategoriesForStep(stepId: string): PlanCategory[] {
   const step = getPlanStep(stepId);
   if (!step) return [];
   return PLAN_CATALOG.filter((category) => step.categoryIds.includes(category.id));
+}
+
+export function getCatalogFromPrice(): number {
+  let min = Number.POSITIVE_INFINITY;
+  for (const category of PLAN_CATALOG) {
+    for (const group of category.groups) {
+      for (const entity of group.entities) {
+        if (entity.price < min) min = entity.price;
+      }
+    }
+  }
+  return Number.isFinite(min) ? min : 15;
 }
 
 export function shouldPrefixCategory(
@@ -356,7 +435,7 @@ export function getStepIdFromHash(hash: string): PlanStepId {
 }
 
 export function isPlanStepId(id: string): id is PlanStepId {
-  return PLAN_STEPS.some((step) => step.id === id);
+  return isTicketStepId(id);
 }
 
 export function findCategoryIdForEntity(entityId: string): string | undefined {

@@ -1,25 +1,19 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { formatCartSelections, useCart, type CartItem } from '../lib/cartContext';
-import {
-  cartHasTicketsWithoutAddons,
-  hasAddonCheckoutPromptBeenShown,
-  markAddonCheckoutPromptShown,
-} from '../lib/cartAddonPrompt';
+import { useCart, type CartItem } from '../lib/cartContext';
+import { findEntityPlacement } from '../data/planCatalog';
 import { buildCheckoutFromCart } from '../lib/buildCheckoutFromCart';
 import { persistCheckoutBasket } from '../lib/checkoutFlowStorage';
 import { connectPath } from '../lib/routes';
 import { formatPrice } from '../lib/theme';
-import { AddonCheckoutPrompt } from './AddonCheckoutPrompt';
-import { AddToCartToast } from './AddToCartToast';
 import './CartPanel.css';
 
 function CartIcon() {
   return (
-    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" aria-hidden="true">
-      <circle cx="9" cy="21" r="1" />
-      <circle cx="20" cy="21" r="1" />
-      <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7" aria-hidden="true">
+      <circle cx="9" cy="20.5" r="1.35" />
+      <circle cx="18" cy="20.5" r="1.35" />
+      <path d="M2.5 3.5h2.2l2.2 11.1a1.7 1.7 0 0 0 1.68 1.35h8.55a1.7 1.7 0 0 0 1.66-1.32L21.2 8H6.1" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }
@@ -45,6 +39,19 @@ function formatSummaryPrice(price: number) {
   return formatPrice(price);
 }
 
+function cartLineCopy(item: CartItem) {
+  const place = findEntityPlacement(item.entityId);
+  const path = [...new Set([place?.categoryTitle, place?.groupTitle].filter(Boolean))].join(' › ');
+  const wave = item.selections.wave?.trim();
+  const extras = Object.entries(item.selections)
+    .filter(([key, value]) => key !== 'wave' && value.trim())
+    .map(([, value]) => value.trim());
+  return {
+    path: [...(path ? [path] : []), ...extras].join(' › '),
+    title: wave || item.name,
+  };
+}
+
 function toCartEntity(item: CartItem) {
   return {
     id: item.entityId,
@@ -59,7 +66,6 @@ type CartPanelProps = {
   continueInsteadOfCheckout?: boolean;
   onContinue?: () => boolean | void;
   onBack?: () => void;
-  onSelectPlanTab?: (tabId: string) => void;
 };
 
 export function CartPanel({
@@ -67,13 +73,11 @@ export function CartPanel({
   continueInsteadOfCheckout = false,
   onContinue,
   onBack,
-  onSelectPlanTab,
 }: CartPanelProps) {
   const navigate = useNavigate();
   const cartTitleId = useId();
   const { items, setQuantity, removeItem, totalItems, totalPrice } = useCart();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [showAddonPrompt, setShowAddonPrompt] = useState(false);
   const [hideMobileBarForHero, setHideMobileBarForHero] = useState(false);
   const cartBodyRef = useRef<HTMLDivElement | null>(null);
   const [cartHasOverflow, setCartHasOverflow] = useState(false);
@@ -131,8 +135,8 @@ export function CartPanel({
 
     const syncHeroVisibility = () => {
       const heroBottom = hero.getBoundingClientRect().bottom;
-      const nav = document.querySelector<HTMLElement>('.planStickyNav');
-      const navH = nav?.getBoundingClientRect().height ?? 0;
+      const navCard = document.querySelector<HTMLElement>('.festivalNavbar');
+      const navH = navCard?.getBoundingClientRect().bottom ?? 0;
       // Hide while the immersive hero still occupies most of the viewport.
       setHideMobileBarForHero(heroBottom > window.innerHeight - navH - 24);
     };
@@ -177,6 +181,7 @@ export function CartPanel({
   }, [items, navigate]);
 
   const handleCheckoutClick = useCallback(() => {
+    if (items.length === 0) return;
     if (continueInsteadOfCheckout && onContinue) {
       const advanced = onContinue();
       if (advanced !== false) {
@@ -184,51 +189,8 @@ export function CartPanel({
         return;
       }
     }
-    if (
-      onSelectPlanTab &&
-      !hasAddonCheckoutPromptBeenShown() &&
-      cartHasTicketsWithoutAddons(items)
-    ) {
-      markAddonCheckoutPromptShown();
-      setShowAddonPrompt(true);
-      return;
-    }
     proceedToCheckout();
-  }, [
-    closeMobileDrawer,
-    continueInsteadOfCheckout,
-    items,
-    onContinue,
-    onSelectPlanTab,
-    proceedToCheckout,
-  ]);
-
-  const handleAddonTabSelect = useCallback(
-    (tabId: string) => {
-      setShowAddonPrompt(false);
-      closeMobileDrawer();
-      onSelectPlanTab?.(tabId);
-    },
-    [closeMobileDrawer, onSelectPlanTab],
-  );
-
-  const handleAddonPromptContinue = useCallback(() => {
-    setShowAddonPrompt(false);
-    proceedToCheckout();
-  }, [proceedToCheckout]);
-
-  const handleAddonPromptDismiss = useCallback(() => {
-    setShowAddonPrompt(false);
-  }, []);
-
-  const addonPrompt = (
-    <AddonCheckoutPrompt
-      open={showAddonPrompt}
-      onSelectTab={handleAddonTabSelect}
-      onContinueCheckout={handleAddonPromptContinue}
-      onDismiss={handleAddonPromptDismiss}
-    />
-  );
+  }, [closeMobileDrawer, continueInsteadOfCheckout, items.length, onContinue, proceedToCheckout]);
 
   const cartHeader = (showClose = false) => (
     <div className="cartHeader">
@@ -237,7 +199,7 @@ export function CartPanel({
           <CartIcon />
         </span>
         <h2 className="cartTitle" id={showClose ? cartTitleId : undefined}>
-          Your Cart
+          Your cart
         </h2>
         {showClose ? (
           <button
@@ -253,6 +215,28 @@ export function CartPanel({
     </div>
   );
 
+  const checkoutButton = (
+    <button
+      type="button"
+      className="cartCheckoutBtn"
+      disabled={items.length === 0}
+      onClick={handleCheckoutClick}
+    >
+      {continueInsteadOfCheckout ? 'Continue' : 'Go to checkout'}
+    </button>
+  );
+
+  const checkoutRow = (
+    <div className={onBack ? 'cartCheckout cartCheckout--withBack' : 'cartCheckout'}>
+      {onBack ? (
+        <button type="button" className="cartBackBtn" aria-label="Back" onClick={onBack}>
+          <BackArrowIcon />
+        </button>
+      ) : null}
+      {checkoutButton}
+    </div>
+  );
+
   if (items.length === 0) {
     if (mode !== 'desktop') return null;
 
@@ -263,11 +247,11 @@ export function CartPanel({
             {cartHeader()}
             <div className="cartEmptyState">
               <p className="cartEmptyTitle">Your cart is empty</p>
-              <p className="cartEmptyHint">Add tickets to get started.</p>
+              <p className="cartEmptyHint">Add tickets to get started</p>
             </div>
+            <div className="cartFooter">{checkoutRow}</div>
           </div>
         </div>
-        <AddToCartToast variant="desktop" />
       </aside>
     );
   }
@@ -275,14 +259,14 @@ export function CartPanel({
   const cartList = (
     <ul className="cartList">
       {items.map((item) => {
-        const variantText = formatCartSelections(item.selections);
+        const line = cartLineCopy(item);
 
         return (
           <li key={item.key} className="ticketCard">
             <div className="ticketInfo">
               <div className="ticketInfoTop">
-                <div className="ticketName">{item.name}</div>
-                {variantText ? <p className="ticketVariants">{variantText}</p> : null}
+                {line.path ? <p className="ticketPath">{line.path}</p> : null}
+                <div className="ticketName">{line.title}</div>
               </div>
               <div className="ticketPriceBlock">
                 <div className="ticketLineTotal">{formatSummaryPrice(item.price * item.quantity)}</div>
@@ -336,27 +320,11 @@ export function CartPanel({
 
   const cartSummary = (
     <div className="cartSummary">
-      <span className="cartSummaryItems">
-        {totalItems} item{totalItems === 1 ? '' : 's'}
-      </span>
-      <span className="cartSummaryTotal">{formatSummaryPrice(totalPrice)}</span>
-    </div>
-  );
-
-  const checkoutButton = (
-    <button type="button" className="cartCheckoutBtn" onClick={handleCheckoutClick}>
-      {continueInsteadOfCheckout ? 'Continue' : 'Go to checkout'}
-    </button>
-  );
-
-  const checkoutRow = (
-    <div className={onBack ? 'cartCheckout cartCheckout--withBack' : 'cartCheckout'}>
-      {onBack ? (
-        <button type="button" className="cartBackBtn" aria-label="Back" onClick={onBack}>
-          <BackArrowIcon />
-        </button>
-      ) : null}
-      {checkoutButton}
+      <div className="cartSummaryMain">
+        <span className="cartSummaryLabel">Total</span>
+        <span className="cartSummaryTotal">{formatSummaryPrice(totalPrice)}</span>
+      </div>
+      <span className="cartSummaryTickets">Tickets: {totalItems}</span>
     </div>
   );
 
@@ -388,9 +356,7 @@ export function CartPanel({
             </div>
           </div>
         </div>
-        <AddToCartToast variant="desktop" />
       </aside>
-      {addonPrompt}
       </>
     );
   }
@@ -471,7 +437,6 @@ export function CartPanel({
           </div>
         </>
       ) : null}
-      {addonPrompt}
     </>
   );
 }

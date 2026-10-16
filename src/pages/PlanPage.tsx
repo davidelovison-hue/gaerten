@@ -4,9 +4,9 @@ import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
 import { FestivalNavbar } from '../components/FestivalNavbar';
 import { ForcedPlanProgress } from '../components/ForcedPlanProgress';
-import { OverviewCollapsible } from '../components/OverviewCollapsible';
+import { ImmersiveOverview } from '../components/ImmersiveOverview';
 import { PlanCategorySection } from '../components/PlanCategorySection';
-import { PlanCrossSellStrip } from '../components/PlanCrossSellStrip';
+import { PlanFoldSection, PlanSectionTitle } from '../components/PlanFoldSection';
 import { PlanTabs } from '../components/PlanTabs';
 import { useCart } from '../lib/cartContext';
 import { rememberPlanOrigin } from '../lib/routes';
@@ -14,12 +14,12 @@ import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { useIsMobile } from '../lib/useIsMobile';
 import {
   DEFAULT_PLAN_STEP,
-  PLAN_CORE_STEP_IDS,
   PLAN_STEPS,
   getCategoriesForStep,
   getPlanStep,
   getPlanStepIndex,
   getStepIdFromHash,
+  isTicketStepId,
   shouldPrefixCategory,
   type PlanStepId,
 } from '../data/planCatalog';
@@ -33,37 +33,67 @@ type PlanPageProps = {
 
 const LAST_STEP_INDEX = PLAN_STEPS.length - 1;
 
-function getTabFromHash(): PlanStepId {
-  const hash = window.location.hash.replace(/^#/, '');
-  if (hash === 'overview') return DEFAULT_PLAN_STEP;
-  if (hash === 'accompagnant' || hash === 'pmr') return DEFAULT_PLAN_STEP;
-  return getStepIdFromHash(hash);
+const OVERVIEW_HASHES = new Set([
+  'overview',
+  'highlights',
+  'gallery',
+  'day',
+  'venue',
+  'accompagnant',
+  'pmr',
+  'highlights-1',
+  'lineup-1',
+  'gallery-1',
+  'how-it-works-1',
+  'description-1',
+  'venue-1',
+  'faqs-1',
+]);
+
+function getHashId() {
+  return window.location.hash.replace(/^#/, '');
 }
 
-function shouldOpenOverviewFromHash() {
+function isOverviewHash(hash: string) {
+  return OVERVIEW_HASHES.has(hash);
+}
+
+function getTabFromHash(guided = false): PlanStepId {
   const hash = window.location.hash.replace(/^#/, '');
-  return hash === 'overview';
+  if (!hash || isOverviewHash(hash)) {
+    return DEFAULT_PLAN_STEP;
+  }
+  const next = getStepIdFromHash(hash);
+  if (guided && !isTicketStepId(next)) return DEFAULT_PLAN_STEP;
+  return next;
 }
 
 const TAB_SCROLL_GAP_PX = 12;
 const STICKY_CHECK_TOLERANCE_PX = 2;
 
+function getNavOverlayHeightPx() {
+  const card = document.querySelector<HTMLElement>('.festivalNavbar');
+  if (card) {
+    const bottom = card.getBoundingClientRect().bottom;
+    if (bottom > 0) return bottom;
+  }
+  return document.querySelector<HTMLElement>('.planStickyNav')?.getBoundingClientRect().height ?? 0;
+}
+
 function getStickyOffsetPx() {
-  const nav = document.querySelector<HTMLElement>('.planStickyNav');
   const tabs = document.querySelector<HTMLElement>('.planTabsSlot');
-  const navH = nav?.getBoundingClientRect().height ?? 0;
+  const navH = getNavOverlayHeightPx();
   const tabsH = tabs?.getBoundingClientRect().height ?? 0;
   return navH + tabsH + TAB_SCROLL_GAP_PX;
 }
 
 function isTabsBarStickyNow() {
-  const nav = document.querySelector<HTMLElement>('.planStickyNav');
   const tabs = document.querySelector<HTMLElement>('.planTabsSlot');
   const anchor = document.querySelector<HTMLElement>('.planTabsScrollAnchor');
   if (!tabs) return false;
   if (!anchor) return false;
 
-  const navH = nav?.getBoundingClientRect().height ?? 0;
+  const navH = getNavOverlayHeightPx();
   // Sticky engages once we've scrolled past the anchor point (adjusted by nav height).
   const anchorDocTop = anchor.getBoundingClientRect().top + window.scrollY;
   return window.scrollY >= anchorDocTop - navH - STICKY_CHECK_TOLERANCE_PX;
@@ -78,30 +108,6 @@ function getScrollTargetEl(tabId: string) {
   if (firstTitle) return firstTitle;
   const firstBlock = section.querySelector<HTMLElement>('.groupBlock');
   return firstBlock ?? section;
-}
-
-function scheduleOverviewScroll() {
-  let cancelled = false;
-  let rafId = 0;
-
-  const runOnce = () => {
-    const overviewEl = document.querySelector<HTMLElement>('.planOverviewSlot');
-    if (!overviewEl) return;
-    overviewEl.scrollIntoView({ block: 'start', behavior: 'auto' });
-    const offset = getStickyOffsetPx();
-    if (offset > 0) window.scrollBy({ top: -offset, left: 0, behavior: 'auto' });
-  };
-
-  rafId = requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
-      if (!cancelled) runOnce();
-    });
-  });
-
-  return () => {
-    cancelled = true;
-    if (rafId) cancelAnimationFrame(rafId);
-  };
 }
 
 function scheduleActiveTabScroll(tabId: string) {
@@ -134,24 +140,27 @@ function scheduleActiveTabScroll(tabId: string) {
 }
 
 function getPlanTabsScrollTop() {
-  const nav = document.querySelector<HTMLElement>('.planStickyNav');
   const tabs = document.querySelector<HTMLElement>('.planTabsSlot');
   const anchor = document.querySelector<HTMLElement>('.planTabsScrollAnchor');
   const target = tabs ?? anchor;
   if (!target) return null;
 
-  const navH = nav?.getBoundingClientRect().height ?? 0;
+  const navH = getNavOverlayHeightPx();
   return Math.max(0, target.getBoundingClientRect().top + window.scrollY - navH);
 }
 
 function getTicketSectionScrollTop() {
+  const fold = document.getElementById('tickets');
+  const navH = getNavOverlayHeightPx();
+  if (fold) {
+    return Math.max(0, fold.getBoundingClientRect().top + window.scrollY - navH);
+  }
+
   const fromTabs = getPlanTabsScrollTop();
   if (fromTabs != null) return fromTabs;
 
   const section = document.getElementById(DEFAULT_PLAN_STEP);
   if (!section) return null;
-  const nav = document.querySelector<HTMLElement>('.planStickyNav');
-  const navH = nav?.getBoundingClientRect().height ?? 0;
   return Math.max(0, section.getBoundingClientRect().top + window.scrollY - navH);
 }
 
@@ -212,12 +221,13 @@ function scheduleScrollToTicketSection() {
   };
 }
 
-export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageProps) {
+export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
   const location = useLocation();
   const { items } = useCart();
   const isMobile = useIsMobile();
-  const [activeTab, setActiveTab] = useState<PlanStepId>(getTabFromHash);
-  const [isOverviewOpen, setIsOverviewOpen] = useState(shouldOpenOverviewFromHash);
+  const [activeTab, setActiveTab] = useState<PlanStepId>(() => getTabFromHash(guided));
+  const [overviewOpen, setOverviewOpen] = useState(() => isOverviewHash(getHashId()));
+  const [navScrolled, setNavScrolled] = useState(false);
   const hasInitialTabScrollRef = useRef(false);
   const hasCart = items.length > 0;
   const stepIndex = getPlanStepIndex(activeTab);
@@ -230,12 +240,38 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
     rememberPlanOrigin(location.pathname);
   }, [location.pathname]);
 
+  useEffect(() => {
+    if (guided) return;
+    const sync = () => setNavScrolled(window.scrollY > 24);
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    return () => window.removeEventListener('scroll', sync);
+  }, [guided]);
+
+  useLayoutEffect(() => {
+    if (guided) return undefined;
+    const applyViewportHeight = () => {
+      if (window.scrollY > 1) return;
+      const h = window.visualViewport?.height ?? window.innerHeight;
+      document.documentElement.style.setProperty('--app-vh', `${h}px`);
+    };
+    applyViewportHeight();
+    window.addEventListener('orientationchange', applyViewportHeight);
+    window.addEventListener('resize', applyViewportHeight);
+    window.visualViewport?.addEventListener('resize', applyViewportHeight);
+    return () => {
+      window.removeEventListener('orientationchange', applyViewportHeight);
+      window.removeEventListener('resize', applyViewportHeight);
+      window.visualViewport?.removeEventListener('resize', applyViewportHeight);
+      document.documentElement.style.removeProperty('--app-vh');
+    };
+  }, [guided]);
+
   // Logo / home: land at the very top of the page (no section jump).
   useLayoutEffect(() => {
     if (location.pathname !== homePath) return;
     const hash = location.hash.replace(/^#/, '');
     if (hash) return;
-    setIsOverviewOpen(false);
     return scrollPageToTop();
   }, [homePath, location.pathname, location.hash, location.key]);
 
@@ -243,7 +279,6 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
     (stepId: PlanStepId, scrollToBar = false) => {
       const targetIndex = getPlanStepIndex(stepId);
       if (guided && targetIndex > stepIndex + 1) return;
-      setIsOverviewOpen(false);
       setActiveTab(stepId);
       const nextHash = `#${stepId}`;
       if (window.location.hash !== nextHash) {
@@ -260,13 +295,6 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
       goToStep(tabId);
     },
     [activeTab, goToStep],
-  );
-
-  const selectPlanTab = useCallback(
-    (tabId: string) => {
-      goToStep(getStepIdFromHash(tabId), true);
-    },
-    [goToStep],
   );
 
   const goToNextStep = useCallback(() => {
@@ -288,7 +316,7 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
   }, [goToNextStep, isLastStep]);
 
   const handleGoToTickets = useCallback(() => {
-    setIsOverviewOpen(false);
+    setOverviewOpen(false);
     if (activeTab !== DEFAULT_PLAN_STEP) {
       setActiveTab(DEFAULT_PLAN_STEP);
       window.history.pushState(null, '', `#${DEFAULT_PLAN_STEP}`);
@@ -298,23 +326,21 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
     scheduleScrollToTicketSection();
   }, [activeTab]);
 
-  const handleOverviewToggle = useCallback(() => {
-    setIsOverviewOpen((open) => !open);
+  const toggleOverview = useCallback(() => {
+    setOverviewOpen((open) => !open);
   }, []);
 
   useEffect(() => {
     const syncFromHash = () => {
-      const hash = window.location.hash.replace(/^#/, '');
-      if (hash === 'overview') {
-        setIsOverviewOpen(true);
-        return;
-      }
-      const next = getTabFromHash();
+      const hash = getHashId();
+      const next = getTabFromHash(guided);
       if (guided) {
         const nextIndex = getPlanStepIndex(next);
         if (nextIndex > stepIndex + 1) return;
       }
       setActiveTab(next);
+      if (isOverviewHash(hash)) setOverviewOpen(true);
+      if (isTicketStepId(hash)) setOverviewOpen(false);
     };
 
     window.addEventListener('popstate', syncFromHash);
@@ -326,15 +352,10 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
   }, [guided, stepIndex]);
 
   useEffect(() => {
-    if (!isOverviewOpen) return;
-    return scheduleOverviewScroll();
-  }, [isOverviewOpen]);
-
-  useEffect(() => {
     if (!hasInitialTabScrollRef.current) {
       hasInitialTabScrollRef.current = true;
       const hash = window.location.hash.replace(/^#/, '');
-      if ((activeTab === DEFAULT_PLAN_STEP && !hash) || hash === 'overview') {
+      if (!hash || hash === 'overview') {
         return;
       }
     }
@@ -343,9 +364,11 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
   }, [activeTab]);
 
   return (
-    <div className="planPage">
+    <div
+      className={`planPage${guided ? '' : ' planPage--marketplace'}${!guided && navScrolled ? ' planPage--navScrolled' : ''}`}
+    >
       <div className="planStickyNav">
-        <FestivalNavbar />
+        <FestivalNavbar variant={guided ? 'dark' : 'marketplace'} />
       </div>
 
       <div className="planHeroSlot planHeroSlot--mediaHero planHeroSlot--immersive">
@@ -353,63 +376,102 @@ export function PlanPage({ homePath = '/', overview, guided = false }: PlanPageP
       </div>
 
       <div className="planDesktopShell">
-        <div className="planIntroBand">
-          <div className="planOverviewSlot">
-            <OverviewCollapsible isOpen={isOverviewOpen} onToggle={handleOverviewToggle}>
-              {overview}
-            </OverviewCollapsible>
-          </div>
-
-          <h2 className="planTicketsHeading">Tickets</h2>
-        </div>
-
-        <div className="planTabsScrollAnchor" aria-hidden="true" />
-        <div className={`planTabsSlot${guided ? ' planTabsSlot--forced' : ''}`}>
-          {guided ? (
-            <ForcedPlanProgress activeStep={activeTab} />
-          ) : (
-            <PlanTabs activeTab={activeTab} onTabChange={handleTabChange} />
-          )}
-        </div>
-
-        <div className="planMainShell">
-          <div className="planMainColumn">
-            <div className="planContentColumn">
-              {stepCategories.map((category) => (
-                <PlanCategorySection
-                  key={category.id}
-                  category={category}
-                  isActive
-                  prefixCarouselTitles={shouldPrefixCategory(
-                    stepCategories,
-                    category,
-                    activeStepTitle,
-                  )}
-                />
-              ))}
-              {!guided && PLAN_CORE_STEP_IDS.includes(activeTab) ? (
-                <PlanCrossSellStrip activeTab={activeTab} onSelectTab={selectPlanTab} />
-              ) : null}
+        {guided ? (
+          <>
+            <div className="planTabsScrollAnchor" aria-hidden="true" />
+            <div className="planTabsSlot planTabsSlot--forced">
+              <ForcedPlanProgress activeStep={isTicketStepId(activeTab) ? activeTab : DEFAULT_PLAN_STEP} />
             </div>
-          </div>
-        </div>
+            <div className="planMainShell">
+              <div className="planMainColumn">
+                <div className="planContentColumn">
+                  {stepCategories.map((category) => (
+                    <PlanCategorySection
+                      key={category.id}
+                      category={category}
+                      isActive
+                      prefixCarouselTitles={shouldPrefixCategory(
+                        stepCategories,
+                        category,
+                        activeStepTitle,
+                      )}
+                    />
+                  ))}
+                </div>
+              </div>
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="planIntroBand">
+              <PlanFoldSection
+                id="overview"
+                title="Overview"
+                icon="compass"
+                open={overviewOpen}
+                onToggle={toggleOverview}
+              >
+                <ImmersiveOverview />
+              </PlanFoldSection>
+            </div>
+            <section id="tickets" className="planTicketsSection" aria-label="Tickets">
+              <div className="planTickets">
+                <PlanSectionTitle icon="ticket">Tickets</PlanSectionTitle>
+                <div className="planTicketsRail">
+                  <div className="planTicketsMain">
+                    <div className="planTabsScrollAnchor" aria-hidden="true" />
+                    <div className="planTabsSlot">
+                      <PlanTabs activeTab={activeTab} onTabChange={handleTabChange} tabs={PLAN_STEPS} />
+                    </div>
+                    <div className="planMainShell">
+                      <div className="planMainColumn">
+                        <div className="planContentColumn">
+                          {stepCategories.map((category) => (
+                            <PlanCategorySection
+                              key={category.id}
+                              category={category}
+                              isActive
+                              prefixCarouselTitles={shouldPrefixCategory(
+                                stepCategories,
+                                category,
+                                activeStepTitle,
+                              )}
+                            />
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {!isMobile ? (
+                    <div className="planTicketsCart">
+                      <CartPanel
+                        mode="desktop"
+                        continueInsteadOfCheckout={!isLastStep}
+                        onContinue={handleCartContinue}
+                        onBack={stepIndex > 0 ? goToPrevStep : undefined}
+                      />
+                    </div>
+                  ) : null}
+                </div>
+              </div>
+            </section>
+          </>
+        )}
 
         {isMobile && hasCart ? (
           <CartPanel
             mode="mobile"
-            continueInsteadOfCheckout={guided && !isLastStep}
-            onContinue={guided ? handleCartContinue : undefined}
-            onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
-            onSelectPlanTab={guided ? undefined : selectPlanTab}
+            continueInsteadOfCheckout={!isLastStep}
+            onContinue={handleCartContinue}
+            onBack={stepIndex > 0 ? goToPrevStep : undefined}
           />
         ) : null}
-        {!isMobile ? (
+        {guided && !isMobile ? (
           <CartPanel
             mode="desktop"
-            continueInsteadOfCheckout={guided && !isLastStep}
-            onContinue={guided ? handleCartContinue : undefined}
-            onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
-            onSelectPlanTab={guided ? undefined : selectPlanTab}
+            continueInsteadOfCheckout={!isLastStep}
+            onContinue={handleCartContinue}
+            onBack={stepIndex > 0 ? goToPrevStep : undefined}
           />
         ) : null}
       </div>

@@ -5,24 +5,32 @@
   min-width: 0;
 }
 
-.festivalArtistsCarousel__head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 0.75rem;
-  margin-bottom: 0.85rem;
+.festivalArtistsCarousel__heading {
+  margin: 0 0 0.75rem;
 }
 
 .festivalArtistsCarousel__title {
   margin: 0;
-  font-size: var(--type-h5-size);
-  line-height: var(--type-h5-line-height);
-  font-weight: var(--font-weight-bold);
-  color: #0a0a0a;
+  font-size: 1.4161rem;
+  line-height: 1.1;
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: #1c1c1c;
+}
+
+.festivalArtistsCarousel__overline {
+  display: block;
+  margin: 0 0 0.25rem;
+  font-size: 0.706rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: #5c5c5c;
 }
 
 .festivalArtistsCarousel__hint {
-  margin: 0;
+  margin: 0.25rem 0 0;
   font-size: var(--type-caption-size);
   line-height: var(--type-caption-line-height);
   color: #737373;
@@ -41,7 +49,7 @@
 }
 
 .festivalArtistsCarousel__outer {
-  --artist-avatar-size: 5.15rem;
+  --artist-avatar-size: 6.25rem;
   --artist-track-pad-top: 0.15rem;
   position: relative;
   width: 100%;
@@ -88,7 +96,7 @@
 
 .festivalArtistsCarousel__track {
   display: flex;
-  gap: 0.85rem;
+  gap: 1.05rem;
   overflow-x: auto;
   overflow-y: hidden;
   padding: 0.15rem 0.25rem 0.65rem;
@@ -109,8 +117,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
-  width: 5.35rem;
+  gap: 0.5rem;
+  width: 6.5rem;
   scroll-snap-align: start;
   text-align: center;
 }
@@ -118,8 +126,8 @@
 .festivalArtistChip__avatar {
   position: relative;
   display: block;
-  width: 5.15rem;
-  height: 5.15rem;
+  width: 6.25rem;
+  height: 6.25rem;
   border-radius: 50%;
   overflow: hidden;
   flex-shrink: 0;
@@ -152,7 +160,7 @@
   -webkit-box-orient: vertical;
   overflow: hidden;
   width: 100%;
-  font-size: 0.72rem;
+  font-size: 0.8125rem;
   font-weight: 600;
   line-height: 1.2;
   color: #0a0a0a;
@@ -166,16 +174,16 @@
 
 @media (min-width: 768px) {
   .festivalArtistChip {
-    width: 6rem;
+    width: 7.5rem;
   }
 
   .festivalArtistChip__avatar {
-    width: 5.75rem;
-    height: 5.75rem;
+    width: 7.25rem;
+    height: 7.25rem;
   }
 
   .festivalArtistsCarousel__outer {
-    --artist-avatar-size: 5.75rem;
+    --artist-avatar-size: 7.25rem;
   }
 }
 

@@ -184,16 +184,8 @@
   border-bottom: 1px solid #eef0f2;
 }
 
-.planOverviewLineup .festivalArtistsCarousel__head {
-  margin-bottom: 0.75rem;
-}
-
-.planOverviewLineup .festivalArtistsCarousel__title {
-  font-size: 1.5rem;
-  line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: -0.03em;
-  color: #031419;
+.planOverviewLineup .sectionMediaHeading {
+  margin-bottom: 0.7rem;
 }
 
 .planOverviewLineup .festivalArtistsCarousel__hint {

@@ -8,6 +8,7 @@ import './FestivalNavbar.css';
 
 type FestivalNavbarProps = {
   profileSlot?: ReactNode;
+  variant?: 'dark' | 'marketplace';
 };
 
 function GlobeIcon() {
@@ -27,7 +28,51 @@ function MenuIcon() {
   );
 }
 
-export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
+function SearchIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <circle cx="11" cy="11" r="7" stroke="currentColor" strokeWidth="1.7" />
+      <path d="M20 20l-3.2-3.2" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" />
+    </svg>
+  );
+}
+
+function PinIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 384 512" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M215.7 499.2C267 435 384 279.4 384 192C384 86 298 0 192 0S0 86 0 192c0 87.4 117 243 168.3 307.2c12.3 15.3 35.1 15.3 47.4 0zM192 128a64 64 0 1 1 0 128 64 64 0 1 1 0-128z"
+      />
+    </svg>
+  );
+}
+
+function CategoriesIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1.5" stroke="currentColor" strokeWidth="1.6" />
+    </svg>
+  );
+}
+
+function HeartIcon() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M12.1 20.3 4.8 13c-1.9-1.9-1.9-5 0-6.9 1.9-1.9 5-1.9 6.9 0l.4.4.4-.4c1.9-1.9 5-1.9 6.9 0 1.9 1.9 1.9 5 0 6.9l-7.3 7.3Z"
+        stroke="currentColor"
+        strokeWidth="1.7"
+        strokeLinejoin="round"
+      />
+    </svg>
+  );
+}
+
+export function FestivalNavbar({ profileSlot, variant = 'dark' }: FestivalNavbarProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const profileControl =
@@ -48,8 +93,12 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
     scrollPageToTop();
   };
 
+  const isMarketplace = variant === 'marketplace';
+  const logoSrc = isMarketplace ? `${import.meta.env.BASE_URL}fever-logo-black.svg` : FESTIVAL_LOGO_SRC;
+  const logoAlt = isMarketplace ? 'fever' : FESTIVAL_EVENT.title;
+
   return (
-    <header className="festivalNavbar">
+    <header className={`festivalNavbar${isMarketplace ? ' festivalNavbar--marketplace' : ''}`}>
       <div className="festivalNavbarInner">
         <div className="leftCluster">
           <button
@@ -59,15 +108,42 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
             onClick={goToLandingTop}
           >
             <img
-              className="logoImg logoImg--photo"
-              src={FESTIVAL_LOGO_SRC}
-              alt={FESTIVAL_EVENT.title}
-              width={160}
-              height={58}
+              className={`logoImg${isMarketplace ? ' logoImg--fever' : ' logoImg--photo'}`}
+              src={logoSrc}
+              alt={logoAlt}
+              width={isMarketplace ? 92 : 160}
+              height={isMarketplace ? 28 : 58}
               decoding="async"
             />
           </button>
         </div>
+
+        {isMarketplace ? (
+          <>
+            <button type="button" className="marketplaceNavLink">
+              <PinIcon />
+              <span>Paris</span>
+            </button>
+            <span className="marketplaceNavDivider" aria-hidden="true" />
+            <button type="button" className="marketplaceNavLink">
+              <CategoriesIcon />
+              <span>Categories</span>
+            </button>
+            <div className="marketplaceSearchWrap">
+              <label className="marketplaceSearch">
+                <span className="marketplaceSearch__icon">
+                  <SearchIcon />
+                </span>
+                <input
+                  className="marketplaceSearch__input"
+                  type="search"
+                  placeholder="What do you want to do?"
+                  aria-label="What do you want to do?"
+                />
+              </label>
+            </div>
+          </>
+        ) : null}
 
         <div className="actionsDesktop">
           <button type="button" className="iconBtn" aria-label="Language">
@@ -76,8 +152,18 @@ export function FestivalNavbar({ profileSlot }: FestivalNavbarProps) {
             </span>
             EN
           </button>
-          <span className="vRuleActions" aria-hidden="true" />
-          <span className="festivalNavbarProfileSlot">{profileControl}</span>
+          {isMarketplace ? (
+            <button type="button" className="iconBtnOnly marketplaceHeartBtn" aria-label="Saved">
+              <HeartIcon />
+            </button>
+          ) : (
+            <span className="vRuleActions" aria-hidden="true" />
+          )}
+          {isMarketplace ? (
+            <span className="marketplaceSignIn">{profileControl}</span>
+          ) : (
+            <span className="festivalNavbarProfileSlot">{profileControl}</span>
+          )}
         </div>
 
         <div className="actionsMobile" role="toolbar" aria-label="Quick actions">

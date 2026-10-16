@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { LINEUP_HINT, LINEUP_TITLE } from '../data/festivalConfig';
+import { LINEUP_TITLE } from '../data/festivalConfig';
 import { FESTIVAL_ARTISTS } from '../data/festivalArtists';
 import { FestivalArtistsCarousel } from './FestivalArtistsCarousel';
 import { OverviewSection } from './OverviewSection';
@@ -27,8 +27,8 @@ export function OverviewCollapsible({
       <div className="planOverviewLineup">
         <FestivalArtistsCarousel
           artists={FESTIVAL_ARTISTS}
+          overline="Artists"
           title={LINEUP_TITLE}
-          hint={LINEUP_HINT}
           hideDay
         />
       </div>

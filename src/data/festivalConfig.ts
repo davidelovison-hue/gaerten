@@ -31,23 +31,59 @@ export const HERO_GRID_IMAGES = [
 export const GALLERY_IMAGES = [
   {
     src: `${BASE}venue-grand-palais.jpg`,
-    alt: 'Black Coffee @ Grand Palais — Gärten',
+    alt: 'Grand Palais from above at dusk',
   },
   {
-    src: HERO_GRID_IMAGES[1],
-    alt: 'Gärten night under the lights',
+    src: `${BASE}ticket-ga-crowd.jpg`,
+    alt: 'Friends dancing at Gärten',
   },
   {
-    src: HERO_GRID_IMAGES[2],
-    alt: 'Crowd at a Gärten night',
+    src: `${BASE}artist-black-coffee.jpg`,
+    alt: 'Black Coffee on the decks',
   },
   {
-    src: HERO_GRID_IMAGES[3],
-    alt: 'Gärten — electronic music in Paris',
+    src: `${BASE}ticket-vip-booth.jpg`,
+    alt: 'Fireworks over the night stage',
+  },
+  {
+    src: `${BASE}ticket-vip-decks.jpg`,
+    alt: 'DJ booth under the lights',
+  },
+  {
+    src: `${BASE}hero-crowd-1.jpg`,
+    alt: 'Crowd facing the night stage',
   },
   {
     src: `${BASE}abono-vipsound.jpg`,
-    alt: 'Night at a Gärten event',
+    alt: 'Night crowd and pyro at Gärten',
+  },
+  {
+    src: `${BASE}ticket-ga-grounds.jpg`,
+    alt: 'Confetti drop over the dancefloor',
+  },
+  {
+    src: `${BASE}hero-crowd-3.jpg`,
+    alt: 'Lasers and confetti on the floor',
+  },
+  {
+    src: `${BASE}hero-grid-2.jpg`,
+    alt: 'Front row at the barrier',
+  },
+  {
+    src: `${BASE}hero-crowd-2.jpg`,
+    alt: 'Hands up under the stage lights',
+  },
+  {
+    src: `${BASE}ticket-vip-lounge.jpg`,
+    alt: 'Outdoor lounge beside the venue',
+  },
+  {
+    src: `${BASE}hero-grid-3.jpg`,
+    alt: 'Blue night over the main stage',
+  },
+  {
+    src: `${BASE}hero-crowd-4.jpg`,
+    alt: 'Crowd under purple festival lights',
   },
 ];
 
@@ -68,60 +104,68 @@ export const AVATAR_URL = `${BASE}favicon.png`;
 export const VENUE_IMAGE = `${BASE}venue-grand-palais.jpg`;
 
 export const HERO_FACTS = [
-  { label: 'Date', value: '15 May' },
-  { label: 'Doors', value: '20:00' },
-  { label: 'Format', value: 'Indoor' },
-  { label: 'City', value: 'Paris' },
+  { label: 'Duration', value: 'Till 3AM', icon: 'duration' },
+  { label: 'Start', value: '20:00', icon: 'start' },
+  { label: 'End', value: '03:00', icon: 'end' },
+  { label: 'Ages', value: '18+', icon: 'ages' },
+  { label: 'Format', value: 'Outdoor', icon: 'format' },
+  { label: 'Music', value: 'Afro House', icon: 'music' },
 ] as const;
 
 export const LINEUP_TITLE = 'Lineup';
-export const LINEUP_HINT = 'Saturday 15 May 2027';
 
 export const IMMERSIVE_EXPECT = [
-  'We are proud to present Black Coffee at the Grand Palais, Paris, on Saturday 15 May 2027. A night of deep, soulful house beneath the largest glass roof in Europe, where French heritage meets cutting-edge electronic music.',
-  'Produced by Gärten: the first luxury musical events brand. Entry passes from €69, with VIP next to the DJ booth, a cashless bar, and Metro access at Champs-Élysées – Clemenceau.',
+  'Black Coffee at the Grand Palais is an extraordinary night of music, energy and connection, bringing one of the world’s most celebrated electronic music artists to one of Paris’s most iconic venues. Get ready for an unforgettable experience where hypnotic rhythms, powerful beats and an incredible atmosphere come together for a night like no other.',
+  'From the moment you arrive, you’ll feel the energy of the crowd as Black Coffee takes you on a musical journey through his signature blend of Afro-house and electronic sounds. Surrounded by thousands of music lovers in the spectacular setting of the Grand Palais, you’ll become part of a shared celebration of music, dance and connection that will stay with you long after the final beat.',
 ] as const;
 
 export const IMMERSIVE_HIGHLIGHT_CARDS = [
   {
-    title: 'Black Coffee at the Grand Palais',
-    text: 'A Gärten night with Black Coffee under the largest glass roof in Europe — deep, soulful house in one of the most spectacular rooms in Paris.',
+    title: 'An Unforgettable Night with Black Coffee',
+    text: 'Experience one of the world’s most celebrated electronic music artists live, bringing his signature Afro-house sound and hypnotic rhythms to Paris.',
+    image: `${BASE}artist-black-coffee.jpg`,
+  },
+  {
+    title: 'An Iconic Venue, An Extraordinary Atmosphere',
+    text: 'Discover the magic of the Grand Palais, where breathtaking architecture meets powerful beats and an electrifying atmosphere for a night like no other.',
     image: `${BASE}venue-grand-palais.jpg`,
   },
   {
-    title: 'A lineup built to be felt',
-    text: 'Keinemusik, Dixon, Âme, Themba, Sofiane Pamart and more — house and electronic artists across one indoor evening.',
-    image: `${BASE}hero-grid-2.jpg`,
-  },
-  {
-    title: 'Heritage after dark',
-    text: 'Cutting-edge electronic music in the Nef: French luxury, a unique venue, and one night under steel and glass.',
-    image: `${BASE}hero-grid-3.jpg`,
-  },
-  {
-    title: 'VIP, bar, and the way in',
-    text: 'VIP beside the DJ booth with private WC and bottle service. Cashless bar on site. Metro lines 1 and 13 at Champs-Élysées – Clemenceau.',
-    image: `${BASE}hero-grid-4.jpg`,
+    title: 'Music, Energy & Connection',
+    text: 'Dance, connect and lose yourself in the music alongside fellow electronic music lovers. Share an unforgettable experience that will stay with you long after the final beat.',
+    image: `${BASE}ticket-ga-crowd.jpg`,
   },
 ] as const;
 
-export const IMMERSIVE_DAY_STEPS = [
+export const IMMERSIVE_DAY_STEPS: {
+  time?: string;
+  title: string;
+  text: string;
+  image: string;
+}[] = [
   {
-    title: 'Arrive a little early',
-    text: 'Doors at 20:00. Come through, grab a cashless top-up at the bar, and settle in before Black Coffee.',
-    tone: 'violet' as const,
+    time: 'Doors open · 20:00',
+    title: 'Arrive at the Grand Palais',
+    text: 'Doors open at 20:00. Make your way into the Nef and settle in as the room fills under the glass roof.',
+    image: `${BASE}ticket-ga-chateau.jpg`,
   },
   {
-    title: 'Take your place',
-    text: 'General access in the Nef, or VIP next to the DJ booth with private WC and bottle service.',
-    tone: 'orange' as const,
+    title: 'Food & drinks',
+    text: 'Enjoy a lively atmosphere with music, bars and food on site. Cashless only.',
+    image: `${BASE}ticket-vip-lounge.jpg`,
   },
   {
-    title: 'Stay for the last record',
-    text: 'An indoor night through to the close, under the glass roof of the Grand Palais.',
-    tone: 'blue' as const,
+    title: 'Music from the best artists',
+    text: 'Open-air sessions with world-class DJs — Black Coffee on the decks.',
+    image: `${BASE}artist-black-coffee.jpg`,
   },
-] as const;
+  {
+    time: 'Last beat · 03:00',
+    title: 'Good music, good people',
+    text: 'A crowd that comes for the music. Stay with it until close.',
+    image: `${BASE}ticket-ga-crowd.jpg`,
+  },
+];
 
 export const IMMERSIVE_FAQS = [
   {
@@ -203,6 +247,4 @@ export const FESTIVAL_COPY = {
       'Grand Palais\nAvenue Winston Churchill\n75008 Paris, France\nMetro: Champs-Élysées – Clemenceau (lines 1 and 13)',
     mapQuery: 'Grand Palais, Avenue Winston Churchill, 75008 Paris',
   },
-  accessibility:
-    'Please contact the organiser for access needs. 18+ event. Cashless only on site.',
 } as const;

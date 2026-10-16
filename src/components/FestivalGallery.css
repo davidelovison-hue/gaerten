@@ -4,6 +4,11 @@
   margin: 0;
 }
 
+.planHeroSlot--immersive .festivalGalleryBand {
+  height: 100%;
+  min-height: 100%;
+}
+
 .eventMediaHero {
   --event-media-hero-height: 16.875rem;
 
@@ -634,12 +639,12 @@
 
 /* —— Immersive hero (Fever immersive-style) —— */
 .eventMediaHero--immersive {
-  --event-media-hero-height: calc(100svh - var(--festival-nav-height, 3rem));
+  --event-media-hero-height: 100%;
   position: relative;
   display: block;
   width: 100%;
-  height: var(--event-media-hero-height);
-  min-height: 28rem;
+  height: 100%;
+  min-height: 100%;
   max-height: none;
   margin: 0;
   border-radius: 0;
@@ -682,166 +687,323 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background:
-    linear-gradient(
-      180deg,
-      rgba(0, 0, 0, 0.22) 0%,
-      rgba(0, 0, 0, 0.04) 32%,
-      rgba(0, 0, 0, 0.2) 58%,
-      rgba(0, 0, 0, 0.72) 82%,
-      rgba(0, 0, 0, 0.92) 100%
-    );
+  background: linear-gradient(180deg, oklch(0% 0 0deg / 0) 33.88%, oklch(0% 0 0deg) 100%);
 }
 
 .eventMediaHero--immersive .eventMediaHero__overlay {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  gap: 0.55rem;
+  align-items: stretch;
+  justify-content: flex-end;
+  gap: 1rem;
   position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  inset: 0;
   z-index: 2;
-  width: 100%;
+  width: auto;
   max-width: none;
   min-width: 0;
   margin: 0;
-  padding: 1.5rem 1.25rem 1.75rem;
+  padding-inline: 1rem;
+  padding-block-end: 3.1875rem;
   box-sizing: border-box;
+  overflow: visible;
   pointer-events: none;
 }
 
-.eventMediaHero--immersive .eventMediaHero__exclusive {
+.eventMediaHero--immersive .eventMediaHero__overlayInner {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 80rem;
+  margin: 0 auto;
+  min-width: 0;
+  overflow: hidden;
+}
+
+.eventMediaHero--immersive .eventMediaHero__contentMain {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.75rem;
+  min-width: 0;
+  padding-inline: 0;
+}
+
+.eventMediaHero--immersive .eventMediaHero__header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.eventMediaHero--immersive .eventMediaHero__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
   margin: 0;
-  padding: 0.22rem 0.5rem;
+  padding: 0.25rem 0.5rem;
   border-radius: 0.25rem;
-  font-size: 0.6875rem;
+  font-size: 0.75rem;
   line-height: 1.2;
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
+  font-weight: 600;
   color: #fff;
-  background: rgba(0, 0, 0, 0.85);
+  background: oklch(55% 0.2 300deg);
+  white-space: nowrap;
+}
+
+.eventMediaHero--immersive .eventMediaHero__tagA11y {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.eventMediaHero--immersive .eventMediaHero__tagText {
+  text-transform: uppercase;
+  font-size: 0.625rem;
+  line-height: 0;
+  margin-top: 0.125rem;
+}
+
+.eventMediaHero--immersive .eventMediaHero__tagLogo {
+  height: 0.625rem;
+  width: auto;
+  display: block;
 }
 
 .eventMediaHero--immersive .eventMediaHero__title {
   margin: 0;
-  max-width: 22ch;
-  font-family: 'Jost', sans-serif;
-  font-size: clamp(2rem, 6vw, 3.5rem);
-  line-height: 1.05;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  max-width: none;
+  font-family: inherit;
+  font-size: 1.6852rem;
+  line-height: 1.25;
+  font-weight: 400;
+  letter-spacing: 0.025em;
   color: #fff;
-  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.35);
+  text-shadow: none;
 }
 
-.eventMediaHero--immersive .eventMediaHero__metaRow {
-  display: flex;
-  flex-wrap: wrap;
+.eventMediaHero--immersive .eventMediaHero__titleToggle {
+  display: inline-flex;
   align-items: center;
-  gap: 0.45rem 0.85rem;
-  width: 100%;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  font: inherit;
+  color: inherit;
+  text-align: start;
+  pointer-events: auto;
+  cursor: default;
+}
+
+.eventMediaHero--immersive .eventMediaHero__titleText {
+  display: inline;
+}
+
+.eventMediaHero--immersive .eventMediaHero__titleChevron {
+  display: inline-block;
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  margin-left: 0;
+  vertical-align: 0;
+}
+
+.eventMediaHero--immersive .eventMediaHero__eventMeta {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  margin-block: 0.5rem;
+  padding-inline-start: 0.5rem;
+  align-self: flex-start;
+}
+
+.eventMediaHero--immersive .eventMediaHero__eventMeta::before {
+  content: '';
+  position: absolute;
+  inset-block: 0.25rem 0;
+  inset-inline-start: 0;
+  width: 0.125rem;
+  border-inline-start: 0.125rem solid oklch(87% 0 0deg);
+  border-radius: 9999px;
+}
+
+.eventMediaHero--immersive .eventMediaHero__eventDate {
+  margin: 0;
+  font-size: 1rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #fff;
 }
 
 .eventMediaHero--immersive .eventMediaHero__venue {
   margin: 0;
-  font-size: clamp(0.875rem, 1.6vw, 1.05rem);
-  line-height: 1.3;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.92);
-}
-
-.eventMediaHero--immersive .eventMediaHero__rating {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.28rem;
-  margin: 0;
-  font-size: 0.875rem;
-  line-height: 1.2;
-  font-weight: 700;
+  font-size: 0.8403rem;
+  line-height: 1.25;
+  font-weight: 400;
   color: #fff;
 }
 
-.eventMediaHero--immersive .eventMediaHero__ratingScore {
-  color: #ffb020;
-  font-size: 0.8rem;
-}
-
-.eventMediaHero--immersive .eventMediaHero__ratingCount {
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.72);
-}
-
-.eventMediaHero--immersive .eventMediaHero__footer {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  align-self: stretch;
-  gap: 1.15rem;
-  width: auto;
-  min-width: 0;
-  margin-top: 0.15rem;
-}
-
 .eventMediaHero--immersive .eventMediaHero__facts {
-  display: flex;
-  flex-wrap: nowrap;
-  gap: 0.5rem;
   width: 100%;
   min-width: 0;
   max-width: 100%;
   margin: 0;
   padding: 0;
-  list-style: none;
-  overflow-x: auto;
-  scrollbar-width: none;
-  -webkit-overflow-scrolling: touch;
+  overflow: hidden;
+  container-type: inline-size;
 }
 
-.eventMediaHero--immersive .eventMediaHero__facts::-webkit-scrollbar {
-  display: none;
+.eventMediaHero--immersive .eventMediaHero__factsTrack {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  width: max-content;
+  margin: 0;
+  padding: 0;
+  animation: heroFactsMarquee 22s linear infinite;
+}
+
+.eventMediaHero--immersive .eventMediaHero__factsSet {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+  flex: 0 0 auto;
+  width: max-content;
+  min-width: calc(100cqi + 1.5rem);
+  margin: 0;
+  padding: 0 1.5rem 0 0;
+  list-style: none;
+}
+
+.eventMediaHero--immersive .eventMediaHero__facts:hover .eventMediaHero__factsTrack,
+.eventMediaHero--immersive .eventMediaHero__facts:focus-within .eventMediaHero__factsTrack {
+  animation-play-state: paused;
+}
+
+@keyframes heroFactsMarquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .eventMediaHero--immersive .eventMediaHero__facts {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .eventMediaHero--immersive .eventMediaHero__factsTrack {
+    animation: none;
+  }
+
+  .eventMediaHero--immersive .eventMediaHero__factsSet[aria-hidden='true'] {
+    display: none;
+  }
 }
 
 .eventMediaHero--immersive .eventMediaHero__fact {
   flex: 0 0 auto;
   display: flex;
-  flex-direction: column;
-  gap: 0.12rem;
-  min-width: 5rem;
-  padding: 0.5rem 0.7rem;
-  border-radius: 0.5rem;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  flex-direction: row;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.5rem;
+  min-width: 0;
+  padding-inline: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  backdrop-filter: none;
 }
 
-.eventMediaHero--immersive .eventMediaHero__factLabel {
-  font-size: 0.625rem;
-  line-height: 1.2;
-  font-weight: 600;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+.eventMediaHero--immersive .eventMediaHero__fact:first-child {
+  padding-inline-start: 0;
 }
 
-.eventMediaHero--immersive .eventMediaHero__factValue {
-  font-size: 0.875rem;
-  line-height: 1.2;
-  font-weight: 700;
+.eventMediaHero--immersive .eventMediaHero__factIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.25rem;
+  height: 1.25rem;
+  flex-shrink: 0;
   color: #fff;
 }
 
-.eventMediaHero--immersive .eventMediaHero__cta {
-  pointer-events: auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) auto;
-  align-items: center;
-  column-gap: 1rem;
-  width: 100%;
+.eventMediaHero--immersive .eventMediaHero__factIcon svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.eventMediaHero--immersive .eventMediaHero__factCopy {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
   min-width: 0;
+}
+
+.eventMediaHero--immersive .eventMediaHero__factLabel {
+  margin: 0;
+  font-size: 0.70625rem;
+  line-height: 1.25;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  text-transform: uppercase;
+  color: oklch(87% 0 0deg);
+  white-space: nowrap;
+}
+
+.eventMediaHero--immersive .eventMediaHero__factValue {
+  margin: 0;
+  font-size: 0.8403rem;
+  line-height: 1.5;
+  font-weight: 400;
+  color: #fff;
+  white-space: nowrap;
+}
+
+.eventMediaHero--immersive .eventMediaHero__factDivider {
+  width: 0.0625rem;
+  height: 2rem;
+  margin-inline: 0 0.75rem;
+  background: oklch(100% 0 0 / 0.2);
+  flex-shrink: 0;
+  align-self: center;
+}
+
+.eventMediaHero--immersive .eventMediaHero__priceRow {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 100%;
+  min-width: 0;
+  padding-block: 0.75rem;
+}
+
+.eventMediaHero--immersive .eventMediaHero__priceRow--bannered {
+  position: relative;
+  margin-block-start: 0;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  background-color: #ffffff1f;
+  backdrop-filter: blur(1.875rem);
+  -webkit-backdrop-filter: blur(1.875rem);
+  justify-content: space-between;
 }
 
 .eventMediaHero--immersive .eventMediaHero__from {
@@ -849,48 +1011,55 @@
   flex-direction: column;
   align-items: flex-start;
   justify-content: center;
-  gap: 0.08rem;
+  gap: 0.25rem;
   margin: 0;
   min-width: 0;
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .eventMediaHero--immersive .eventMediaHero__fromLabel {
-  font-size: 0.75rem;
-  line-height: 1.2;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.7062rem;
+  line-height: 1.25;
+  font-weight: 400;
+  color: #fff;
 }
 
 .eventMediaHero--immersive .eventMediaHero__fromPrice {
-  font-size: 1.375rem;
-  line-height: 1.15;
-  font-weight: 700;
-  letter-spacing: -0.03em;
+  font-size: 1.19rem;
+  line-height: 1.25;
+  font-weight: 500;
+  letter-spacing: 0;
   color: #fff;
 }
 
 .eventMediaHero--immersive .eventMediaHero__buyBtn {
-  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
   margin: 0;
-  min-width: 8.75rem;
-  height: 2.75rem;
-  padding: 0 1.45rem;
+  min-width: 9.5rem;
+  height: 3rem;
+  padding: 0.5rem 1.5rem;
   border: none;
-  border-radius: 9999px;
+  border-radius: 624.9375rem;
   font: inherit;
-  font-size: 0.9375rem;
-  line-height: 1;
+  font-size: 1rem;
+  line-height: 1.5;
   font-weight: 600;
-  color: #111111;
-  background: #fff;
+  letter-spacing: 0;
+  color: oklch(22% 0 0deg);
+  background: oklch(100% 0 0deg);
   cursor: pointer;
   box-shadow: none;
   white-space: nowrap;
-  transition: background 0.2s ease, transform 0.15s ease;
+  transition: background-color 0.2s ease;
 }
 
 .eventMediaHero--immersive .eventMediaHero__buyBtn:hover {
-  background: #f3f3f3;
+  background: oklch(94% 0 0deg);
 }
 
 .eventMediaHero--immersive .eventMediaHero__buyBtn:focus-visible {
@@ -899,7 +1068,7 @@
 }
 
 .eventMediaHero--immersive .eventMediaHero__buyBtn:active {
-  transform: scale(0.98);
+  transform: none;
 }
 
 .eventMediaHero--immersive .eventMediaHero__playBtn {
@@ -910,12 +1079,7 @@
 }
 
 .eventMediaHero--immersive .eventMediaHero__galleryBtn--onVideo {
-  display: inline-flex;
-  right: 1rem;
-  bottom: auto;
-  top: 1rem;
-  z-index: 3;
-  pointer-events: auto;
+  display: none;
 }
 
 .eventMediaHero--immersive .eventMediaHero__galleryBtn--onTile {
@@ -959,127 +1123,121 @@
   }
 
   .planHeroSlot--immersive .eventMediaHero__overlay {
-    bottom: var(--hero-extra-tail, 0px);
-    gap: 0.55rem;
-    padding: 1.05rem 1.15rem 1rem;
+    inset: 0;
+    width: auto;
+    max-width: none;
+    justify-content: flex-end;
+    padding-inline: 1.25rem;
+    padding-block-start: calc(0.75rem + env(safe-area-inset-top, 0px));
+    padding-block-end: calc(1.15rem + env(safe-area-inset-bottom, 0px));
   }
 
   .planHeroSlot--immersive .eventMediaHero__title {
-    font-size: clamp(1.85rem, 8vw, 2.35rem);
+    font-size: 1.6852rem;
+    max-width: none;
   }
 
-  .planHeroSlot--immersive .eventMediaHero__footer {
-    gap: 1.15rem;
-    margin-top: 0.35rem;
+  .planHeroSlot--immersive .eventMediaHero__priceRow--bannered {
+    margin-block-start: 0;
+    gap: 1rem;
+    padding: 0;
+    border-radius: 0;
+    background: transparent;
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
   }
 
-  .planHeroSlot--immersive .eventMediaHero__facts {
-    gap: 0.45rem;
-    margin-top: 0;
-    padding-right: 0;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__fact {
-    min-width: 4.35rem;
-    padding: 0.45rem 0.55rem;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__cta {
-    width: 100%;
-    min-width: 0;
-    column-gap: 0.85rem;
-    align-items: center;
+  .planHeroSlot--immersive .eventMediaHero__from {
+    gap: 0.125rem;
   }
 
   .planHeroSlot--immersive .eventMediaHero__fromLabel {
     font-size: 0.75rem;
+    line-height: 1.25;
+    font-weight: 400;
   }
 
   .planHeroSlot--immersive .eventMediaHero__fromPrice {
-    font-size: 1.5rem;
+    font-size: 1.25rem;
+    line-height: 1.2;
+    font-weight: 500;
   }
 
   .planHeroSlot--immersive .eventMediaHero__buyBtn {
-    width: auto;
-    min-width: 8.25rem;
-    height: 2.75rem;
-    padding: 0 1.35rem;
-    font-size: 0.9375rem;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__playBtn {
-    top: 0.85rem;
-    left: 0.85rem;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__galleryBtn--onVideo {
-    top: 0.85rem;
-    right: 0.85rem;
+    flex: 0 0 auto;
+    min-width: 9.75rem;
+    max-width: none;
+    height: 3.25rem;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1c1c1c;
+    background: #fff;
+    white-space: nowrap;
+    text-align: center;
   }
 }
 
 @media (min-width: 901px) {
   .planHeroSlot--immersive .eventMediaHero--immersive {
-    --event-media-hero-height: calc(100svh - var(--festival-nav-height, 3.5rem));
-    height: var(--event-media-hero-height);
-    min-height: 36rem;
+    --event-media-hero-height: 100%;
+    height: 100%;
+    min-height: 100%;
     border-radius: 0;
   }
 
   .planHeroSlot--immersive .eventMediaHero__overlay {
-    padding: 2.25rem clamp(3.5rem, 6vw, 7rem) 2rem;
-    gap: 0.7rem;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__footer {
-    flex-direction: row;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1.75rem;
-    margin-top: 0.35rem;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__facts {
-    flex: 1 1 auto;
-    flex-wrap: wrap;
+    inset: 0;
     width: auto;
-    overflow: visible;
+    max-width: none;
+    padding-inline: 2rem;
+    padding-block-end: 6.375rem;
   }
 
-  .planHeroSlot--immersive .eventMediaHero__cta {
-    width: auto;
-    justify-items: end;
-    grid-template-columns: auto auto;
-    column-gap: 1.35rem;
+  .planHeroSlot--immersive .eventMediaHero__overlayInner {
+    display: grid;
+    grid-template-columns: minmax(0, 760fr) minmax(0, 480fr);
+    align-items: end;
+    column-gap: 2.5rem;
   }
 
-  .planHeroSlot--immersive .eventMediaHero__from {
-    align-items: flex-start;
+  .planHeroSlot--immersive .eventMediaHero__contentMain {
+    margin-block-end: 1rem;
+    padding-inline: 0;
   }
 
-  .planHeroSlot--immersive .eventMediaHero__fromLabel {
-    font-size: 0.8125rem;
+  .planHeroSlot--immersive .eventMediaHero__title {
+    font-size: 2.3864rem;
+    line-height: 1.1;
+    letter-spacing: 0.025em;
+  }
+
+  .planHeroSlot--immersive .eventMediaHero__priceRow {
+    width: 100%;
+    min-width: 0;
+    max-inline-size: 28.75rem;
+    justify-self: end;
+    margin-block-start: 0;
+    gap: 1rem;
   }
 
   .planHeroSlot--immersive .eventMediaHero__fromPrice {
-    font-size: 1.625rem;
+    font-size: 1.4161rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
   }
 
   .planHeroSlot--immersive .eventMediaHero__buyBtn {
-    min-width: 10rem;
+    min-width: 11.5625rem;
     height: 3rem;
-    padding: 0 1.7rem;
-    font-size: 0.9375rem;
+    padding: 0 1.5rem;
+    font-size: 1rem;
+    white-space: nowrap;
   }
+}
 
-  .planHeroSlot--immersive .eventMediaHero__playBtn {
-    left: 1.5rem;
-    top: 1.25rem;
-  }
-
-  .planHeroSlot--immersive .eventMediaHero__galleryBtn--onVideo {
-    right: 1.5rem;
-    top: 1.35rem;
-    left: auto;
+@media (min-width: 80rem) {
+  .planHeroSlot--immersive .eventMediaHero__priceRow {
+    max-inline-size: none;
   }
 }

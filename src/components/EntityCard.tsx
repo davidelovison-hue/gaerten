@@ -10,6 +10,7 @@ import {
   isTicketWaveLayout,
   showTitleListingTag,
 } from '../lib/entityHelpers';
+import { TicketDetailsSheet } from './TicketDetailsSheet';
 import './EntityCard.css';
 
 type EntityCardProps = {
@@ -47,6 +48,7 @@ export function EntityCard({ entity }: EntityCardProps) {
   const hideImage =
     entity.hideImage || entity.id.startsWith('park-') || entity.id.startsWith('bus-');
   const isAdmissionTicket = (ENTRY_TICKET_IDS as readonly string[]).includes(entity.id);
+  const isShuttle = entity.id.startsWith('shuttle-');
   const hasImages = !hideImage && images.length > 0;
   const hasGallery = hasImages && images.length > 1;
   const listingTone = getListingTagTone(entity.listingTag);
@@ -58,27 +60,47 @@ export function EntityCard({ entity }: EntityCardProps) {
   const showDescription =
     !!entity.description?.trim() &&
     entity.type === 'configurable_single' &&
-    !(isWaveTicket && hasNonWaveAxes);
+    !(isWaveTicket && hasNonWaveAxes) &&
+    !isShuttle;
   const showTitleTagArea =
-    !isSoldOut && (isWaveTicket || (showTitleListingTag(entity) && !!entity.listingTag?.trim()));
-  const showImageTag = !!entity.listingTag?.trim() && hasImages;
+    !isWaveTicket &&
+    !isSoldOut &&
+    showTitleListingTag(entity) &&
+    !!entity.listingTag?.trim();
+  const showImageTag = !isWaveTicket && !!entity.listingTag?.trim() && hasImages;
   const showListingInTitle =
     !!entity.listingTag?.trim() && showTitleTagArea && !showImageTag;
+  const showWaveExtras = isWaveTicket && !showDescription;
 
   const [imageIndex, setImageIndex] = useState(0);
+  const [detailsOpen, setDetailsOpen] = useState(false);
   const [selectedByAxis, setSelectedByAxis] = useState<Record<string, string>>(() =>
     getDefaultSelections(entity),
   );
   const stripRef = useRef<HTMLDivElement>(null);
+  const closeDetails = useCallback(() => setDetailsOpen(false), []);
 
   useEffect(() => {
     setImageIndex(0);
+    setDetailsOpen(false);
     if (stripRef.current) stripRef.current.scrollLeft = 0;
     setSelectedByAxis(getDefaultSelections(entity));
   }, [entity.id]);
 
   const quantity = getQuantity(entity.id, selectedByAxis);
   const unitPrice = getEntityUnitPrice(entity, selectedByAxis);
+  const selectedWave =
+    selectedByAxis.wave ??
+    entity.variantAxes?.find((axis) => axis.id === 'wave')?.defaultOption ??
+    entity.variantAxes?.find((axis) => axis.id === 'wave')?.options[0] ??
+    '';
+  const includeItems =
+    (selectedWave && entity.waveIncludes?.[selectedWave]) || entity.includedItems || [];
+  const showSeeMore = (isAdmissionTicket || isShuttle) && includeItems.length > 0;
+  const detailsTitle =
+    isAdmissionTicket && selectedWave
+      ? `${selectedWave} — what's included`
+      : entity.name;
   const isSelectedOptionSoldOut =
     !isSoldOut &&
     !!entity.variantAxes?.some((axis) => {
@@ -260,24 +282,10 @@ export function EntityCard({ entity }: EntityCardProps) {
           <>
             <div className="header cardWaveTitleSlot">
               <h3 className="title">{entity.name}</h3>
-              {showTitleTagArea ? (
-                <div
-                  className={
-                    !showListingInTitle ? 'titleTagsWrap titleTagsWrapTicketStub' : 'titleTagsWrap'
-                  }
-                  aria-hidden={!showListingInTitle ? true : undefined}
-                >
-                  {showListingInTitle ? (
-                    <span className={`${listingTagClass(listingTone)} entityListingTagInTitle`}>
-                      {entity.listingTag}
-                    </span>
-                  ) : null}
-                </div>
-              ) : null}
             </div>
 
             <div className="cardWaveSubtextSlot leadRestTicket">
-              {metaLines.length > 0 ? (
+              {showWaveExtras && metaLines.length > 0 ? (
                 <div className="meta">
                   {metaLines.map((line) => (
                     <p key={line} className="metaLine metaLineClamp">
@@ -291,7 +299,7 @@ export function EntityCard({ entity }: EntityCardProps) {
                 <p className="description descriptionClamp">{entity.description}</p>
               ) : null}
 
-              {previewBullets.length > 0 ? (
+              {showWaveExtras && previewBullets.length > 0 ? (
                 <ul className="benefits benefitsPreview">
                   {previewBullets.map((item) => (
                     <li key={item}>{item}</li>
@@ -304,7 +312,17 @@ export function EntityCard({ entity }: EntityCardProps) {
 
             <div className="cardWaveChipsSlot cardChipsSlot">{entity.variantAxes?.map(renderAxis)}</div>
 
-            <div className="footer">
+            {showSeeMore ? (
+              <button
+                type="button"
+                className="cardSeeMore"
+                onClick={() => setDetailsOpen(true)}
+              >
+                See more <span aria-hidden="true">›</span>
+              </button>
+            ) : null}
+
+            <div className={showSeeMore ? 'footer footerWithSeeMore' : 'footer'}>
               {showUnavailableFooter ? (
                 <div className="priceRowWithStepper">
                   <div className="price">
@@ -386,11 +404,21 @@ export function EntityCard({ entity }: EntityCardProps) {
                 <div className="cardChipsSlot">{entity.variantAxes.map(renderAxis)}</div>
               </>
             ) : null}
+
+            {showSeeMore ? (
+              <button
+                type="button"
+                className="cardSeeMore"
+                onClick={() => setDetailsOpen(true)}
+              >
+                See more <span aria-hidden="true">›</span>
+              </button>
+            ) : null}
           </div>
         )}
 
         {!isWaveTicket ? (
-          <div className="footer">
+          <div className={showSeeMore ? 'footer footerWithSeeMore' : 'footer'}>
             {showUnavailableFooter ? (
               <div className="priceRowWithStepper">
                 <div className="price">
@@ -428,6 +456,20 @@ export function EntityCard({ entity }: EntityCardProps) {
           </div>
         ) : null}
       </div>
+      {showSeeMore ? (
+        <TicketDetailsSheet
+          open={detailsOpen}
+          title={detailsTitle}
+          items={includeItems}
+          priceLabel={formatEntityTotalPrice(unitPrice)}
+          soldOut={showUnavailableFooter}
+          onClose={closeDetails}
+          onAdd={(count) => {
+            updateQuantity(quantity + count);
+            closeDetails();
+          }}
+        />
+      ) : null}
     </article>
   );
 }

@@ -1,8 +1,8 @@
-import { PLAN_STEPS, type PlanStepId } from '../data/planCatalog';
+import { PLAN_STEPS, type TicketStepId } from '../data/planCatalog';
 import './ForcedPlanProgress.css';
 
 type ForcedPlanProgressProps = {
-  activeStep: PlanStepId;
+  activeStep: TicketStepId;
 };
 
 export function ForcedPlanProgress({ activeStep }: ForcedPlanProgressProps) {

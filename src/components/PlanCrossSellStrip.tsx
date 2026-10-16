@@ -1,8 +1,8 @@
-import { PLAN_STEPS, type PlanStepId } from '../data/planCatalog';
+import { PLAN_STEPS, type TicketStepId } from '../data/planCatalog';
 import './PlanCrossSellStrip.css';
 
 type PlanCrossSellStripProps = {
-  activeTab: PlanStepId;
+  activeTab: TicketStepId;
   onSelectTab: (tabId: string) => void;
 };
 

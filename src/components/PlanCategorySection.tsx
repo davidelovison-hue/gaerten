@@ -12,6 +12,8 @@ type PlanCategorySectionProps = {
   prefixCarouselTitles?: boolean;
   /** Show the category title above the cards (stacked / scroll plan). */
   showCategoryHeading?: boolean;
+  /** Always show the group title, even when there is only one group. */
+  showGroupTitles?: boolean;
   footer?: ReactNode;
 };
 
@@ -20,11 +22,12 @@ export function PlanCategorySection({
   isActive = true,
   prefixCarouselTitles = false,
   showCategoryHeading = false,
+  showGroupTitles = false,
   footer,
 }: PlanCategorySectionProps) {
   const groups = category.groups.filter((group) => group.entities.length > 0);
   const equalRow = category.cardLayout === 'equalRow';
-  const showCarouselTitle = prefixCarouselTitles || groups.length > 1;
+  const showCarouselTitle = prefixCarouselTitles || showGroupTitles || groups.length > 1;
 
   const carouselTitle = (group: PlanGroup) =>
     formatCarouselTitle(category.title, group.title, prefixCarouselTitles);
@@ -57,21 +60,26 @@ export function PlanCategorySection({
     );
   }
 
-  const renderGroup = (group: PlanGroup, withTitle: boolean) => (
+  const renderGroup = (group: PlanGroup, withTitle: boolean) => {
+    const heading = carouselTitle(group).trim();
+    return (
     <div key={group.id} className="groupBlock">
-      {withTitle ? <h3 className="groupCarouselTitle">{carouselTitle(group)}</h3> : null}
+      {withTitle && heading ? (
+        <h3 className="groupCarouselTitle">{heading}</h3>
+      ) : null}
       <GroupCarousel
         mobileGroupLayout="all"
         layout={equalRow ? 'equalRow' : 'default'}
         itemCount={group.entities.length}
-        ariaLabel={carouselTitle(group)}
+        ariaLabel={heading || category.title}
       >
         {group.entities.map((entity) => (
           <EntityCard key={entity.id} entity={entity} />
         ))}
       </GroupCarousel>
     </div>
-  );
+    );
+  };
 
   return (
     <section

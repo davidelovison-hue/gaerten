@@ -56,7 +56,7 @@ export function GroupCarousel({
   const useCarousel =
     !useEqualRow &&
     !useStack &&
-    (isMobile ? mobileGroupLayout === 'all' && itemCount > 1 : itemCount >= 3);
+    (isMobile ? mobileGroupLayout === 'all' && itemCount > 1 : itemCount >= 2);
 
   const updateScrollState = useCallback(() => {
     const element = scrollRef.current;
