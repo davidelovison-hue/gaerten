@@ -342,15 +342,8 @@ export function CartPanel({
               onScroll={updateScrollHint}
             >
               {cartList}
-              {showScrollHint ? (
-                <div className="cartBodyMore" aria-hidden="true">
-                  <span className="cartBodyMoreText">More tickets below</span>
-                  <span className="cartBodyMoreArrow">⌄</span>
-                </div>
-              ) : null}
             </div>
             <div className="cartFooter" aria-label="Cart summary and checkout">
-              {showScrollHint ? <div className="cartScrollHint">Scroll to see more tickets</div> : null}
               {cartSummary}
               {checkoutRow}
             </div>
@@ -420,16 +413,9 @@ export function CartPanel({
                   onScroll={updateScrollHint}
                 >
                   {cartList}
-                  {showScrollHint ? (
-                    <div className="cartBodyMore" aria-hidden="true">
-                      <span className="cartBodyMoreText">More tickets below</span>
-                      <span className="cartBodyMoreArrow">⌄</span>
-                    </div>
-                  ) : null}
                 </div>
               </div>
               <div className="cartFooter">
-                {showScrollHint ? <div className="cartScrollHint">Scroll to see more tickets</div> : null}
                 {cartSummary}
                 {checkoutRow}
               </div>

@@ -71,6 +71,19 @@ export function EntityCard({ entity }: EntityCardProps) {
   const showListingInTitle =
     !!entity.listingTag?.trim() && showTitleTagArea && !showImageTag;
   const showWaveExtras = isWaveTicket && !showDescription;
+  const chipOptions = entity.variantAxes?.flatMap((axis) => axis.options) ?? [];
+  const singleChipLabel = chipOptions.length === 1 ? chipOptions[0] : null;
+  const showChips = chipOptions.length > 1;
+  const titleAlreadyHasChip = (name: string, chip: string) => {
+    const compact = (value: string) => value.toLowerCase().replace(/[^a-z0-9]/g, '');
+    const nameBits = compact(name);
+    const chipBits = compact(chip);
+    return chipBits.length > 0 && nameBits.includes(chipBits);
+  };
+  const cardTitle =
+    singleChipLabel && !titleAlreadyHasChip(entity.name, singleChipLabel)
+      ? `${entity.name} — ${singleChipLabel}`
+      : entity.name;
 
   const [imageIndex, setImageIndex] = useState(0);
   const [detailsOpen, setDetailsOpen] = useState(false);
@@ -281,7 +294,7 @@ export function EntityCard({ entity }: EntityCardProps) {
         {isWaveTicket ? (
           <>
             <div className="header cardWaveTitleSlot">
-              <h3 className="title">{entity.name}</h3>
+              <h3 className="title">{cardTitle}</h3>
             </div>
 
             <div className="cardWaveSubtextSlot leadRestTicket">
@@ -296,7 +309,7 @@ export function EntityCard({ entity }: EntityCardProps) {
               ) : null}
 
               {showDescription ? (
-                <p className="description descriptionClamp">{entity.description}</p>
+                <p className="description">{entity.description}</p>
               ) : null}
 
               {showWaveExtras && previewBullets.length > 0 ? (
@@ -310,7 +323,9 @@ export function EntityCard({ entity }: EntityCardProps) {
 
             <div className="cardWaveMidSpacer" aria-hidden="true" />
 
-            <div className="cardWaveChipsSlot cardChipsSlot">{entity.variantAxes?.map(renderAxis)}</div>
+            {showChips ? (
+              <div className="cardWaveChipsSlot cardChipsSlot">{entity.variantAxes?.map(renderAxis)}</div>
+            ) : null}
 
             {showSeeMore ? (
               <button
@@ -362,7 +377,7 @@ export function EntityCard({ entity }: EntityCardProps) {
         ) : (
           <div className="lead">
             <div className="header">
-              <h3 className="title">{entity.name}</h3>
+              <h3 className="title">{cardTitle}</h3>
               {showTitleTagArea ? (
                 <div className="titleTagsWrap">
                   {showListingInTitle ? (
@@ -398,10 +413,10 @@ export function EntityCard({ entity }: EntityCardProps) {
               ) : null}
             </div>
 
-            {entity.variantAxes?.length ? (
+            {showChips ? (
               <>
                 <div className="cardConfigMidSpacer" aria-hidden="true" />
-                <div className="cardChipsSlot">{entity.variantAxes.map(renderAxis)}</div>
+                <div className="cardChipsSlot">{entity.variantAxes?.map(renderAxis)}</div>
               </>
             ) : null}
 

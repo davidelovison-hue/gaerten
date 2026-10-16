@@ -60,10 +60,9 @@ function merchTee(id: string, name: string, price: number): PlanEntity {
     price,
     type: 'configurable_single',
     listingTag: 'LIMITED',
-    description: 'Limited edition. Choose your size.',
+    description: 'Limited edition.',
     variantAxes: [TEE_SIZES],
     optionPrices: Object.fromEntries(TEE_SIZES.options.map((size) => [size, price])),
-    cardPreviewBullets: ['Limited edition', 'S–XXL'],
     includedItems: ['1× t-shirt'],
   };
 }
@@ -85,7 +84,6 @@ function barTopUp(id: string, amount: number): PlanEntity {
         defaultOption: option,
       },
     ],
-    cardPreviewBullets: [`Load €${amount}`, 'Cashless bar'],
     includedItems: [`€${amount} bar credit`],
     requires: [...ENTRY_TICKET_IDS],
   };
@@ -112,7 +110,7 @@ export const PLAN_CATALOG: PlanCategory[] = [
             price: 69,
             type: 'configurable_single',
             listingTag: 'SELLING FAST',
-            description: 'General admission to Gärten. Valid for 1 person. Choose your wave.',
+            description: 'General admission. Valid for 1 person.',
             variantAxes: [
               {
                 id: 'wave',
@@ -149,8 +147,7 @@ export const PLAN_CATALOG: PlanCategory[] = [
             type: 'configurable_single',
             listingTag: 'LIMITED',
             pricingMode: 'dynamic',
-            description:
-              'Limited. Valid for 1 person. Stage VIP, private WC and fast-track.',
+            description: 'Limited. Valid for 1 person.',
             variantAxes: [
               {
                 id: 'wave',
