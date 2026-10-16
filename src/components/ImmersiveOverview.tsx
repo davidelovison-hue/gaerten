@@ -3,6 +3,7 @@ import {
   FESTIVAL_COPY,
   FESTIVAL_MEDIA_HERO,
   GALLERY_IMAGE_URLS,
+  HOUSE_RULES,
   IMMERSIVE_DAY_STEPS,
   IMMERSIVE_EXPECT,
   IMMERSIVE_FAQS,
@@ -18,9 +19,11 @@ import './ImmersiveOverview.css';
 
 const SECTION_NAV = [
   { id: 'highlights-1', label: 'Highlights' },
+  { id: 'lineup-1', label: 'Lineup' },
   { id: 'gallery-1', label: 'Gallery' },
   { id: 'how-it-works-1', label: 'On the day' },
   { id: 'description-1', label: 'Overview' },
+  { id: 'rules-1', label: 'House rules' },
   { id: 'venue-1', label: 'Venue' },
   { id: 'faqs-1', label: 'FAQs' },
 ] as const;
@@ -95,6 +98,17 @@ function PinIcon() {
       <path
         fill="currentColor"
         d="M352 192c0-88.4-71.6-160-160-160S32 103.6 32 192c0 15.6 5.4 37 16.6 63.4c10.9 25.9 26.2 54 43.6 82.1c34.1 55.3 74.4 108.2 99.9 140c25.4-31.8 65.8-84.7 99.9-140c17.3-28.1 32.7-56.3 43.6-82.1C346.6 229 352 207.6 352 192zm32 0c0 87.4-117 243-168.3 307.2c-12.3 15.3-35.1 15.3-47.4 0C117 435 0 279.4 0 192C0 86 86 0 192 0S384 86 384 192zm-240 0a48 48 0 1 0 96 0 48 48 0 1 0 -96 0zm48 80a80 80 0 1 1 0-160 80 80 0 1 1 0 160z"
+      />
+    </svg>
+  );
+}
+
+function TransitIcon() {
+  return (
+    <svg viewBox="0 0 448 512" width="16" height="16" aria-hidden="true">
+      <path
+        fill="currentColor"
+        d="M96 0C43 0 0 43 0 96v256c0 40.3 23.7 75.1 57.8 91.2L32.2 473.5c-3.5 8.6-.3 18.4 7.8 22.5s18.6 1.3 23.3-6.3L96.4 448h255.2l33.1 41.7c4.7 7.6 14.5 10.4 23.3 6.3s11.3-13.9 7.8-22.5l-25.6-30.3C424.3 427.1 448 392.3 448 352V96c0-53-43-96-96-96H96zm0 64h256c17.7 0 32 14.3 32 32v96H64V96c0-17.7 14.3-32 32-32zM64 256h320v96c0 17.7-14.3 32-32 32H96c-17.7 0-32-14.3-32-32v-96zm64 48a24 24 0 1 0 0 48 24 24 0 1 0 0-48zm192 0a24 24 0 1 0 0 48 24 24 0 1 0 0-48z"
       />
     </svg>
   );
@@ -323,6 +337,22 @@ export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewPr
         </div>
         ) : null}
 
+        {showBlock('rules-1') ? (
+        <div id="rules-1" className="fvBlock">
+          <section className="fvSection">
+            <SectionHeader overline="Good to know" title="House rules" />
+            <ul className="fvRules">
+              {HOUSE_RULES.map((rule) => (
+                <li key={rule.title} className="fvRule">
+                  <p className="fvRule__title">{rule.title}</p>
+                  <p className="fvRule__text">{rule.text}</p>
+                </li>
+              ))}
+            </ul>
+          </section>
+        </div>
+        ) : null}
+
         {showBlock('venue-1') ? (
         <div id="venue-1" className="fvBlock">
           <section className="fvVenueSection">
@@ -354,7 +384,20 @@ export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewPr
                     </span>
                     <span className="fvVenueFact__content">
                       <p className="fvVenueFact__label">Address</p>
-                      <p className="fvVenueFact__value">{FESTIVAL_COPY.gettingThere.address.replace(/\n/g, ', ')}</p>
+                      <p className="fvVenueFact__value">{FESTIVAL_COPY.gettingThere.address}</p>
+                    </span>
+                  </li>
+                  <li className="fvVenueFact">
+                    <span className="fvVenueFact__icon">
+                      <TransitIcon />
+                    </span>
+                    <span className="fvVenueFact__content">
+                      <p className="fvVenueFact__label">Getting there</p>
+                      {FESTIVAL_COPY.gettingThere.lines.map((line) => (
+                        <p key={line} className="fvVenueFact__value">
+                          {line}
+                        </p>
+                      ))}
                     </span>
                   </li>
                 </ul>

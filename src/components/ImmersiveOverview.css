@@ -77,6 +77,46 @@ h2.fvHead__title {
   min-width: 0;
 }
 
+.fvRules {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.75rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.fvRule {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 1rem 1.15rem;
+  border-radius: 0.75rem;
+  background: #f7f7f7;
+}
+
+.fvRule__title {
+  margin: 0;
+  font-size: 0.9375rem;
+  line-height: 1.35;
+  font-weight: 600;
+  color: #1c1c1c;
+}
+
+.fvRule__text {
+  margin: 0;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  color: #5c5c5c;
+}
+
+@media (min-width: 700px) {
+  .fvRules {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
 .fvReadMore__content {
   display: -webkit-box;
   -webkit-box-orient: vertical;
@@ -545,6 +585,9 @@ h2.fvHead__title {
 }
 
 .fvVenueFact__content {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
   min-width: 0;
 }
 

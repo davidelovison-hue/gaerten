@@ -46,6 +46,7 @@ const OVERVIEW_HASHES = new Set([
   'gallery-1',
   'how-it-works-1',
   'description-1',
+  'rules-1',
   'venue-1',
   'faqs-1',
 ]);

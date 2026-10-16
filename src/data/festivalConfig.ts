@@ -114,6 +114,29 @@ export const HERO_FACTS = [
 
 export const LINEUP_TITLE = 'Lineup';
 
+export const HOUSE_RULES = [
+  {
+    title: '18+',
+    text: 'This night is 18+. Bring a valid photo ID — you will need it at the door.',
+  },
+  {
+    title: 'Cashless',
+    text: 'Card and mobile payments only. No cash on site, including at the bar.',
+  },
+  {
+    title: 'No outside food or drinks',
+    text: 'Leave bottles and food outside. Bars are on site; VIP includes bottle service.',
+  },
+  {
+    title: 'Doors and last entry',
+    text: 'Doors open at 20:00. Last entry is before close. Music till 03:00.',
+  },
+  {
+    title: 'Bags and security',
+    text: 'Small bags only. Expect a security check at the gate.',
+  },
+] as const;
+
 export const IMMERSIVE_EXPECT = [
   'Black Coffee at the Grand Palais is an extraordinary night of music, energy and connection, bringing one of the world’s most celebrated electronic music artists to one of Paris’s most iconic venues. Get ready for an unforgettable experience where hypnotic rhythms, powerful beats and an incredible atmosphere come together for a night like no other.',
   'From the moment you arrive, you’ll feel the energy of the crowd as Black Coffee takes you on a musical journey through his signature blend of Afro-house and electronic sounds. Surrounded by thousands of music lovers in the spectacular setting of the Grand Palais, you’ll become part of a shared celebration of music, dance and connection that will stay with you long after the final beat.',
@@ -243,8 +266,12 @@ export const FESTIVAL_COPY = {
   },
   gettingThere: {
     name: 'Grand Palais',
-    address:
-      'Grand Palais\nAvenue Winston Churchill\n75008 Paris, France\nMetro: Champs-Élysées – Clemenceau (lines 1 and 13)',
+    address: 'Grand Palais, Avenue Winston Churchill, 75008 Paris, France',
+    lines: [
+      'Metro Champs-Élysées – Clemenceau (lines 1 and 13), about 5 minutes on foot.',
+      'Taxi drop-off on Avenue Winston Churchill, next to the Grand Palais.',
+      'After 03:00, last metro has gone. Optional return shuttle to Paris-Bercy, about 25 minutes.',
+    ],
     mapQuery: 'Grand Palais, Avenue Winston Churchill, 75008 Paris',
   },
 } as const;
