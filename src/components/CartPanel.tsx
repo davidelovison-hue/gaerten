@@ -35,6 +35,14 @@ function BackArrowIcon() {
   );
 }
 
+function ScrollDownIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" aria-hidden="true">
+      <path d="M6 9l6 6 6-6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function formatSummaryPrice(price: number) {
   return formatPrice(price);
 }
@@ -171,6 +179,25 @@ export function CartPanel({
     () => cartHasOverflow && !cartIsAtBottom,
     [cartHasOverflow, cartIsAtBottom],
   );
+
+  const scrollCartDown = useCallback(() => {
+    const el = cartBodyRef.current;
+    if (!el) return;
+    el.scrollBy({ top: Math.max(112, Math.round(el.clientHeight * 0.45)), behavior: 'smooth' });
+  }, []);
+
+  const scrollMoreHint = showScrollHint ? (
+    <button
+      type="button"
+      className="cartScrollMore"
+      aria-label="Scroll to see more items"
+      onClick={scrollCartDown}
+    >
+      <span className="cartScrollMoreIcon">
+        <ScrollDownIcon />
+      </span>
+    </button>
+  ) : null;
 
   const proceedToCheckout = useCallback(() => {
     const returnHash = window.location.hash.replace(/^#/, '') || 'entry';
@@ -342,6 +369,7 @@ export function CartPanel({
               onScroll={updateScrollHint}
             >
               {cartList}
+              {scrollMoreHint}
             </div>
             <div className="cartFooter" aria-label="Cart summary and checkout">
               {cartSummary}
@@ -406,14 +434,13 @@ export function CartPanel({
           >
             <div className="cartMobileDrawerPanel cartPanel">
               {cartHeader(true)}
-              <div className="cartMobileDrawerBody cartBody">
-                <div
-                  ref={cartBodyRef}
-                  className={showScrollHint ? 'cartMobileDrawerScroll cartBodyHint' : 'cartMobileDrawerScroll'}
-                  onScroll={updateScrollHint}
-                >
-                  {cartList}
-                </div>
+              <div
+                ref={cartBodyRef}
+                className={showScrollHint ? 'cartMobileDrawerBody cartBody cartBodyHint' : 'cartMobileDrawerBody cartBody'}
+                onScroll={updateScrollHint}
+              >
+                {cartList}
+                {scrollMoreHint}
               </div>
               <div className="cartFooter">
                 {cartSummary}
