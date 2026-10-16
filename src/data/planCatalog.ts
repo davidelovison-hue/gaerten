@@ -115,24 +115,24 @@ export const PLAN_CATALOG: PlanCategory[] = [
               {
                 id: 'wave',
                 label: 'Wave',
-                options: ['First Wave', 'Second Wave'],
-                defaultOption: 'First Wave',
+                options: ['1st Wave', '2nd Wave'],
+                defaultOption: '1st Wave',
               },
             ],
             optionPrices: {
-              'First Wave': 69,
-              'Second Wave': 69,
+              '1st Wave': 69,
+              '2nd Wave': 69,
             },
             cardPreviewBullets: ['Valid for 1 person', 'All waves €69'],
             includedItems: ['Festival entry', 'General access area'],
             waveIncludes: {
-              'First Wave': [
+              '1st Wave': [
                 'Doors open at 20:00, last entry before close',
                 'Access to all Grand Palais general areas',
                 'Valid for 1 person',
                 'Transferable up to 48h before the event, non-refundable',
               ],
-              'Second Wave': [
+              '2nd Wave': [
                 'Doors open at 20:00',
                 'Access to all Grand Palais general areas',
                 'Valid for 1 person',
@@ -152,13 +152,13 @@ export const PLAN_CATALOG: PlanCategory[] = [
               {
                 id: 'wave',
                 label: 'Wave',
-                options: ['First Wave', 'Second Wave'],
-                defaultOption: 'First Wave',
+                options: ['1st Wave', '2nd Wave'],
+                defaultOption: '1st Wave',
               },
             ],
             optionPrices: {
-              'First Wave': 249,
-              'Second Wave': 249,
+              '1st Wave': 249,
+              '2nd Wave': 249,
             },
             cardPreviewBullets: ['Stage VIP next to DJ booth', 'Private WC · bottle service'],
             includedItems: [
@@ -168,14 +168,14 @@ export const PLAN_CATALOG: PlanCategory[] = [
               'Fast-track entry',
             ],
             waveIncludes: {
-              'First Wave': [
+              '1st Wave': [
                 'Fast-track entry from 20:00',
                 'VIP area next to the DJ booth throughout the show',
                 'Private WC',
                 'Bottle service',
                 'Valid for 1 person',
               ],
-              'Second Wave': [
+              '2nd Wave': [
                 'Fast-track entry from 20:00',
                 'VIP area next to the DJ booth throughout the show',
                 'Private WC and bottle service',

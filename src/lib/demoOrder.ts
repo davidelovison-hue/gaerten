@@ -17,7 +17,7 @@ export function ensureDemoOrder(): OrderConfirmationState | null {
     eventImage: FESTIVAL_EVENT.image,
     venue: FESTIVAL_EVENT.venue,
     dateLine: FESTIVAL_EVENT.dateLine,
-    lines: [{ id: 'ticket-ga', label: '1× General access (First wave)', amount: ticketSubtotal }],
+    lines: [{ id: 'ticket-ga', label: '1× General access (1st Wave)', amount: ticketSubtotal }],
     subtotal: ticketSubtotal,
     serviceFee,
     total,
