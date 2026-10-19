@@ -110,6 +110,12 @@ export function EntityCard({ entity }: EntityCardProps) {
   const includeItems =
     (selectedWave && entity.waveIncludes?.[selectedWave]) || entity.includedItems || [];
   const showSeeMore = (isAdmissionTicket || isShuttle) && includeItems.length > 0;
+  const sessionLabel =
+    selectedWave ||
+    selectedByAxis.option ||
+    singleChipLabel ||
+    '';
+  const seeMoreCopy = sessionLabel ? `See more for ${sessionLabel}` : 'See more';
   const detailsTitle =
     isAdmissionTicket && selectedWave
       ? `${selectedWave} — what's included`
@@ -333,7 +339,7 @@ export function EntityCard({ entity }: EntityCardProps) {
                 className="cardSeeMore"
                 onClick={() => setDetailsOpen(true)}
               >
-                See more <span aria-hidden="true">›</span>
+                {seeMoreCopy} <span aria-hidden="true">›</span>
               </button>
             ) : null}
 
@@ -426,7 +432,7 @@ export function EntityCard({ entity }: EntityCardProps) {
                 className="cardSeeMore"
                 onClick={() => setDetailsOpen(true)}
               >
-                See more <span aria-hidden="true">›</span>
+                {seeMoreCopy} <span aria-hidden="true">›</span>
               </button>
             ) : null}
           </div>

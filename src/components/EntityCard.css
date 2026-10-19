@@ -359,6 +359,8 @@
   font-weight: 700;
   letter-spacing: -0.01em;
   cursor: pointer;
+  text-align: left;
+  max-width: 100%;
 }
 
 .cardSeeMore span {
