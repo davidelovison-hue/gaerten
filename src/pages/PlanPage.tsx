@@ -8,7 +8,6 @@ import { ImmersiveOverview } from '../components/ImmersiveOverview';
 import { PlanCategorySection } from '../components/PlanCategorySection';
 import { PlanFoldSection, PlanSectionTitle } from '../components/PlanFoldSection';
 import { PlanTabs } from '../components/PlanTabs';
-import { useCart } from '../lib/cartContext';
 import { rememberPlanOrigin } from '../lib/routes';
 import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { useIsMobile } from '../lib/useIsMobile';
@@ -224,13 +223,11 @@ function scheduleScrollToTicketSection() {
 
 export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
   const location = useLocation();
-  const { items } = useCart();
   const isMobile = useIsMobile();
   const [activeTab, setActiveTab] = useState<PlanStepId>(() => getTabFromHash(guided));
   const [overviewOpen, setOverviewOpen] = useState(() => isOverviewHash(getHashId()));
   const [navScrolled, setNavScrolled] = useState(false);
   const hasInitialTabScrollRef = useRef(false);
-  const hasCart = items.length > 0;
   const stepIndex = getPlanStepIndex(activeTab);
   const stepCategories = getCategoriesForStep(activeTab);
   const isLastStep = stepIndex >= LAST_STEP_INDEX;
@@ -459,7 +456,7 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
           </>
         )}
 
-        {isMobile && hasCart ? (
+        {isMobile ? (
           <CartPanel
             mode="mobile"
             continueInsteadOfCheckout={!isLastStep}

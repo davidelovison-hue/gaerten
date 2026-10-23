@@ -43,6 +43,14 @@ function ScrollDownIcon() {
   );
 }
 
+function ChevronUpIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.6" aria-hidden="true">
+      <path d="M6 15l6-6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
 function formatSummaryPrice(price: number) {
   return formatPrice(price);
 }
@@ -130,7 +138,7 @@ export function CartPanel({
   }, [items.length, mode, isMobileDrawerOpen, updateScrollHint]);
 
   useEffect(() => {
-    if (mode !== 'mobile' || items.length === 0) {
+    if (mode !== 'mobile') {
       setHideMobileBarForHero(false);
       return;
     }
@@ -141,12 +149,15 @@ export function CartPanel({
       return;
     }
 
+    const ticketCards = () =>
+      document.querySelector<HTMLElement>('.planTicketsMain .card, .planTicketsMain .cardAdmission');
+
     const syncHeroVisibility = () => {
       const heroBottom = hero.getBoundingClientRect().bottom;
-      const navCard = document.querySelector<HTMLElement>('.festivalNavbar');
-      const navH = navCard?.getBoundingClientRect().bottom ?? 0;
-      // Hide while the immersive hero still occupies most of the viewport.
-      setHideMobileBarForHero(heroBottom > window.innerHeight - navH - 24);
+      const cardsTop = ticketCards()?.getBoundingClientRect().top ?? Number.POSITIVE_INFINITY;
+      const heroStillVisible = heroBottom > 8;
+      const cardsNotReached = cardsTop > window.innerHeight - 140;
+      setHideMobileBarForHero(heroStillVisible || cardsNotReached);
     };
 
     syncHeroVisibility();
@@ -156,6 +167,8 @@ export function CartPanel({
       { threshold: [0, 0.15, 0.35, 0.5, 0.75, 1] },
     );
     observer.observe(hero);
+    const tickets = document.querySelector<HTMLElement>('.planTicketsMain, #tickets');
+    if (tickets) observer.observe(tickets);
 
     window.addEventListener('scroll', syncHeroVisibility, { passive: true });
     window.addEventListener('resize', syncHeroVisibility);
@@ -165,7 +178,7 @@ export function CartPanel({
       window.removeEventListener('scroll', syncHeroVisibility);
       window.removeEventListener('resize', syncHeroVisibility);
     };
-  }, [items.length, mode]);
+  }, [mode]);
 
   useEffect(() => {
     const el = cartBodyRef.current;
@@ -264,23 +277,81 @@ export function CartPanel({
     </div>
   );
 
-  if (items.length === 0) {
-    if (mode !== 'desktop') return null;
+  const checkoutLabel = continueInsteadOfCheckout ? 'Continue' : 'Go to checkout';
+  const mobileTriggerInner = (
+    <>
+      <span className="cartMobileTriggerIconWrap" aria-hidden="true">
+        <span className="cartMobileTriggerIcon">
+          <CartIcon />
+        </span>
+        {totalItems > 0 ? (
+          <span className="cartMobileTriggerBadge">{totalItems > 99 ? '99+' : totalItems}</span>
+        ) : null}
+      </span>
+      <span className="cartMobileTriggerCopy">
+        <span className="cartMobileTriggerPrice">{formatPrice(totalPrice)}</span>
+        <span className="cartMobileTriggerTickets">Tickets: {totalItems}</span>
+      </span>
+    </>
+  );
+  const mobileBar = (empty: boolean) => (
+    <div
+      className={`cartMobileBar${empty ? ' cartMobileBar--empty' : ' cartMobileBar--openable'}${hideMobileBarForHero ? ' cartMobileBar--heroImmersive' : ''}${onBack ? ' cartMobileBar--withBack' : ''}`}
+      role="region"
+      aria-label="Cart actions"
+      aria-hidden={hideMobileBarForHero}
+    >
+      {empty ? (
+        <div className="cartMobileTrigger">{mobileTriggerInner}</div>
+      ) : (
+        <button
+          type="button"
+          className="cartMobileTrigger"
+          aria-expanded="false"
+          aria-label={`Open cart, ${totalItems} item${totalItems === 1 ? '' : 's'}, ${formatPrice(totalPrice)} total`}
+          onClick={() => setIsMobileDrawerOpen(true)}
+        >
+          {mobileTriggerInner}
+          <span className="cartMobileTriggerArrow" aria-hidden="true">
+            <ChevronUpIcon />
+          </span>
+        </button>
+      )}
+      {onBack ? (
+        <button type="button" className="cartMobileBackBtn" aria-label="Back" onClick={onBack}>
+          <BackArrowIcon />
+        </button>
+      ) : null}
+      <button
+        type="button"
+        className="cartMobileCheckoutPill"
+        disabled={empty}
+        onClick={empty ? undefined : handleCheckoutClick}
+      >
+        {checkoutLabel}
+      </button>
+    </div>
+  );
 
-    return (
-      <aside className="planCartColumn" aria-label="Shopping cart">
-        <div className="cartPanelReveal">
-          <div className="cartPanel cartPanelFloat cartPanelEmpty" role="complementary">
-            {cartHeader()}
-            <div className="cartEmptyState">
-              <p className="cartEmptyTitle">Your cart is empty</p>
-              <p className="cartEmptyHint">Add tickets to get started</p>
+  if (items.length === 0) {
+    if (mode === 'desktop') {
+      return (
+        <aside className="planCartColumn" aria-label="Shopping cart">
+          <div className="cartPanelReveal">
+            <div className="cartPanel cartPanelFloat cartPanelEmpty" role="complementary">
+              {cartHeader()}
+              <div className="cartEmptyState">
+                <p className="cartEmptyTitle">Your cart is empty</p>
+                <p className="cartEmptyHint">Add tickets to get started</p>
+              </div>
+              <div className="cartFooter">{checkoutRow}</div>
             </div>
-            <div className="cartFooter">{checkoutRow}</div>
           </div>
-        </div>
-      </aside>
-    );
+        </aside>
+      );
+    }
+
+    return mobileBar(true);
   }
 
   const cartList = (
@@ -384,39 +455,7 @@ export function CartPanel({
 
   return (
     <>
-      {!isMobileDrawerOpen ? (
-        <div
-          className={`cartMobileBar${hideMobileBarForHero ? ' cartMobileBar--heroImmersive' : ''}${onBack ? ' cartMobileBar--withBack' : ''}`}
-          role="region"
-          aria-label="Cart actions"
-          aria-hidden={hideMobileBarForHero}
-        >
-          <button
-            type="button"
-            className="cartMobileTrigger"
-            aria-label={`View cart, ${totalItems} item${totalItems === 1 ? '' : 's'}, ${formatPrice(totalPrice)} total`}
-            onClick={() => setIsMobileDrawerOpen(true)}
-          >
-            <span className="cartMobileTriggerIconWrap">
-              <span className="cartMobileTriggerIcon" aria-hidden="true">
-                <CartIcon />
-              </span>
-              <span className="cartMobileTriggerBadge" aria-hidden="true">
-                {totalItems}
-              </span>
-            </span>
-            <span className="cartMobileTriggerPrice">{formatPrice(totalPrice)}</span>
-          </button>
-          {onBack ? (
-            <button type="button" className="cartMobileBackBtn" aria-label="Back" onClick={onBack}>
-              <BackArrowIcon />
-            </button>
-          ) : null}
-          <button type="button" className="cartMobileCheckoutPill" onClick={handleCheckoutClick}>
-            {continueInsteadOfCheckout ? 'Continue' : 'Go to checkout'}
-          </button>
-        </div>
-      ) : null}
+      {!isMobileDrawerOpen ? mobileBar(false) : null}
 
       {isMobileDrawerOpen ? (
         <>

@@ -539,10 +539,10 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 1rem;
-    padding: 0.75rem 1.25rem max(0.75rem, env(safe-area-inset-bottom));
-    background: #f2f3f3;
-    border-top: 1px solid #ccd2d8;
+    gap: 0.75rem;
+    padding: 0.7rem 1rem max(0.7rem, env(safe-area-inset-bottom));
+    background: #fff;
+    border-top: 1px solid #ececec;
     font-family: Inter, system-ui, -apple-system, sans-serif;
     transform: translateY(0);
     opacity: 1;
@@ -553,6 +553,42 @@
     will-change: transform, opacity;
   }
 
+  .cartMobileTriggerArrow {
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: auto;
+    height: auto;
+    margin-left: 0.2rem;
+    border-radius: 0;
+    background: transparent;
+    color: #1c1c1c;
+    box-shadow: none;
+    animation: cartMobileOpenCue 1.7s ease-in-out infinite;
+  }
+
+  .cartMobileTriggerArrow svg {
+    width: 1.15rem;
+    height: 1.15rem;
+  }
+
+  @keyframes cartMobileOpenCue {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-0.2rem);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cartMobileTriggerArrow {
+      animation: none;
+    }
+  }
+
   .cartMobileBar--heroImmersive {
     transform: translateY(100%);
     opacity: 0;
@@ -560,88 +596,119 @@
   }
 
   .cartMobileTrigger {
-    flex: 0 0 auto;
+    flex: 1 1 auto;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     align-items: center;
-    justify-content: center;
-    gap: 0.2rem;
-    min-width: 3.25rem;
+    justify-content: flex-start;
+    gap: 0.65rem;
+    min-width: 0;
     padding: 0;
     border: none;
     background: transparent;
     color: #0a0a0a;
     cursor: pointer;
     font: inherit;
+    text-align: left;
+  }
+
+  .cartMobileBar--empty .cartMobileTrigger {
+    cursor: default;
+  }
+
+  .cartMobileTriggerCopy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.05rem;
+    min-width: 0;
+  }
+
+  .cartMobileTriggerTickets {
+    font-size: 0.75rem;
+    line-height: 1.2;
+    font-weight: 400;
+    color: #8a8a8a;
+    white-space: nowrap;
   }
 
   .cartMobileTriggerIconWrap {
     position: relative;
     display: inline-flex;
+    flex-shrink: 0;
     align-items: center;
     justify-content: center;
   }
 
   .cartMobileTriggerIcon {
     display: inline-flex;
+    flex-shrink: 0;
     color: #0a0a0a;
   }
 
   .cartMobileTriggerIcon svg {
-    width: 1.35rem;
-    height: 1.35rem;
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
   .cartMobileTriggerBadge {
     position: absolute;
-    top: -0.4rem;
-    right: -0.55rem;
-    min-width: 1.125rem;
-    height: 1.125rem;
-    padding: 0 0.2rem;
+    top: -0.35rem;
+    right: -0.45rem;
     box-sizing: border-box;
+    min-width: 1.05rem;
+    height: 1.05rem;
+    padding: 0 0.22rem;
     border-radius: 9999px;
     background: #0079ca;
     color: #fff;
     font-size: 0.625rem;
-    line-height: 1;
-    font-weight: var(--font-weight-bold);
+    line-height: 1.05rem;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-variant-numeric: tabular-nums;
   }
 
   .cartMobileTriggerPrice {
-    font-size: var(--type-small-size);
-    line-height: var(--type-small-line-height);
-    font-weight: 600;
+    font-size: 1.0625rem;
+    line-height: 1.2;
+    font-weight: 700;
     color: #0a0a0a;
     font-variant-numeric: tabular-nums;
     white-space: nowrap;
+    letter-spacing: -0.02em;
   }
 
   .cartMobileCheckoutPill {
-    flex: 1 1 66%;
-    max-width: 66%;
+    flex: 0 0 auto;
+    max-width: none;
     min-width: 0;
     align-self: center;
-    padding: 0.85rem 1.25rem;
+    padding: 0.8rem 1.35rem;
     border: none;
     border-radius: 9999px;
     background: var(--cta-bg, #0079ca);
     color: var(--cta-text, #fff);
     font: inherit;
-    font-size: var(--type-small-size);
-    line-height: var(--type-small-line-height);
-    font-weight: var(--font-weight-bold);
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    font-weight: 700;
     cursor: pointer;
     white-space: nowrap;
     text-align: center;
   }
 
-  .cartMobileCheckoutPill:hover {
+  .cartMobileCheckoutPill:hover:not(:disabled) {
     background: var(--cta-bg-hover, #0062a3);
+  }
+
+  .cartMobileCheckoutPill:disabled {
+    background: #eef0f2;
+    color: #b0b6bb;
+    cursor: not-allowed;
   }
 
   .cartMobileBackBtn {
@@ -671,7 +738,7 @@
   }
 
   .cartMobileBar--withBack .cartMobileCheckoutPill {
-    flex: 1 1 auto;
+    flex: 0 0 auto;
     max-width: none;
   }
 

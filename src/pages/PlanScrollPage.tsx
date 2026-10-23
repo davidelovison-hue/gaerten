@@ -6,7 +6,6 @@ import { FestivalNavbar } from '../components/FestivalNavbar';
 import { OverviewCollapsible } from '../components/OverviewCollapsible';
 import { PlanCategorySection } from '../components/PlanCategorySection';
 import { PlanTabs } from '../components/PlanTabs';
-import { useCart } from '../lib/cartContext';
 import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { useIsMobile } from '../lib/useIsMobile';
 import {
@@ -90,14 +89,12 @@ type PlanScrollPageProps = {
 
 export function PlanScrollPage({ homePath = '/scroll', overview }: PlanScrollPageProps) {
   const location = useLocation();
-  const { items } = useCart();
   const isMobile = useIsMobile();
   const isSnap = homePath === '/immersive';
   const [activeTab, setActiveTab] = useState<PlanStepId>(getTabFromHash);
   const [isOverviewOpen, setIsOverviewOpen] = useState(
     () => window.location.hash.replace(/^#/, '') === 'overview',
   );
-  const hasCart = items.length > 0;
   const suppressSpyUntilRef = useRef(0);
   const didInitialHashScroll = useRef(false);
   const snapRootRef = useRef<HTMLDivElement>(null);
@@ -268,7 +265,7 @@ export function PlanScrollPage({ homePath = '/scroll', overview }: PlanScrollPag
 
   const cartPanels = (
     <>
-      {isMobile && hasCart ? <CartPanel mode="mobile" /> : null}
+      {isMobile ? <CartPanel mode="mobile" /> : null}
       {!isMobile ? <CartPanel mode="desktop" /> : null}
     </>
   );
