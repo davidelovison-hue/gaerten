@@ -265,7 +265,7 @@ export function PlanScrollPage({ homePath = '/scroll', overview }: PlanScrollPag
 
   const cartPanels = (
     <>
-      {isMobile ? <CartPanel mode="mobile" onGetTickets={handleGoToTickets} /> : null}
+      {isMobile ? <CartPanel mode="mobile" /> : null}
       {!isMobile ? <CartPanel mode="desktop" /> : null}
     </>
   );

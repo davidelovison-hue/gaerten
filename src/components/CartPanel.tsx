@@ -7,7 +7,6 @@ import { buildCheckoutFromCart } from '../lib/buildCheckoutFromCart';
 import { persistCheckoutBasket } from '../lib/checkoutFlowStorage';
 import { connectPath } from '../lib/routes';
 import { formatPrice } from '../lib/theme';
-import { useTicketsSectionReached } from '../lib/useTicketsSectionReached';
 import './CartPanel.css';
 
 function CartIcon() {
@@ -84,7 +83,6 @@ type CartPanelProps = {
   continueInsteadOfCheckout?: boolean;
   onContinue?: () => boolean | void;
   onBack?: () => void;
-  onGetTickets?: () => void;
 };
 
 export function CartPanel({
@@ -92,12 +90,10 @@ export function CartPanel({
   continueInsteadOfCheckout = false,
   onContinue,
   onBack,
-  onGetTickets,
 }: CartPanelProps) {
   const navigate = useNavigate();
   const cartTitleId = useId();
   const { items, setQuantity, removeItem, totalItems, totalPrice } = useCart();
-  const ticketsReached = useTicketsSectionReached();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
   const cartBodyRef = useRef<HTMLDivElement | null>(null);
   const [cartHasOverflow, setCartHasOverflow] = useState(false);
@@ -193,19 +189,6 @@ export function CartPanel({
     proceedToCheckout();
   }, [closeMobileDrawer, continueInsteadOfCheckout, items.length, onContinue, proceedToCheckout]);
 
-  const scrollToTicketSection = useCallback(() => {
-    if (onGetTickets) {
-      onGetTickets();
-      return;
-    }
-    const fold =
-      document.getElementById('tickets') ??
-      document.querySelector<HTMLElement>('.planTicketsMain, .planTicketsSection, .planSnap--tickets');
-    if (!fold) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    fold.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
-  }, [onGetTickets]);
-
   const cartHeader = (showClose = false) => (
     <div className="cartHeader">
       <div className="cartHeaderTitleRow">
@@ -264,43 +247,35 @@ export function CartPanel({
       </span>
       <span className="cartMobileTriggerCopy">
         <span className="cartMobileTriggerPrice">{formatPrice(totalPrice)}</span>
-        <span className="cartMobileTriggerTickets">Tickets: {totalItems}</span>
+        <span className="cartMobileTriggerTickets">Items: {totalItems}</span>
       </span>
     </>
   );
-  const mobileBar = (empty: boolean) => (
+  const mobileBar = (
     <div
-      className={`cartMobileBar${empty ? ' cartMobileBar--empty' : ' cartMobileBar--openable'}${onBack && !empty ? ' cartMobileBar--withBack' : ''}`}
+      className={`cartMobileBar cartMobileBar--openable${onBack ? ' cartMobileBar--withBack' : ''}`}
       role="region"
-      aria-label={empty ? 'Get tickets' : 'Cart actions'}
+      aria-label="Cart actions"
     >
-      {empty ? (
-        <div className="cartMobileTrigger">{mobileTriggerInner}</div>
-      ) : (
-        <button
-          type="button"
-          className="cartMobileTrigger"
-          aria-expanded="false"
-          aria-label={`Open cart, ${totalItems} item${totalItems === 1 ? '' : 's'}, ${formatPrice(totalPrice)} total`}
-          onClick={() => setIsMobileDrawerOpen(true)}
-        >
-          {mobileTriggerInner}
-          <span className="cartMobileTriggerArrow" aria-hidden="true">
-            <ChevronUpIcon />
-          </span>
-        </button>
-      )}
-      {onBack && !empty ? (
+      <button
+        type="button"
+        className="cartMobileTrigger"
+        aria-expanded="false"
+        aria-label={`Open cart, ${totalItems} item${totalItems === 1 ? '' : 's'}, ${formatPrice(totalPrice)} total`}
+        onClick={() => setIsMobileDrawerOpen(true)}
+      >
+        {mobileTriggerInner}
+        <span className="cartMobileTriggerArrow" aria-hidden="true">
+          <ChevronUpIcon />
+        </span>
+      </button>
+      {onBack ? (
         <button type="button" className="cartMobileBackBtn" aria-label="Back" onClick={onBack}>
           <BackArrowIcon />
         </button>
       ) : null}
-      <button
-        type="button"
-        className="cartMobileCheckoutPill"
-        onClick={empty ? scrollToTicketSection : handleCheckoutClick}
-      >
-        {empty ? 'Get tickets' : checkoutLabel}
+      <button type="button" className="cartMobileCheckoutPill" onClick={handleCheckoutClick}>
+        {checkoutLabel}
       </button>
     </div>
   );
@@ -323,8 +298,7 @@ export function CartPanel({
       );
     }
 
-    if (!ticketsReached) return null;
-    return createPortal(mobileBar(true), document.body);
+    return null;
   }
 
   const cartList = (
@@ -395,7 +369,7 @@ export function CartPanel({
         <span className="cartSummaryLabel">Total</span>
         <span className="cartSummaryTotal">{formatSummaryPrice(totalPrice)}</span>
       </div>
-      <span className="cartSummaryTickets">Tickets: {totalItems}</span>
+      <span className="cartSummaryTickets">Items: {totalItems}</span>
     </div>
   );
 
@@ -428,7 +402,7 @@ export function CartPanel({
 
   return createPortal(
     <>
-      {!isMobileDrawerOpen ? mobileBar(false) : null}
+      {!isMobileDrawerOpen ? mobileBar : null}
 
       {isMobileDrawerOpen ? (
         <>

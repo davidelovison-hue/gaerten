@@ -14,7 +14,8 @@
   transition: margin-block-end 0.35s ease;
 }
 
-.planFold--open .planFold__header {
+.planFold--open .planFold__header,
+.planFold--peek:not(.planFold--open) .planFold__header {
   margin-block-end: 1.5rem;
 }
 
@@ -89,6 +90,12 @@
 
 .planFold__region--collapsed .planFold__inner {
   overflow-y: clip;
+}
+
+.planFold__seeMoreRow {
+  display: flex;
+  justify-content: center;
+  margin-top: 1.25rem;
 }
 
 @media (prefers-reduced-motion: reduce) {

@@ -407,9 +407,13 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
                 title="Overview"
                 icon="compass"
                 open={overviewOpen}
+                peekWhenCollapsed
                 onToggle={toggleOverview}
               >
-                <ImmersiveOverview />
+                <ImmersiveOverview
+                  hideNav={!overviewOpen}
+                  only={overviewOpen ? undefined : 'highlights-1'}
+                />
               </PlanFoldSection>
             </div>
             <section id="tickets" className="planTicketsSection" aria-label="Tickets">
@@ -462,7 +466,6 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
             continueInsteadOfCheckout={guided && !isLastStep}
             onContinue={handleCartContinue}
             onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
-            onGetTickets={handleGoToTickets}
           />
         ) : null}
         {guided && !isMobile ? (

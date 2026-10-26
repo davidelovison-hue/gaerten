@@ -8,6 +8,7 @@ type PlanFoldSectionProps = {
   open: boolean;
   onToggle: () => void;
   className?: string;
+  peekWhenCollapsed?: boolean;
   children: ReactNode;
 };
 
@@ -68,47 +69,68 @@ export function PlanFoldSection({
   open,
   onToggle,
   className,
+  peekWhenCollapsed = false,
   children,
 }: PlanFoldSectionProps) {
   const panelId = `${id}-region`;
+  const collapsedHidden = !open && !peekWhenCollapsed;
+  const showHeaderToggle = open || !peekWhenCollapsed;
 
   return (
     <section
       id={id}
-      className={`planFold${open ? ' planFold--open' : ''}${className ? ` ${className}` : ''}`}
+      className={`planFold${open ? ' planFold--open' : ''}${peekWhenCollapsed ? ' planFold--peek' : ''}${className ? ` ${className}` : ''}`}
       aria-label={title}
     >
       <div className="planFold__header" onClick={onToggle}>
         <PlanSectionTitle icon={icon}>{title}</PlanSectionTitle>
-        <button
-          type="button"
-          className="planFold__toggle"
-          aria-expanded={open}
-          aria-controls={panelId}
-          onClick={(event) => {
-            event.stopPropagation();
-            onToggle();
-          }}
-        >
-          <span>{open ? 'See less' : 'See more'}</span>
-          <span className="planFold__toggleIcon">
-            <ChevronIcon />
-          </span>
-        </button>
+        {showHeaderToggle ? (
+          <button
+            type="button"
+            className="planFold__toggle"
+            aria-expanded={open}
+            aria-controls={panelId}
+            onClick={(event) => {
+              event.stopPropagation();
+              onToggle();
+            }}
+          >
+            <span>{open ? 'See less' : 'See more'}</span>
+            <span className="planFold__toggleIcon">
+              <ChevronIcon />
+            </span>
+          </button>
+        ) : null}
       </div>
       <div
         id={panelId}
-        className={`planFold__region${open ? '' : ' planFold__region--collapsed'}`}
+        className={`planFold__region${collapsedHidden ? ' planFold__region--collapsed' : ''}`}
       >
         <div
           className="planFold__inner"
           ref={(el) => {
-            if (el) el.inert = !open;
+            if (el) el.inert = collapsedHidden;
           }}
         >
           {children}
         </div>
       </div>
+      {peekWhenCollapsed && !open ? (
+        <div className="planFold__seeMoreRow">
+          <button
+            type="button"
+            className="planFold__toggle"
+            aria-expanded={false}
+            aria-controls={panelId}
+            onClick={onToggle}
+          >
+            <span>See more</span>
+            <span className="planFold__toggleIcon">
+              <ChevronIcon />
+            </span>
+          </button>
+        </div>
+      ) : null}
     </section>
   );
 }
