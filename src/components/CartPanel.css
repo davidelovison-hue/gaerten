@@ -534,7 +534,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 95;
+    z-index: 150;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -587,12 +587,6 @@
     .cartMobileTriggerArrow {
       animation: none;
     }
-  }
-
-  .cartMobileBar--heroImmersive {
-    transform: translateY(100%);
-    opacity: 0;
-    pointer-events: none;
   }
 
   .cartMobileTrigger {
@@ -745,7 +739,7 @@
   .cartMobileBackdrop {
     position: fixed;
     inset: 0;
-    z-index: 120;
+    z-index: 160;
     border: none;
     padding: 0;
     margin: 0;
@@ -758,7 +752,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    z-index: 121;
+    z-index: 161;
     box-sizing: border-box;
     max-height: min(85vh, 42rem);
     display: flex;

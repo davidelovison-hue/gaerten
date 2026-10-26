@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { useNavigate } from 'react-router-dom';
 import { useCart, type CartItem } from '../lib/cartContext';
 import { findEntityPlacement } from '../data/planCatalog';
@@ -6,6 +7,7 @@ import { buildCheckoutFromCart } from '../lib/buildCheckoutFromCart';
 import { persistCheckoutBasket } from '../lib/checkoutFlowStorage';
 import { connectPath } from '../lib/routes';
 import { formatPrice } from '../lib/theme';
+import { useTicketsSectionReached } from '../lib/useTicketsSectionReached';
 import './CartPanel.css';
 
 function CartIcon() {
@@ -82,6 +84,7 @@ type CartPanelProps = {
   continueInsteadOfCheckout?: boolean;
   onContinue?: () => boolean | void;
   onBack?: () => void;
+  onGetTickets?: () => void;
 };
 
 export function CartPanel({
@@ -89,12 +92,13 @@ export function CartPanel({
   continueInsteadOfCheckout = false,
   onContinue,
   onBack,
+  onGetTickets,
 }: CartPanelProps) {
   const navigate = useNavigate();
   const cartTitleId = useId();
   const { items, setQuantity, removeItem, totalItems, totalPrice } = useCart();
+  const ticketsReached = useTicketsSectionReached();
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState(false);
-  const [hideMobileBarForHero, setHideMobileBarForHero] = useState(false);
   const cartBodyRef = useRef<HTMLDivElement | null>(null);
   const [cartHasOverflow, setCartHasOverflow] = useState(false);
   const [cartIsAtBottom, setCartIsAtBottom] = useState(true);
@@ -136,49 +140,6 @@ export function CartPanel({
   useEffect(() => {
     updateScrollHint();
   }, [items.length, mode, isMobileDrawerOpen, updateScrollHint]);
-
-  useEffect(() => {
-    if (mode !== 'mobile') {
-      setHideMobileBarForHero(false);
-      return;
-    }
-
-    const hero = document.querySelector<HTMLElement>('.planHeroSlot--immersive');
-    if (!hero) {
-      setHideMobileBarForHero(false);
-      return;
-    }
-
-    const ticketCards = () =>
-      document.querySelector<HTMLElement>('.planTicketsMain .card, .planTicketsMain .cardAdmission');
-
-    const syncHeroVisibility = () => {
-      const heroBottom = hero.getBoundingClientRect().bottom;
-      const cardsTop = ticketCards()?.getBoundingClientRect().top ?? Number.POSITIVE_INFINITY;
-      const heroStillVisible = heroBottom > 8;
-      const cardsNotReached = cardsTop > window.innerHeight - 140;
-      setHideMobileBarForHero(heroStillVisible || cardsNotReached);
-    };
-
-    syncHeroVisibility();
-
-    const observer = new IntersectionObserver(
-      () => syncHeroVisibility(),
-      { threshold: [0, 0.15, 0.35, 0.5, 0.75, 1] },
-    );
-    observer.observe(hero);
-    const tickets = document.querySelector<HTMLElement>('.planTicketsMain, #tickets');
-    if (tickets) observer.observe(tickets);
-
-    window.addEventListener('scroll', syncHeroVisibility, { passive: true });
-    window.addEventListener('resize', syncHeroVisibility);
-
-    return () => {
-      observer.disconnect();
-      window.removeEventListener('scroll', syncHeroVisibility);
-      window.removeEventListener('resize', syncHeroVisibility);
-    };
-  }, [mode]);
 
   useEffect(() => {
     const el = cartBodyRef.current;
@@ -231,6 +192,19 @@ export function CartPanel({
     }
     proceedToCheckout();
   }, [closeMobileDrawer, continueInsteadOfCheckout, items.length, onContinue, proceedToCheckout]);
+
+  const scrollToTicketSection = useCallback(() => {
+    if (onGetTickets) {
+      onGetTickets();
+      return;
+    }
+    const fold =
+      document.getElementById('tickets') ??
+      document.querySelector<HTMLElement>('.planTicketsMain, .planTicketsSection, .planSnap--tickets');
+    if (!fold) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    fold.scrollIntoView({ block: 'start', behavior: reduceMotion ? 'auto' : 'smooth' });
+  }, [onGetTickets]);
 
   const cartHeader = (showClose = false) => (
     <div className="cartHeader">
@@ -296,10 +270,9 @@ export function CartPanel({
   );
   const mobileBar = (empty: boolean) => (
     <div
-      className={`cartMobileBar${empty ? ' cartMobileBar--empty' : ' cartMobileBar--openable'}${hideMobileBarForHero ? ' cartMobileBar--heroImmersive' : ''}${onBack ? ' cartMobileBar--withBack' : ''}`}
+      className={`cartMobileBar${empty ? ' cartMobileBar--empty' : ' cartMobileBar--openable'}${onBack && !empty ? ' cartMobileBar--withBack' : ''}`}
       role="region"
-      aria-label="Cart actions"
-      aria-hidden={hideMobileBarForHero}
+      aria-label={empty ? 'Get tickets' : 'Cart actions'}
     >
       {empty ? (
         <div className="cartMobileTrigger">{mobileTriggerInner}</div>
@@ -317,7 +290,7 @@ export function CartPanel({
           </span>
         </button>
       )}
-      {onBack ? (
+      {onBack && !empty ? (
         <button type="button" className="cartMobileBackBtn" aria-label="Back" onClick={onBack}>
           <BackArrowIcon />
         </button>
@@ -325,10 +298,9 @@ export function CartPanel({
       <button
         type="button"
         className="cartMobileCheckoutPill"
-        disabled={empty}
-        onClick={empty ? undefined : handleCheckoutClick}
+        onClick={empty ? scrollToTicketSection : handleCheckoutClick}
       >
-        {checkoutLabel}
+        {empty ? 'Get tickets' : checkoutLabel}
       </button>
     </div>
   );
@@ -351,7 +323,8 @@ export function CartPanel({
       );
     }
 
-    return mobileBar(true);
+    if (!ticketsReached) return null;
+    return createPortal(mobileBar(true), document.body);
   }
 
   const cartList = (
@@ -453,7 +426,7 @@ export function CartPanel({
     );
   }
 
-  return (
+  return createPortal(
     <>
       {!isMobileDrawerOpen ? mobileBar(false) : null}
 
@@ -489,6 +462,7 @@ export function CartPanel({
           </div>
         </>
       ) : null}
-    </>
+    </>,
+    document.body,
   );
 }

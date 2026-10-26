@@ -1,4 +1,5 @@
-import { useMemo, useState, type MouseEvent } from 'react';
+import { useEffect, useMemo, useRef, useState, type MouseEvent } from 'react';
+import { createPortal } from 'react-dom';
 import {
   FESTIVAL_MEDIA_HERO,
   GALLERY_IMAGE_URLS,
@@ -6,7 +7,10 @@ import {
   HERO_FACTS,
 } from '../data/festivalConfig';
 import { getCatalogFromPrice } from '../data/planCatalog';
+import { useCart } from '../lib/cartContext';
 import { FESTIVAL_EVENT } from '../lib/festivalEvent';
+import { useIsMobile } from '../lib/useIsMobile';
+import { useTicketsSectionReached } from '../lib/useTicketsSectionReached';
 import {
   buildGalleryItems,
   FestivalGalleryModal,
@@ -130,8 +134,13 @@ type FestivalGalleryProps = {
 export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
   const config = FESTIVAL_MEDIA_HERO;
   const alt = GALLERY_IMAGES[0]?.alt ?? FESTIVAL_EVENT.title;
+  const { totalItems } = useCart();
+  const isMobile = useIsMobile();
+  const ticketsReached = useTicketsSectionReached();
+  const priceRowRef = useRef<HTMLDivElement | null>(null);
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryStartIndex, setGalleryStartIndex] = useState(0);
+  const [heroCtaInView, setHeroCtaInView] = useState(true);
 
   const galleryItems = useMemo(
     () => buildGalleryItems(GALLERY_IMAGE_URLS, config.video, config.videoPoster),
@@ -140,6 +149,24 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
   const fromPrice = formatFeverFromPrice(getCatalogFromPrice());
 
   const canOpenGallery = galleryItems.length > 0;
+  const showStickyBuy =
+    isMobile && Boolean(onBuyTickets) && totalItems === 0 && !heroCtaInView && !ticketsReached;
+
+  useEffect(() => {
+    const el = priceRowRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setHeroCtaInView(Boolean(entry?.isIntersecting)),
+      { threshold: 0.45 },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    document.body.classList.toggle('has-sticky-get-tickets', showStickyBuy);
+    return () => document.body.classList.remove('has-sticky-get-tickets');
+  }, [showStickyBuy]);
 
   const openGalleryAt = (index: number) => {
     if (!canOpenGallery) return;
@@ -226,7 +253,10 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
                   </div>
                 </div>
                 {onBuyTickets ? (
-                  <div className="eventMediaHero__priceRow eventMediaHero__priceRow--bannered">
+                  <div
+                    ref={priceRowRef}
+                    className="eventMediaHero__priceRow eventMediaHero__priceRow--bannered"
+                  >
                     <div className="eventMediaHero__from">
                       <span className="eventMediaHero__fromLabel">From</span>
                       <span className="eventMediaHero__fromPrice">{fromPrice}</span>
@@ -296,6 +326,21 @@ export function FestivalGallery({ onBuyTickets }: FestivalGalleryProps) {
           onClose={() => setGalleryOpen(false)}
         />
       ) : null}
+
+      {showStickyBuy
+        ? createPortal(
+            <div className="eventMediaHeroStickyBuy" role="region" aria-label="Get tickets">
+              <div className="eventMediaHeroStickyBuy__from">
+                <span className="eventMediaHeroStickyBuy__fromLabel">From</span>
+                <span className="eventMediaHeroStickyBuy__fromPrice">{fromPrice}</span>
+              </div>
+              <button type="button" className="eventMediaHeroStickyBuy__btn" onClick={onBuyTickets}>
+                Get tickets
+              </button>
+            </div>,
+            document.body,
+          )
+        : null}
     </>
   );
 }

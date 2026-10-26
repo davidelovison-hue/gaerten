@@ -444,9 +444,9 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
                     <div className="planTicketsCart">
                       <CartPanel
                         mode="desktop"
-                        continueInsteadOfCheckout={!isLastStep}
+                        continueInsteadOfCheckout={guided && !isLastStep}
                         onContinue={handleCartContinue}
-                        onBack={stepIndex > 0 ? goToPrevStep : undefined}
+                        onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
                       />
                     </div>
                   ) : null}
@@ -459,9 +459,10 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
         {isMobile ? (
           <CartPanel
             mode="mobile"
-            continueInsteadOfCheckout={!isLastStep}
+            continueInsteadOfCheckout={guided && !isLastStep}
             onContinue={handleCartContinue}
-            onBack={stepIndex > 0 ? goToPrevStep : undefined}
+            onBack={guided && stepIndex > 0 ? goToPrevStep : undefined}
+            onGetTickets={handleGoToTickets}
           />
         ) : null}
         {guided && !isMobile ? (

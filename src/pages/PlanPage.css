@@ -520,6 +520,10 @@
     padding: 1.5rem 1rem;
   }
 
+  body.has-sticky-get-tickets .planPage--marketplace .planIntroBand {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px));
+  }
+
   .planPage--marketplace .planMainShell {
     padding: 0 0 calc(4.5rem + env(safe-area-inset-bottom, 0px));
   }

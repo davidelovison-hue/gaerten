@@ -1176,6 +1176,66 @@
     white-space: nowrap;
     text-align: center;
   }
+
+  .eventMediaHeroStickyBuy {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 150;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.75rem 1.25rem max(0.75rem, env(safe-area-inset-bottom));
+    background: #0a0a0a;
+    color: #fff;
+    font-family: Inter, system-ui, -apple-system, sans-serif;
+  }
+
+  .eventMediaHeroStickyBuy__from {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.125rem;
+    min-width: 0;
+  }
+
+  .eventMediaHeroStickyBuy__fromLabel {
+    font-size: 0.75rem;
+    line-height: 1.25;
+    font-weight: 400;
+    color: #fff;
+  }
+
+  .eventMediaHeroStickyBuy__fromPrice {
+    font-size: 1.25rem;
+    line-height: 1.2;
+    font-weight: 500;
+    color: #fff;
+  }
+
+  .eventMediaHeroStickyBuy__btn {
+    flex: 0 0 auto;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 9.75rem;
+    height: 3.25rem;
+    margin: 0;
+    padding: 0 1.5rem;
+    border: none;
+    border-radius: 624.9375rem;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1c1c1c;
+    background: #fff;
+    cursor: pointer;
+    white-space: nowrap;
+  }
 }
 
 @media (min-width: 901px) {
