@@ -119,15 +119,12 @@ export function PlanFoldSection({
         <div className="planFold__seeMoreRow">
           <button
             type="button"
-            className="planFold__toggle"
+            className="planFold__seeMoreBtn"
             aria-expanded={false}
             aria-controls={panelId}
             onClick={onToggle}
           >
-            <span>See more</span>
-            <span className="planFold__toggleIcon">
-              <ChevronIcon />
-            </span>
+            See more
           </button>
         </div>
       ) : null}

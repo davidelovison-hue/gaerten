@@ -98,6 +98,40 @@
   margin-top: 1.25rem;
 }
 
+.planFold__seeMoreBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  box-sizing: border-box;
+  min-width: 10.5rem;
+  height: 2.75rem;
+  margin: 0;
+  padding: 0 1.75rem;
+  border: 0.09375rem solid #0079ca;
+  border-radius: 624.9375rem;
+  background: transparent;
+  color: #0079ca;
+  font: inherit;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.planFold__seeMoreBtn:hover {
+  color: #005795;
+  border-color: #005795;
+  background: #0079ca0f;
+}
+
+.planFold__seeMoreBtn:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .planFold__header,
   .planFold__region,
