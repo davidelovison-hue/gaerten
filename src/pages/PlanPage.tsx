@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useLayoutEffect, useRef, useState, type ReactNode } from 'react';
+import { createPortal } from 'react-dom';
 import { useLocation } from 'react-router-dom';
 import { CartPanel } from '../components/CartPanel';
 import { FestivalGallery } from '../components/FestivalGallery';
@@ -8,12 +9,15 @@ import { ImmersiveOverview } from '../components/ImmersiveOverview';
 import { PlanCategorySection } from '../components/PlanCategorySection';
 import { PlanFoldSection, PlanSectionTitle } from '../components/PlanFoldSection';
 import { PlanTabs } from '../components/PlanTabs';
+import { useCart } from '../lib/cartContext';
 import { rememberPlanOrigin } from '../lib/routes';
 import { scrollPageToTop } from '../lib/scrollPageToTop';
 import { useIsMobile } from '../lib/useIsMobile';
+import { useTicketsSectionReached } from '../lib/useTicketsSectionReached';
 import {
   DEFAULT_PLAN_STEP,
   PLAN_STEPS,
+  getCatalogFromPrice,
   getCategoriesForStep,
   getPlanStep,
   getPlanStepIndex,
@@ -70,6 +74,11 @@ function getTabFromHash(guided = false): PlanStepId {
 
 const TAB_SCROLL_GAP_PX = 12;
 const STICKY_CHECK_TOLERANCE_PX = 2;
+const OVERVIEW_CTA_CLEARANCE_PX = 120;
+
+function formatFeverFromPrice(value: number) {
+  return `€${value.toFixed(2)}`;
+}
 
 function getNavOverlayHeightPx() {
   const card = document.querySelector<HTMLElement>('.festivalNavbar');
@@ -224,6 +233,9 @@ function scheduleScrollToTicketSection() {
 export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
   const location = useLocation();
   const isMobile = useIsMobile();
+  const { totalItems, totalPrice } = useCart();
+  const ticketsReached = useTicketsSectionReached();
+  const [overviewCtaClear, setOverviewCtaClear] = useState(true);
   const [activeTab, setActiveTab] = useState<PlanStepId>(() => getTabFromHash(guided));
   const [overviewOpen, setOverviewOpen] = useState(() => isOverviewHash(getHashId()));
   const [navScrolled, setNavScrolled] = useState(false);
@@ -245,6 +257,29 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
     window.addEventListener('scroll', sync, { passive: true });
     return () => window.removeEventListener('scroll', sync);
   }, [guided]);
+
+  useEffect(() => {
+    if (guided || isMobile || !overviewOpen) {
+      setOverviewCtaClear(true);
+      return;
+    }
+    const sync = () => {
+      const header = document.querySelector<HTMLElement>('#overview .planFold__header');
+      if (!header) {
+        setOverviewCtaClear(true);
+        return;
+      }
+      const headerBottom = header.getBoundingClientRect().bottom;
+      setOverviewCtaClear(headerBottom < window.innerHeight - OVERVIEW_CTA_CLEARANCE_PX);
+    };
+    sync();
+    window.addEventListener('scroll', sync, { passive: true });
+    window.addEventListener('resize', sync);
+    return () => {
+      window.removeEventListener('scroll', sync);
+      window.removeEventListener('resize', sync);
+    };
+  }, [guided, isMobile, overviewOpen]);
 
   useLayoutEffect(() => {
     if (guided) return undefined;
@@ -477,6 +512,28 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
           />
         ) : null}
       </div>
+      {!guided && !isMobile && overviewOpen && !ticketsReached && overviewCtaClear
+        ? createPortal(
+            <div className="planOverviewStickyCta" role="region" aria-label="Get tickets">
+              <div className="planOverviewStickyCta__from">
+                {totalItems === 0 ? (
+                  <span className="planOverviewStickyCta__fromLabel">From</span>
+                ) : null}
+                <span className="planOverviewStickyCta__fromPrice">
+                  {formatFeverFromPrice(totalItems > 0 ? totalPrice : getCatalogFromPrice())}
+                </span>
+              </div>
+              <button
+                type="button"
+                className="planOverviewStickyCta__btn"
+                onClick={handleGoToTickets}
+              >
+                Get tickets
+              </button>
+            </div>,
+            document.body,
+          )
+        : null}
     </div>
   );
 }

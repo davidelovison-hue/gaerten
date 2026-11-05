@@ -337,7 +337,88 @@
   line-height: var(--type-base-line-height);
 }
 
+.planOverviewStickyCta {
+  display: none;
+}
+
 @media (min-width: 901px) {
+  .planOverviewStickyCta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    position: fixed;
+    right: max(1.5rem, calc((100vw - 80rem) / 2));
+    bottom: 1.5rem;
+    z-index: 140;
+    box-sizing: border-box;
+    width: 28.75rem;
+    max-width: calc(100vw - 3rem);
+    margin: 0;
+    padding: 1rem;
+    border-radius: 1.5rem;
+    background: rgb(22 22 22 / 0.84);
+    backdrop-filter: blur(1.875rem);
+    -webkit-backdrop-filter: blur(1.875rem);
+    box-shadow: 0 0.75rem 2rem rgb(0 0 0 / 0.18);
+    font-family: inherit;
+  }
+
+  .planOverviewStickyCta__from {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+    gap: 0.25rem;
+    min-width: 0;
+    white-space: nowrap;
+  }
+
+  .planOverviewStickyCta__fromLabel {
+    font-size: 0.7062rem;
+    line-height: 1.25;
+    font-weight: 400;
+    color: #fff;
+  }
+
+  .planOverviewStickyCta__fromPrice {
+    font-size: 1.4161rem;
+    line-height: 1.1;
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    color: #fff;
+  }
+
+  .planOverviewStickyCta__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin: 0;
+    min-width: 11.5625rem;
+    height: 3rem;
+    padding: 0 1.5rem;
+    border: none;
+    border-radius: 624.9375rem;
+    background: #fff;
+    color: oklch(22% 0 0deg);
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+
+  .planOverviewStickyCta__btn:hover {
+    background: oklch(94% 0 0deg);
+  }
+
+  .planOverviewStickyCta__btn:focus-visible {
+    outline: 2px solid #fff;
+    outline-offset: 2px;
+  }
+
   .planPage--marketplace {
     --festival-nav-height: calc(1.5rem + 4rem);
     --sticky-tabs-height: calc(2.5rem + 1px);
