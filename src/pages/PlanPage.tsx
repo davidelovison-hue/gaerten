@@ -412,7 +412,7 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
               >
                 <ImmersiveOverview
                   hideNav={!overviewOpen}
-                  only={overviewOpen ? undefined : 'highlights-1'}
+                  only={overviewOpen ? undefined : 'lineup-1'}
                 />
               </PlanFoldSection>
             </div>

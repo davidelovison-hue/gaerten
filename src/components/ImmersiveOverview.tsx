@@ -18,8 +18,8 @@ import { FeverNavTabs } from './FeverNavTabs';
 import './ImmersiveOverview.css';
 
 const SECTION_NAV = [
-  { id: 'highlights-1', label: 'Highlights' },
   { id: 'lineup-1', label: 'Lineup' },
+  { id: 'highlights-1', label: 'Highlights' },
   { id: 'gallery-1', label: 'Gallery' },
   { id: 'how-it-works-1', label: 'On the day' },
   { id: 'description-1', label: 'Overview' },
@@ -187,6 +187,21 @@ export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewPr
       )}
 
       <div className={`fvSections${hideNav ? ' fvSections--embedded' : ''}`}>
+        {showBlock('lineup-1') ? (
+        <div id="lineup-1" className="fvBlock">
+          <section className="fvSection">
+            <div className="fvLineup">
+              <FestivalArtistsCarousel
+                artists={FESTIVAL_ARTISTS}
+                overline="Artists"
+                title={LINEUP_TITLE}
+                hideDay
+              />
+            </div>
+          </section>
+        </div>
+        ) : null}
+
         {showBlock('highlights-1') ? (
         <div id="highlights-1" className="fvBlock">
           <section className="fvSection fvSection--highlights">
@@ -224,21 +239,6 @@ export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewPr
                   </svg>
                 </button>
               </div>
-            </div>
-          </section>
-        </div>
-        ) : null}
-
-        {showBlock('lineup-1') ? (
-        <div id="lineup-1" className="fvBlock">
-          <section className="fvSection">
-            <div className="fvLineup">
-              <FestivalArtistsCarousel
-                artists={FESTIVAL_ARTISTS}
-                overline="Artists"
-                title={LINEUP_TITLE}
-                hideDay
-              />
             </div>
           </section>
         </div>
