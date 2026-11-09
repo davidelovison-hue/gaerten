@@ -117,9 +117,10 @@ function TransitIcon() {
 type ImmersiveOverviewProps = {
   hideNav?: boolean;
   only?: string | string[];
+  navTrailing?: ReactNode;
 };
 
-export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewProps) {
+export function ImmersiveOverview({ hideNav = false, only, navTrailing }: ImmersiveOverviewProps) {
   const [galleryOpen, setGalleryOpen] = useState(false);
   const [galleryIndex, setGalleryIndex] = useState(0);
   const [showAllFaqs, setShowAllFaqs] = useState(false);
@@ -183,6 +184,7 @@ export function ImmersiveOverview({ hideNav = false, only }: ImmersiveOverviewPr
           tabs={SECTION_NAV.map((item) => ({ id: item.id, label: item.label }))}
           activeId={activeSection}
           onSelect={jumpTo}
+          trailing={navTrailing}
         />
       )}
 

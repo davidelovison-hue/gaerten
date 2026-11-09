@@ -17,6 +17,11 @@ type EntityCardProps = {
   entity: PlanEntity;
 };
 
+function formatChipPrice(value: number) {
+  const rounded = Math.round(value * 100) / 100;
+  return Number.isInteger(rounded) ? `€${rounded}` : `€${rounded.toFixed(2)}`;
+}
+
 function listingTagClass(tone: ReturnType<typeof getListingTagTone>) {
   if (tone === 'selling_fast') return 'entityListingTag entityListingTagSellingFast';
   if (tone === 'limited') return 'entityListingTag entityListingTagLimited';
@@ -160,6 +165,7 @@ export function EntityCard({ entity }: EntityCardProps) {
   const renderAxis = (axis: VariantAxis) => {
     const selected = selectedByAxis[axis.id];
     const disabledOptions = new Set(axis.disabledOptions ?? []);
+    const showChipPrices = axis.id === 'wave';
 
     return (
       <div key={axis.id} className="axis">
@@ -173,10 +179,12 @@ export function EntityCard({ entity }: EntityCardProps) {
             const isOptionSoldOut = disabledOptions.has(option);
             // Whole-card sold out: chips stay locked. Sold-out options stay clickable to preview price.
             const isOptionDisabled = isSoldOut;
+            const optionPrice = entity.optionPrices?.[option];
             const pillClass = [
               'pill',
               isSelected ? 'pillSelected' : '',
               isOptionSoldOut ? 'pillSoldOut' : '',
+              showChipPrices && optionPrice != null ? 'pillPriced' : '',
             ]
               .filter(Boolean)
               .join(' ');
@@ -196,7 +204,12 @@ export function EntityCard({ entity }: EntityCardProps) {
                   });
                 }}
               >
-                {option}
+                <span className="pillName">{option}</span>
+                {showChipPrices && optionPrice != null ? (
+                  <span className="pillMeta">
+                    <span className="pillPrice">{formatChipPrice(optionPrice)}</span>
+                  </span>
+                ) : null}
               </button>
             );
           })}

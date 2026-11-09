@@ -115,17 +115,37 @@ export const PLAN_CATALOG: PlanCategory[] = [
               {
                 id: 'wave',
                 label: 'Wave',
-                options: ['1st Wave', '2nd Wave'],
-                defaultOption: '1st Wave',
+                options: [
+                  'Presale',
+                  'Early bird',
+                  '1st Wave',
+                  '2nd Wave',
+                ],
+                defaultOption: '2nd Wave',
+                disabledOptions: ['Presale', 'Early bird', '1st Wave'],
               },
             ],
             optionPrices: {
-              '1st Wave': 69,
+              'Presale': 39,
+              'Early bird': 49,
+              '1st Wave': 59,
               '2nd Wave': 69,
             },
-            cardPreviewBullets: ['Valid for 1 person', 'All waves €69'],
+            cardPreviewBullets: ['Valid for 1 person', '2nd Wave €69'],
             includedItems: ['Festival entry', 'General access area'],
             waveIncludes: {
+              'Presale': [
+                'Doors open at 20:00, last entry before close',
+                'Access to all Grand Palais general areas',
+                'Valid for 1 person',
+                'Transferable up to 48h before the event, non-refundable',
+              ],
+              'Early bird': [
+                'Doors open at 20:00, last entry before close',
+                'Access to all Grand Palais general areas',
+                'Valid for 1 person',
+                'Transferable up to 48h before the event, non-refundable',
+              ],
               '1st Wave': [
                 'Doors open at 20:00, last entry before close',
                 'Access to all Grand Palais general areas',
@@ -152,12 +172,14 @@ export const PLAN_CATALOG: PlanCategory[] = [
               {
                 id: 'wave',
                 label: 'Wave',
-                options: ['1st Wave', '2nd Wave'],
-                defaultOption: '1st Wave',
+                options: ['Early bird', '1st Wave', '2nd Wave'],
+                defaultOption: '2nd Wave',
+                disabledOptions: ['Early bird', '1st Wave'],
               },
             ],
             optionPrices: {
-              '1st Wave': 249,
+              'Early bird': 179,
+              '1st Wave': 199,
               '2nd Wave': 249,
             },
             cardPreviewBullets: ['Stage VIP next to DJ booth', 'Private WC · bottle service'],
@@ -168,6 +190,13 @@ export const PLAN_CATALOG: PlanCategory[] = [
               'Fast-track entry',
             ],
             waveIncludes: {
+              'Early bird': [
+                'Fast-track entry from 20:00',
+                'VIP area next to the DJ booth throughout the show',
+                'Private WC',
+                'Bottle service',
+                'Valid for 1 person',
+              ],
               '1st Wave': [
                 'Fast-track entry from 20:00',
                 'VIP area next to the DJ booth throughout the show',

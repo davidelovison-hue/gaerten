@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type ReactNode } from 'react';
 import './FeverNavTabs.css';
 
 export type FeverNavTab = {
@@ -14,6 +14,7 @@ type FeverNavTabsProps = {
   getTabDomId?: (id: string) => string;
   variant?: 'line' | 'pill' | 'bar';
   showActions?: boolean;
+  trailing?: ReactNode;
 };
 
 export function FeverNavTabs({
@@ -24,6 +25,7 @@ export function FeverNavTabs({
   getTabDomId,
   variant = 'line',
   showActions = false,
+  trailing,
 }: FeverNavTabsProps) {
   const barRef = useRef<HTMLDivElement>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -74,6 +76,7 @@ export function FeverNavTabs({
           ))}
         </div>
         <span className="fvNavTabs__indicator" ref={indicatorRef} aria-hidden="true" />
+        {trailing ? <div className="fvNavTabs__trailing">{trailing}</div> : null}
         {showActions ? (
           <div className="fvNavTabs__actions">
             <span className="fvNavTabs__actionsDivider" aria-hidden="true" />
