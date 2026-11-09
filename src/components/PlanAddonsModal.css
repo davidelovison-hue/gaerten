@@ -1,0 +1,221 @@
+.planAddonsModal {
+  position: fixed;
+  inset: 0;
+  z-index: 250;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+.planAddonsModal__backdrop {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: rgb(16 16 16 / 0.45);
+  cursor: pointer;
+}
+
+.planAddonsModal__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 26.5rem);
+  max-height: min(40rem, calc(100dvh - 1.5rem));
+  margin: 0;
+  padding: 1.35rem 1.25rem 1.15rem;
+  border-radius: 1.5rem 1.5rem 1.15rem 1.15rem;
+  background: #fff;
+  box-shadow: 0 0.75rem 2rem #00000024;
+  box-sizing: border-box;
+}
+
+.planAddonsModal__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem;
+  margin: 0 0 1.15rem;
+}
+
+.planAddonsModal__heading {
+  min-width: 0;
+}
+
+.planAddonsModal__title {
+  margin: 0;
+  font-size: 1.25rem;
+  line-height: 1.25;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #1c1c1c;
+}
+
+.planAddonsModal__lead {
+  margin: 0.4rem 0 0;
+  font-size: 0.9375rem;
+  line-height: 1.45;
+  font-weight: 400;
+  color: #6b7c84;
+}
+
+.planAddonsModal__close {
+  flex: 0 0 2rem;
+  width: 2rem;
+  height: 2rem;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  border-radius: 9999px;
+  background: #f0f0f0;
+  color: #5c5c5c;
+  font: inherit;
+  font-size: 1.35rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.planAddonsModal__close:hover {
+  background: #e8e8e8;
+}
+
+.planAddonsModal__close:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}
+
+.planAddonsModal__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  overflow-y: auto;
+}
+
+.planAddonsModal__offer {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  margin: 0;
+  padding: 0.65rem 0.75rem 0.65rem 0.65rem;
+  border: 1px solid #ececec;
+  border-radius: 1rem;
+  background: #fff;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+}
+
+.planAddonsModal__offer:hover {
+  border-color: #d7dde0;
+  background: #fafbfc;
+}
+
+.planAddonsModal__offer:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}
+
+.planAddonsModal__thumb {
+  flex: 0 0 3.25rem;
+  width: 3.25rem;
+  height: 3.25rem;
+  object-fit: cover;
+  border-radius: 0.75rem;
+  background: #f4f6f7;
+}
+
+.planAddonsModal__offerCopy {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.15rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+
+.planAddonsModal__offerTitle {
+  font-size: 1rem;
+  line-height: 1.25;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #1c1c1c;
+}
+
+.planAddonsModal__offerHint {
+  font-size: 0.8125rem;
+  line-height: 1.35;
+  font-weight: 400;
+  color: #8a8a8a;
+}
+
+.planAddonsModal__chevron {
+  flex: 0 0 auto;
+  display: inline-flex;
+  color: #0079ca;
+}
+
+.planAddonsModal__footer {
+  flex: 0 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  margin-top: 1.15rem;
+  padding-top: 1rem;
+  border-top: 1px solid #ececec;
+}
+
+.planAddonsModal__checkout {
+  width: 100%;
+  min-height: 3.15rem;
+  margin: 0;
+  padding: 0.85rem 1.25rem;
+  border: 0;
+  border-radius: 9999px;
+  background: var(--cta-bg, #0079ca);
+  color: var(--cta-text, #fff);
+  font: inherit;
+  font-size: 1rem;
+  line-height: 1.3;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.planAddonsModal__checkout:hover {
+  background: var(--cta-bg-hover, #0062a3);
+}
+
+.planAddonsModal__checkout:focus-visible {
+  outline: 2px solid #0079ca;
+  outline-offset: 2px;
+}
+
+.planAddonsModal__brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+}
+
+.planAddonsModal__brand img {
+  height: 0.85rem;
+  width: auto;
+  opacity: 0.55;
+}
+
+@media (min-width: 701px) {
+  .planAddonsModal {
+    align-items: center;
+  }
+
+  .planAddonsModal__panel {
+    border-radius: 1.5rem;
+  }
+}

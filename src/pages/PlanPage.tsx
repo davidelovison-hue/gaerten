@@ -5,6 +5,7 @@ import { FestivalGallery } from '../components/FestivalGallery';
 import { FestivalNavbar } from '../components/FestivalNavbar';
 import { ForcedPlanProgress } from '../components/ForcedPlanProgress';
 import { ImmersiveOverview } from '../components/ImmersiveOverview';
+import { PlanAddonsModal } from '../components/PlanAddonsModal';
 import { PlanCategorySection } from '../components/PlanCategorySection';
 import { PlanFoldSection, PlanSectionTitle } from '../components/PlanFoldSection';
 import { PlanTabs } from '../components/PlanTabs';
@@ -227,6 +228,7 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
   const [activeTab, setActiveTab] = useState<PlanStepId>(() => getTabFromHash(guided));
   const [overviewOpen, setOverviewOpen] = useState(() => isOverviewHash(getHashId()));
   const [navScrolled, setNavScrolled] = useState(false);
+  const [addonsOpen, setAddonsOpen] = useState(false);
   const hasInitialTabScrollRef = useRef(false);
   const stepIndex = getPlanStepIndex(activeTab);
   const stepCategories = getCategoriesForStep(activeTab);
@@ -309,9 +311,21 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
   }, [goToStep, stepIndex]);
 
   const handleCartContinue = useCallback(() => {
+    if (activeTab === DEFAULT_PLAN_STEP) {
+      setAddonsOpen(true);
+      return true;
+    }
     if (isLastStep) return false;
     return goToNextStep();
-  }, [goToNextStep, isLastStep]);
+  }, [activeTab, goToNextStep, isLastStep]);
+
+  const handleAddonCategory = useCallback(
+    (stepId: PlanStepId) => {
+      setAddonsOpen(false);
+      goToStep(stepId, true);
+    },
+    [goToStep],
+  );
 
   const handleGoToTickets = useCallback(() => {
     setOverviewOpen(false);
@@ -484,6 +498,11 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
             onBack={stepIndex > 0 ? goToPrevStep : undefined}
           />
         ) : null}
+        <PlanAddonsModal
+          open={addonsOpen}
+          onClose={() => setAddonsOpen(false)}
+          onSelectCategory={handleAddonCategory}
+        />
       </div>
     </div>
   );
