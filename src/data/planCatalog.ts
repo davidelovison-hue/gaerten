@@ -92,7 +92,7 @@ function barTopUp(id: string, amount: number): PlanEntity {
 export const PLAN_CATALOG: PlanCategory[] = [
   {
     id: 'overview',
-    title: 'Overview',
+    title: 'About the event',
     contentMode: 'overview',
     groups: [],
   },

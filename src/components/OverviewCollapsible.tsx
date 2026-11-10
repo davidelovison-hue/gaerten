@@ -22,7 +22,7 @@ export function OverviewCollapsible({
     <section
       id={id}
       className={`planOverviewCollapsible ${isOpen ? 'planOverviewCollapsibleOpen' : ''}`}
-      aria-label="Overview"
+      aria-label="About the event"
     >
       <div className="planOverviewLineup">
         <FestivalArtistsCarousel
@@ -42,7 +42,7 @@ export function OverviewCollapsible({
           onClick={onToggle}
         >
           <span className="planOverviewToggleText">
-            <span className="planOverviewToggleLabel">Overview</span>
+            <span className="planOverviewToggleLabel">About the event</span>
             <span className="planOverviewToggleHint">Show info, venue &amp; more</span>
           </span>
           <span className="planOverviewToggleAction">

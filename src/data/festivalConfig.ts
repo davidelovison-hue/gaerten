@@ -9,7 +9,7 @@ export type PlanCategory = {
 };
 
 export const PLAN_CATEGORIES: PlanCategory[] = [
-  { id: 'overview', title: 'Overview' },
+  { id: 'overview', title: 'About the event' },
   { id: 'entry', title: 'Entry pass' },
   { id: 'merch', title: 'Merch' },
   { id: 'addons', title: 'Bar' },

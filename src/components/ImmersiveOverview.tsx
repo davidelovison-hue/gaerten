@@ -22,7 +22,7 @@ const SECTION_NAV = [
   { id: 'highlights-1', label: 'Highlights' },
   { id: 'gallery-1', label: 'Gallery' },
   { id: 'how-it-works-1', label: 'On the day' },
-  { id: 'description-1', label: 'Overview' },
+  { id: 'description-1', label: 'About the event' },
   { id: 'rules-1', label: 'House rules' },
   { id: 'venue-1', label: 'Venue' },
   { id: 'faqs-1', label: 'FAQs' },

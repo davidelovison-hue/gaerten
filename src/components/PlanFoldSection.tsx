@@ -4,35 +4,12 @@ import './PlanFoldSection.css';
 type PlanFoldSectionProps = {
   id: string;
   title: string;
-  icon: 'compass' | 'ticket';
   open: boolean;
   onToggle: () => void;
   className?: string;
   peekWhenCollapsed?: boolean;
   children: ReactNode;
 };
-
-function CompassIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 512 512" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M256 32a224 224 0 1 1 0 448 224 224 0 1 1 0-448zm0 480A256 256 0 1 0 256 0a256 256 0 1 0 0 512zm92.6-389.1L202.1 171.8c-14.3 4.8-25.6 16-30.4 30.4L122.9 348.6c-8.3 25 15.5 48.8 40.5 40.5l146.5-48.8c14.3-4.8 25.6-16 30.4-30.4l48.8-146.5c8.3-25-15.5-48.8-40.5-40.5zm10.1 30.4L309.9 299.8c-1.6 4.8-5.3 8.5-10.1 10.1L153.3 358.7l48.8-146.5c1.6-4.8 5.3-8.5 10.1-10.1l146.5-48.8zM256 280a24 24 0 1 0 0-48 24 24 0 1 0 0 48z"
-      />
-    </svg>
-  );
-}
-
-function TicketIcon() {
-  return (
-    <svg width="16" height="16" viewBox="0 0 576 512" aria-hidden="true">
-      <path
-        fill="currentColor"
-        d="M64 64C28.7 64 0 92.7 0 128v66c0 7.3 4.9 13.7 12 15.5c20.7 5.3 36 24.1 36 46.5s-15.3 41.2-36 46.5C4.9 304.3 0 310.7 0 318v66c0 35.3 28.7 64 64 64H512c35.3 0 64-28.7 64-64V318c0-7.3-4.9-13.7-12-15.5c-20.7-5.3-36-24.1-36-46.5s15.3-41.2 36-46.5c7.1-1.8 12-8.2 12-15.5V128c0-35.3-28.7-64-64-64H64zM32 128c0-17.7 14.3-32 32-32H512c17.7 0 32 14.3 32 32v54.7c-28.2 12.3-48 40.5-48 73.3s19.8 61 48 73.3V384c0 17.7-14.3 32-32 32H64c-17.7 0-32-14.3-32-32V329.3C60.2 317 80 288.8 80 256s-19.8-61-48-73.3V128zm128 64H416V320H160V192zm-32 0V320c0 17.7 14.3 32 32 32H416c17.7 0 32-14.3 32-32V192c0-17.7-14.3-32-32-32H160c-17.7 0-32 14.3-32 32z"
-      />
-    </svg>
-  );
-}
 
 function ChevronIcon() {
   return (
@@ -45,27 +22,13 @@ function ChevronIcon() {
   );
 }
 
-export function PlanSectionTitle({
-  icon,
-  children,
-}: {
-  icon: 'compass' | 'ticket';
-  children: ReactNode;
-}) {
-  return (
-    <h2 className="planFold__title">
-      <span className="planFold__icon" aria-hidden="true">
-        {icon === 'ticket' ? <TicketIcon /> : <CompassIcon />}
-      </span>
-      <span>{children}</span>
-    </h2>
-  );
+export function PlanSectionTitle({ children }: { children: ReactNode }) {
+  return <h2 className="planFold__title">{children}</h2>;
 }
 
 export function PlanFoldSection({
   id,
   title,
-  icon,
   open,
   onToggle,
   className,
@@ -83,7 +46,7 @@ export function PlanFoldSection({
       aria-label={title}
     >
       <div className="planFold__header" onClick={onToggle}>
-        <PlanSectionTitle icon={icon}>{title}</PlanSectionTitle>
+        <PlanSectionTitle>{title}</PlanSectionTitle>
         {showHeaderToggle ? (
           <button
             type="button"
@@ -124,7 +87,7 @@ export function PlanFoldSection({
             aria-controls={panelId}
             onClick={onToggle}
           >
-            See more
+            More info
           </button>
         </div>
       ) : null}

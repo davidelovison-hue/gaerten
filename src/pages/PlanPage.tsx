@@ -425,8 +425,7 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
             <div className="planIntroBand">
               <PlanFoldSection
                 id="overview"
-                title="Overview"
-                icon="compass"
+                title="About the event"
                 open={overviewOpen}
                 peekWhenCollapsed
                 onToggle={toggleOverview}
@@ -440,7 +439,7 @@ export function PlanPage({ homePath = '/', guided = false }: PlanPageProps) {
             </div>
             <section id="tickets" className="planTicketsSection" aria-label="Tickets">
               <div className="planTickets">
-                <PlanSectionTitle icon="ticket">Tickets</PlanSectionTitle>
+                <PlanSectionTitle>Tickets</PlanSectionTitle>
                 <div className="planTicketsRail">
                   <div className="planTicketsMain">
                     <div className="planTabsScrollAnchor" aria-hidden="true" />
