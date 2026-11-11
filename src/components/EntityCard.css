@@ -5,7 +5,7 @@
   --muted: #536b75;
   --border: #d1d5db;
   --bg-soft: #f9fafb;
-  --entity-accent: #0079ca;
+  --entity-accent: #1c1c1c;
   --chip-border: #e0e0e0;
   box-sizing: border-box;
   width: 100%;
@@ -360,7 +360,7 @@
   padding: 0;
   border: 0;
   background: none;
-  color: #0079ca;
+  color: #1c1c1c;
   font: inherit;
   font-size: 0.9375rem;
   line-height: 1.3;
@@ -673,14 +673,14 @@
 }
 
 .pillSoldOut {
-  color: #6b7280;
-  border-color: #e5e7eb;
-  background: #f9fafb;
+  color: #9aa3ab;
+  border-color: #e2e4e8;
+  background: #eef0f2;
 }
 
 .pillSoldOut:hover {
-  border-color: #d1d5db;
-  background: #f3f4f6;
+  border-color: #d5d8de;
+  background: #e8eaed;
 }
 
 .pillSoldOut.pillSelected {
@@ -831,7 +831,7 @@
 }
 
 .qtyBtnMinus:not(:disabled) {
-  color: #0079ca;
+  color: #1c1c1c;
 }
 
 .qtyBtnMinus:disabled {
@@ -841,11 +841,12 @@
 
 .qtyBtnPlus {
   font-weight: 600;
-  color: #0079ca;
+  color: #1c1c1c;
 }
 
-.qtyBtnPlus:hover {
-  background: #e3f2fd;
+.qtyBtnPlus:hover,
+.qtyBtnMinus:not(:disabled):hover {
+  background: #f0f0f0;
 }
 
 .qtyValue {

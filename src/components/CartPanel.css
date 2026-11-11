@@ -282,7 +282,7 @@
 
 .cartQtyTheme {
   --primary: #0a1f26;
-  --entity-accent: #0079ca;
+  --entity-accent: #1c1c1c;
   --chip-border: #e0e0e0;
   flex-shrink: 0;
 }
@@ -295,8 +295,8 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: #e3f2fd;
-  color: #0079ca;
+  background: #f0f0f0;
+  color: #1c1c1c;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -304,7 +304,7 @@
 }
 
 .ticketTrashBtn:hover {
-  background: #cfe8fc;
+  background: #e4e4e4;
 }
 
 .cartQtyBtnMinus {
@@ -318,8 +318,8 @@
   padding: 0;
   border: none;
   border-radius: 50%;
-  background: #e3f2fd;
-  color: #0079ca;
+  background: #f0f0f0;
+  color: #1c1c1c;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
@@ -327,7 +327,7 @@
 }
 
 .cartQtyBtnMinus:hover {
-  background: #cfe8fc;
+  background: #e4e4e4;
 }
 
 .cartQty {
@@ -358,12 +358,12 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  background: #e3f2fd;
-  color: #0079ca;
+  background: #f0f0f0;
+  color: #1c1c1c;
 }
 
 .cartQtyBtnPlus:hover {
-  background: #cfe8fc;
+  background: #e4e4e4;
 }
 
 .cartQtyValue {

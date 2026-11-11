@@ -87,7 +87,7 @@ export function PlanFoldSection({
             aria-controls={panelId}
             onClick={onToggle}
           >
-            More info
+            Show all details
           </button>
         </div>
       ) : null}
