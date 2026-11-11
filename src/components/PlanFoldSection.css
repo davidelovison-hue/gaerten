@@ -97,10 +97,10 @@
   height: 2.75rem;
   margin: 0;
   padding: 0 1.75rem;
-  border: 0.09375rem solid #0079ca;
+  border: 0.09375rem solid #1c1c1c;
   border-radius: 624.9375rem;
   background: transparent;
-  color: #0079ca;
+  color: #1c1c1c;
   font: inherit;
   font-size: 1rem;
   font-weight: 600;
@@ -111,13 +111,13 @@
 }
 
 .planFold__seeMoreBtn:hover {
-  color: #005795;
-  border-color: #005795;
-  background: #0079ca0f;
+  color: #111;
+  border-color: #111;
+  background: #1c1c1c0f;
 }
 
 .planFold__seeMoreBtn:focus-visible {
-  outline: 2px solid #0079ca;
+  outline: 2px solid #1c1c1c;
   outline-offset: 2px;
 }
 
